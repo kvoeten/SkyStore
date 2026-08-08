@@ -19,6 +19,7 @@
     "db:references": "tsx src/db/import-references.ts",
     "catalog:import": "tsx src/db/import-catalog.ts",
     "catalog:icons:uesp:ingest": "tsx tools/uesp-icons/ingest.ts",
+    "catalog:icons:uesp:hydrate": "tsx tools/uesp-icons/hydrate.ts",
     "catalog:icons:fallbacks:build": "tsx tools/uesp-icons/build-category-fallback.ts",
     "catalog:icons:uesp:map": "tsx tools/uesp-icons/map.ts",
     "catalog:icons:uesp:import": "tsx src/db/import-uesp-icons.ts",

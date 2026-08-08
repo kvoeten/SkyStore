@@ -1,12 +1,12 @@
 # One image intentionally serves both the Next.js web process and the TypeScript worker.
 # Compose selects the role with its command; keeping their runtime dependencies identical
 # prevents deployment-only drift in database/migration contracts.
-FROM node:24-alpine AS dependencies
+FROM node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9e1ad43 AS dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
-FROM node:24-alpine AS build
+FROM node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9e1ad43 AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=dependencies /app/node_modules ./node_modules
@@ -15,7 +15,7 @@ RUN mkdir -p public/catalog-icons \
  && cp catalog/generated/catalog-icons/*.png public/catalog-icons/
 RUN npm run build
 
-FROM node:24-alpine AS runtime
+FROM node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9e1ad43 AS runtime
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
@@ -38,3 +38,18 @@ COPY --from=dependencies --chown=skystore:skystore /app/node_modules ./node_modu
 USER skystore
 EXPOSE 3000
 CMD ["node", "server.js"]
+
+# GitHub releases pass the verified generated bundle as a named BuildKit context.
+# Local runtime builds remain small and continue to use the explicit setup mounts.
+FROM runtime AS release
+ARG SKYSTORE_RELEASE_VERSION=development
+ARG SKYSTORE_RELEASE_REVISION=unknown
+LABEL org.opencontainers.image.title="SkyStore" \
+      org.opencontainers.image.source="https://github.com/kvoeten/SkyStore" \
+      org.opencontainers.image.version=$SKYSTORE_RELEASE_VERSION \
+      org.opencontainers.image.revision=$SKYSTORE_RELEASE_REVISION
+ENV SKYSTORE_CATALOG_IMPORT_DIR=/opt/skystore/catalog \
+    SKYSTORE_UESP_MAPPING=/opt/skystore/catalog/uesp-icons/uesp-icon-mapping.json
+COPY --from=catalog_bundle --chown=skystore:skystore skystore-catalog-current.json skystore-catalog-report.json /opt/skystore/catalog/
+COPY --from=catalog_bundle --chown=skystore:skystore uesp-icons/uesp-icon-mapping.json uesp-icons/uesp-icons-manifest.json /opt/skystore/catalog/uesp-icons/
+COPY --from=catalog_bundle --chown=skystore:skystore uesp-icons/assets/ /var/lib/skystore/catalog-images/uesp/

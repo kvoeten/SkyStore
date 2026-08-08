@@ -22,7 +22,7 @@ The public guide is available without an account and shows store selling prices 
 - Stock tracking that never blocks a valid sale, with direct reconciliation to the real in-game inventory.
 - Per-store approval queues, verified contributors, staff display names, reports, pricing targets, and immutable audits.
 - Platform administration for stores, users, catalog activation, unresolved mappings, and quarantined contributors.
-- A normalized Keizaal catalog containing 12,425 items and 2,982 extracted crafting recipes.
+- A normalized Keizaal catalog containing 12,714 items and 3,007 extracted crafting recipes.
 - Consistent category artwork in dense lists, with optional locally stored item-specific imagery on item pages.
 
 Public price information may be up to seven days behind current market activity. Private receipts, stock, staff identities, and store-specific evidence are never exposed through the public guide.
@@ -127,6 +127,8 @@ npm run build
 ## Deployment and data safety
 
 The Compose stack runs the web application, PostgreSQL, a migration job, and a PostgreSQL-backed worker. Only the web service is bound to the host, on loopback by default. Production deployments should put an HTTPS reverse proxy in front of it and use the exact public Discord callback URL.
+
+Tagged releases publish a Linux container to GitHub Container Registry and attach a digest-pinned TrueNAS SCALE YAML. The release image contains the normalized current catalog and verified local item images; it never contains Skyrim plugins, archives, models, textures, or credentials. See the [TrueNAS deployment guide](deploy/truenas/README.md) for the prepared `/mnt/Atlantis/Vault/Skystore` layout, port `13000`, Nginx settings, and Discord callback.
 
 Never commit `.env` files, database dumps, uploads, backups, downloaded image caches, or source game files. Persistent Docker volumes retain PostgreSQL data, uploads, catalog images, and backup staging. Read [operations](docs/operations.md) before upgrading, exposing the service, or configuring encrypted off-site backups.
 

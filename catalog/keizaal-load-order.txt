@@ -3,22 +3,30 @@ Update.esm
 Dawnguard.esm
 HearthFires.esm
 Dragonborn.esm
-Sentinel - Master Plugin.esp
-SkyUI_SE.esp
-Keizaal.esp
+DIS_Heavy_Legion.esp
+Cloaks&Capes.esp
 CommonClothes.esp
 JK's Whiterun's Outskirts.esp
-Cloaks&Capes.esp
 JKs Whiterun.esp
-MoreCraftableEquipment.esp
-DIS_Heavy_Legion.esp
-Sentinel.esp
-Sentinel - Priests and Acolytes.esp
-evgnnsmpaccessories.esp
 JK's Riverwood.esp
-Kad_MoonMonkRobes.esp
-Sentinel - More Craftable Equipment.esp
-KzlOnlineMods.esp
 MCMHelper.esp
+MoreCraftableEquipment.esp
 MoreCraftableEquipment_CloaksandCapes.esp
+Kad_MoonMonkRobes.esp
+SkyUI_SE.esp
 Sentinel - City Guards.esp
+Sentinel - Master Plugin.esp
+Sentinel - More Craftable Equipment.esp
+Sentinel - Priests and Acolytes.esp
+Sentinel.esp
+Keizaal.esp
+KzlOnlineMods.esp
+aaaGraniteHill.esp
+OarsRest.esp
+North Keep.esp
+Mage Clothing Expansion.esp
+WindhelmSSE.esp
+Common Clothing Expanded.esp
+Arena - Markarth Side.esp
+AnotherOakwood.esp
+evgnnsmpaccessories.esp

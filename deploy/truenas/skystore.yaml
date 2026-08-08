@@ -1,0 +1,103 @@
+name: skystore
+
+# Paste this YAML into TrueNAS SCALE's "Install via YAML" editor.
+# Release downloads replace the RELEASE_TAG image references with an immutable image digest.
+x-skystore-environment: &skystore-environment
+  NODE_ENV: "production"
+  DATABASE_URL: "postgres://skystore:REPLACE_WITH_ALPHANUMERIC_DATABASE_PASSWORD@postgres:5432/skystore"
+  AUTH_URL: "https://skystore.kazvoeten.com"
+  AUTH_SECRET: "REPLACE_WITH_AT_LEAST_32_RANDOM_CHARACTERS"
+  AUTH_DISCORD_ID: "1534487408374972598"
+  AUTH_DISCORD_SECRET: "REPLACE_WITH_DISCORD_CLIENT_SECRET"
+  SKYSTORE_ADMIN_DISCORD_ID: "145997830052380674"
+  SKYSTORE_PUBLIC_DELAY_DAYS: "7"
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "skystore"
+      POSTGRES_USER: "skystore"
+      POSTGRES_PASSWORD: "REPLACE_WITH_ALPHANUMERIC_DATABASE_PASSWORD"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U skystore -d skystore"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 15s
+    volumes:
+      - /mnt/Atlantis/Vault/Skystore/postgres:/var/lib/postgresql/data
+    networks: [skystore]
+
+  migrate:
+    image: ghcr.io/kvoeten/skystore:RELEASE_TAG
+    pull_policy: always
+    restart: "no"
+    environment: *skystore-environment
+    command: ["./node_modules/.bin/drizzle-kit", "migrate", "--config=drizzle.config.ts"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [skystore]
+
+  catalog-bootstrap:
+    image: ghcr.io/kvoeten/skystore:RELEASE_TAG
+    pull_policy: always
+    restart: "no"
+    environment: *skystore-environment
+    command:
+      - sh
+      - -ec
+      - ./node_modules/.bin/tsx src/db/import-catalog.ts && ./node_modules/.bin/tsx src/db/import-uesp-icons.ts
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    networks: [skystore]
+
+  web:
+    image: ghcr.io/kvoeten/skystore:RELEASE_TAG
+    pull_policy: always
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 60s
+    security_opt:
+      - no-new-privileges:true
+    environment: *skystore-environment
+    ports:
+      - "13000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health/ready >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 30s
+    depends_on:
+      catalog-bootstrap:
+        condition: service_completed_successfully
+    volumes:
+      - /mnt/Atlantis/Vault/Skystore/uploads:/var/lib/skystore/uploads
+      - /mnt/Atlantis/Vault/Skystore/backups:/var/lib/skystore/backups
+    networks: [skystore]
+
+  worker:
+    image: ghcr.io/kvoeten/skystore:RELEASE_TAG
+    pull_policy: always
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 60s
+    security_opt:
+      - no-new-privileges:true
+    environment: *skystore-environment
+    command: ["./node_modules/.bin/tsx", "src/worker.ts"]
+    depends_on:
+      catalog-bootstrap:
+        condition: service_completed_successfully
+    volumes:
+      - /mnt/Atlantis/Vault/Skystore/uploads:/var/lib/skystore/uploads
+      - /mnt/Atlantis/Vault/Skystore/backups:/var/lib/skystore/backups
+    networks: [skystore]
+
+networks:
+  skystore:
+    driver: bridge
