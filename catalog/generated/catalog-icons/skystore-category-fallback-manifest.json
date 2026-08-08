@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "1",
+  "provider": "skystore_category_art",
+  "source": {
+    "generatedBy": "SkyStore category artwork",
+    "generatedAt": "2026-08-06T10:03:06.168Z"
+  },
+  "files": [
+    {
+      "title": "SkyStore category artwork: armor",
+      "canonicalTitle": "armor.png",
+      "sourcePageUrl": "local:armor.png",
+      "originalUrl": "local:armor.png",
+      "sha1": "2c800b23f24b358352a75908ecb3736c900098c9",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 101102,
+      "timestamp": null,
+      "categoryTrail": [
+        "Armor & clothing",
+        "Jewelry"
+      ],
+      "localPath": "/catalog-icons/armor.png"
+    },
+    {
+      "title": "SkyStore category artwork: book",
+      "canonicalTitle": "book.png",
+      "sourcePageUrl": "local:book.png",
+      "originalUrl": "local:book.png",
+      "sha1": "fd401cf9abe7e82efbe10bf75a10c49c79cee240",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 78103,
+      "timestamp": null,
+      "categoryTrail": [
+        "Books & scrolls",
+        "Spell tomes"
+      ],
+      "localPath": "/catalog-icons/book.png"
+    },
+    {
+      "title": "SkyStore category artwork: flower",
+      "canonicalTitle": "flower.png",
+      "sourcePageUrl": "local:flower.png",
+      "originalUrl": "local:flower.png",
+      "sha1": "aab088c781bb762f8de72b773418d7c899f72a73",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 66642,
+      "timestamp": null,
+      "categoryTrail": [
+        "Alchemy ingredients",
+        "Flora",
+        "Flowers"
+      ],
+      "localPath": "/catalog-icons/flower.png"
+    },
+    {
+      "title": "SkyStore category artwork: food",
+      "canonicalTitle": "food.png",
+      "sourcePageUrl": "local:food.png",
+      "originalUrl": "local:food.png",
+      "sha1": "8535f5c2a921ccbc914b98479ae5b8986758f4e3",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 85397,
+      "timestamp": null,
+      "categoryTrail": [
+        "Food & drink"
+      ],
+      "localPath": "/catalog-icons/food.png"
+    },
+    {
+      "title": "SkyStore category artwork: ingot",
+      "canonicalTitle": "ingot.png",
+      "sourcePageUrl": "local:ingot.png",
+      "originalUrl": "local:ingot.png",
+      "sha1": "c4cff6975b01e02802db20ffb989f49857b23e5d",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 58983,
+      "timestamp": null,
+      "categoryTrail": [
+        "Ingots",
+        "Ores & ingots"
+      ],
+      "localPath": "/catalog-icons/ingot.png"
+    },
+    {
+      "title": "SkyStore category artwork: misc",
+      "canonicalTitle": "misc.png",
+      "sourcePageUrl": "local:misc.png",
+      "originalUrl": "local:misc.png",
+      "sha1": "dd4a174fdd6387b8442cdfceb2c91525fed7604d",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 90642,
+      "timestamp": null,
+      "categoryTrail": [
+        "Crafting materials",
+        "Hides & leather",
+        "Keys",
+        "Miscellaneous",
+        "Soul gems",
+        "Tools & supplies"
+      ],
+      "localPath": "/catalog-icons/misc.png"
+    },
+    {
+      "title": "SkyStore category artwork: ore",
+      "canonicalTitle": "ore.png",
+      "sourcePageUrl": "local:ore.png",
+      "originalUrl": "local:ore.png",
+      "sha1": "34baf80db60ab5cb1d8bd7f149abb7e573e24531",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 75747,
+      "timestamp": null,
+      "categoryTrail": [
+        "Minerals",
+        "Ores",
+        "Ores & ingots"
+      ],
+      "localPath": "/catalog-icons/ore.png"
+    },
+    {
+      "title": "SkyStore category artwork: potion",
+      "canonicalTitle": "potion.png",
+      "sourcePageUrl": "local:potion.png",
+      "originalUrl": "local:potion.png",
+      "sha1": "f4f8ffb11721f371f1e82da5fa1c5c7d475bf67f",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 63794,
+      "timestamp": null,
+      "categoryTrail": [
+        "Potions & poisons"
+      ],
+      "localPath": "/catalog-icons/potion.png"
+    },
+    {
+      "title": "SkyStore category artwork: weapon",
+      "canonicalTitle": "weapon.png",
+      "sourcePageUrl": "local:weapon.png",
+      "originalUrl": "local:weapon.png",
+      "sha1": "cd94ca83c9265866905397f121bfdecfa9d4c6fc",
+      "mime": "image/png",
+      "width": 512,
+      "height": 512,
+      "bytes": 25801,
+      "timestamp": null,
+      "categoryTrail": [
+        "Ammunition",
+        "Weapons"
+      ],
+      "localPath": "/catalog-icons/weapon.png"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "skystore",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx src/db/seed.ts",
+    "db:references": "tsx src/db/import-references.ts",
+    "catalog:import": "tsx src/db/import-catalog.ts",
+    "catalog:icons:uesp:ingest": "tsx tools/uesp-icons/ingest.ts",
+    "catalog:icons:fallbacks:build": "tsx tools/uesp-icons/build-category-fallback.ts",
+    "catalog:icons:uesp:map": "tsx tools/uesp-icons/map.ts",
+    "catalog:icons:uesp:import": "tsx src/db/import-uesp-icons.ts",
+    "worker": "tsx src/worker.ts"
+  },
+  "dependencies": {
+    "@auth/drizzle-adapter": "1.11.3",
+    "drizzle-orm": "0.45.2",
+    "next": "16.3.0",
+    "next-auth": "5.0.0-beta.32",
+    "postgres": "3.4.9",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "drizzle-kit": "0.31.10",
+    "eslint": "9.39.2",
+    "eslint-config-next": "16.3.0",
+    "tsx": "4.21.0",
+    "typescript": "6.0.3",
+    "vitest": "4.1.10"
+  }
+}

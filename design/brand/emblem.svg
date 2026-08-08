@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">SkyStore merchant seal</title>
+  <desc id="desc">An original circular brass merchant seal with balanced scales and a carved diamond center.</desc>
+  <defs>
+    <linearGradient id="brass" x1="26" y1="18" x2="224" y2="236" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D8C7A1"/>
+      <stop offset=".34" stop-color="#B78A45"/>
+      <stop offset=".76" stop-color="#7B572A"/>
+      <stop offset="1" stop-color="#D8C7A1"/>
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="116" fill="#15181D"/>
+  <circle cx="128" cy="128" r="109" fill="none" stroke="url(#brass)" stroke-width="7"/>
+  <circle cx="128" cy="128" r="92" fill="#252B33" stroke="#B78A45" stroke-width="2"/>
+  <path d="M128 38l8 12-8 12-8-12zM128 194l8 12-8 12-8-12zM38 128l12-8 12 8-12 8zM194 128l12-8 12 8-12 8z" fill="#B78A45"/>
+  <g fill="none" stroke="#D8C7A1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M128 62v55M94 91h68M128 78l-11 13M128 78l11 13" stroke-width="7"/>
+    <path d="M92 93L66 139M164 93l26 46" stroke-width="4"/>
+    <path d="M52 140h40c-2 18-13 28-20 28s-18-10-20-28zM164 140h40c-2 18-13 28-20 28s-18-10-20-28z" stroke-width="5"/>
+    <path d="M128 117l25 25-25 25-25-25z" stroke="#B78A45" stroke-width="6"/>
+    <path d="M128 126l16 16-16 16-16-16z" stroke-width="2"/>
+    <path d="M95 187l10-10 10 10M151 187l-10-10-10 10" stroke="#647A55" stroke-width="4"/>
+  </g>
+  <circle cx="128" cy="128" r="4" fill="#D8C7A1"/>
+</svg>

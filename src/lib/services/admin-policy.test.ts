@@ -1,0 +1,3 @@
+import { describe, expect, it } from "vitest";
+import { mayChangeMembership, quarantineOutcome } from "./admin-policy";
+describe("administration policy",()=>{it("keeps owner role changes owner-only",()=>{expect(mayChangeMembership("manager","clerk","manager")).toBe(true);expect(mayChangeMembership("manager","owner","clerk")).toBe(false);expect(mayChangeMembership("manager","clerk","owner")).toBe(false)});it("never changes confirmed stock during quarantine",()=>{expect(quarantineOutcome(2,3,4)).toMatchObject({rejectedReceipts:2,quarantinedObservations:3,approvedReceiptsFlaggedForReview:4,confirmedStockChanged:false})})});

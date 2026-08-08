@@ -1,0 +1,13 @@
+/* eslint-disable react-hooks/error-boundaries -- the catch handles only the awaited database read. */
+import { AppShell, PageHeading, Status } from "@/components/app-shell";
+import { ApprovalActions } from "@/components/approval-actions";
+import { resolveStaffPageStore, staffShellIdentity } from "@/components/staff-page-context";
+import { getApprovalQueue } from "@/lib/services/staff-queries";
+
+export const dynamic = "force-dynamic";
+export default async function ApprovalsPage({ searchParams }: { searchParams: Promise<{ storeId?: string }> }) {
+  const store = await resolveStaffPageStore((await searchParams).storeId);
+  if (!store) return <AppShell current="/approvals"><div className="page"><section className="card empty"><h1>No store selected.</h1><p>You need store access to review submissions.</p></section></div></AppShell>;
+  if (!store.verified) return <AppShell current="/approvals" identity={staffShellIdentity(store)}><div className="page"><PageHeading eyebrow={`${store.name.toUpperCase()} · REVIEW`} title="Approval queue."/><section className="card empty"><h2>Verification required.</h2><p>A verified member of this store must review pending entries.</p></section></div></AppShell>;
+  try { const queue = await getApprovalQueue(store.id); return <AppShell current="/approvals" identity={staffShellIdentity(store)}><div className="page"><PageHeading eyebrow={`${store.name.toUpperCase()} · VERIFIED REVIEW`} title="Pending approval queue."><p className="lede">Unverified submissions stay provisional and are excluded from market and profit calculations until reviewed.</p></PageHeading><div className="notice"><b>{queue.length} waiting for review</b><span>Approve to publish the ledger effect, or reject to reverse provisional movement.</span></div><section className="panel">{queue.length ? <ul className="list">{queue.map((approval) => <li key={approval.id}><span><Status kind="pending">{approval.targetType}</Status><br/><b>{approval.target.label}</b><br/><small>{approval.requesterDisplayName ?? approval.requesterName ?? approval.requestedBy} · {new Date(approval.requestedAt).toLocaleString()} · {approval.target.detail}</small></span><ApprovalActions approvalId={approval.id}/></li>)}</ul> : <div className="empty"><h2>Nothing needs a second set of eyes.</h2><p>New unverified submissions will appear here.</p></div>}</section></div></AppShell>; } catch { return <AppShell current="/approvals" identity={staffShellIdentity(store)}><div className="page"><section className="card empty"><h1>Approval queue unavailable.</h1><p>Please try again shortly.</p></section></div></AppShell>; }
+}

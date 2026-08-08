@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "official_price_rule_identity_unique" ON "official_price_rules" USING btree ("store_id","item_id","side","effective_from","source_label");

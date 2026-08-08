@@ -1,0 +1,25 @@
+{
+  "version": "v1-9e1a080df8d3",
+  "catalogPath": "skystore-catalog-v1-9e1a080df8d3.json",
+  "itemCount": 12425,
+  "unresolvedArtworkCount": 12425,
+  "recipeCount": 2982,
+  "recipesWithUnresolvedMappings": 150,
+  "categoryCounts": {
+    "Alchemy ingredients": 532,
+    "Ammunition": 55,
+    "Armor \u0026 clothing": 3982,
+    "Books \u0026 scrolls": 1093,
+    "Food \u0026 drink": 122,
+    "Hides \u0026 leather": 23,
+    "Jewelry": 465,
+    "Keys": 378,
+    "Miscellaneous": 1502,
+    "Ores \u0026 ingots": 34,
+    "Potions \u0026 poisons": 304,
+    "Soul gems": 17,
+    "Spell tomes": 112,
+    "Tools \u0026 supplies": 495,
+    "Weapons": 3311
+  }
+}

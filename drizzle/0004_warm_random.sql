@@ -1,0 +1,1 @@
+ALTER TABLE "stores" ALTER COLUMN "owner_id" DROP NOT NULL;

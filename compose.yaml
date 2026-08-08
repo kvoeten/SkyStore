@@ -1,0 +1,150 @@
+name: skystore
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-skystore}
+      POSTGRES_USER: ${POSTGRES_USER:-skystore}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [internal]
+
+  migrate:
+    build:
+      context: .
+      target: runtime
+    image: skystore:local
+    restart: "no"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+    command: ["./node_modules/.bin/drizzle-kit", "migrate", "--config=drizzle.config.ts"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [internal]
+
+  web:
+    image: skystore:local
+    build:
+      context: .
+      target: runtime
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+    ports:
+      - "127.0.0.1:${SKYSTORE_WEB_PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health/live >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - uploads:/var/lib/skystore/uploads
+      - catalog_images:/var/lib/skystore/catalog-images:ro
+      - backups:/var/lib/skystore/backups
+    networks: [internal]
+
+  worker:
+    image: skystore:local
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+    command: ["./node_modules/.bin/tsx", "src/worker.ts"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - uploads:/var/lib/skystore/uploads
+      - catalog_images:/var/lib/skystore/catalog-images:ro
+      - backups:/var/lib/skystore/backups
+    networks: [internal]
+
+  catalog-import:
+    image: skystore:local
+    restart: "no"
+    profiles: [setup]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+      SKYSTORE_CATALOG_IMPORT_DIR: /var/lib/skystore/catalog-import
+    command: ["./node_modules/.bin/tsx", "src/db/import-catalog.ts"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./catalog/generated:/var/lib/skystore/catalog-import:ro
+    networks: [internal]
+
+  uesp-icon-import:
+    image: skystore:local
+    restart: "no"
+    profiles: [setup]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+      SKYSTORE_UESP_MAPPING: /var/lib/skystore/catalog-import/uesp-icons/uesp-icon-mapping.json
+    command: ["./node_modules/.bin/tsx", "src/db/import-uesp-icons.ts"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./catalog/generated:/var/lib/skystore/catalog-import:ro
+    networks: [internal]
+
+  catalog-image-sync:
+    image: skystore:local
+    restart: "no"
+    profiles: [setup]
+    user: "0:0"
+    command:
+      - sh
+      - -c
+      - mkdir -p /var/lib/skystore/catalog-images/uesp && cp -f /source/* /var/lib/skystore/catalog-images/uesp/
+    volumes:
+      - ./catalog/generated/uesp-icons/assets:/source:ro
+      - catalog_images:/var/lib/skystore/catalog-images
+    networks: [internal]
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  uploads:
+  catalog_images:
+  backups:

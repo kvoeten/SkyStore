@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="SkyStore deterministic product prototype" />
+    <title>SkyStore · Merchant Ledger</title>
+    <link rel="stylesheet" href="core.css" />
+    <style>
+      .view:not(.visible) { display: none !important; }
+      .brand > img { width: 36px; height: 36px; flex: 0 0 auto; }
+      .mobile-bar .brand > img { width: 30px; height: 30px; }
+      .login-emblem { display: block; width: 76px; height: 76px; margin: 0 auto 22px; }
+      .login-brand { margin: -8px 0 18px; color: var(--iron); font: 700 24px/1 Georgia, serif; letter-spacing: .02em; }
+      .login-brand span { color: #805b2c; }
+      .is-login .sidebar, .is-login .mobile-bar, .is-login .topbar, .is-login .prototype-state { display: none; }
+      .is-login .content { margin-left: 0; }
+      .is-login .login-view { min-height: 100vh; padding: 64px max(24px, calc((100vw - 920px)/2)); }
+      .is-login .login-card { max-width: 920px; margin: 0 auto; }
+      .is-public .nav-list a:not([data-view-link="public"]), .is-public .sidebar-foot { display: none; }
+      .is-public .realm span { display: none; }
+      @media (max-width: 900px) {
+        .is-login .content { margin-left: 0; }
+        .is-public .mobile-nav a:not([data-view-link="public"]) { display: none; }
+      }
+      @media (max-width: 650px) {
+        .is-login .login-view { padding: 28px 15px; }
+        .login-emblem { width: 64px; height: 64px; margin-bottom: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <a class="brand" href="#public" aria-label="SkyStore home">
+          <img src="../brand/emblem.svg" alt="" />
+          <span><strong>Sky</strong>Store<small>Merchant ledger</small></span>
+        </a>
+        <div class="realm">WHITERUN ALLIANCE <span>ACTIVE</span></div>
+        <nav class="nav-list">
+          <a data-view-link="public" href="#public"><span>◈</span> Price guide</a>
+          <a data-view-link="dashboard" href="#dashboard"><span>⌂</span> Store ledger</a>
+          <a data-view-link="inventory" href="#inventory"><span>▦</span> Inventory</a>
+          <a data-view-link="item" href="#item"><span>◇</span> Item record</a>
+          <a href="operations.html#purchase"><span>＋</span> Store pays</a>
+          <a href="operations.html#sale"><span>↗</span> Customer pays</a>
+          <a href="operations.html#street"><span>◌</span> Street report</a>
+        </nav>
+        <div class="sidebar-foot">
+          <span class="avatar">EK</span><span><b>Eiryn Karth</b><small>Verified clerk</small></span>
+          <button class="icon-button" type="button" aria-label="Account options">···</button>
+        </div>
+      </aside>
+
+      <div class="mobile-bar">
+        <a class="brand" href="#public"><img src="../brand/emblem.svg" alt="" /><strong>Sky</strong>Store</a>
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-nav">Menu</button>
+        <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
+          <a data-view-link="public" href="#public">Price guide</a><a data-view-link="dashboard" href="#dashboard">Store ledger</a><a data-view-link="inventory" href="#inventory">Inventory</a><a data-view-link="item" href="#item">Item record</a>
+          <a href="operations.html#purchase">Store pays</a><a href="operations.html#sale">Customer pays</a><a href="operations.html#street">Street report</a>
+        </nav>
+      </div>
+
+      <main id="main-content" class="content">
+        <header class="topbar">
+          <label class="global-search"><span>⌕</span><input id="global-search" type="search" placeholder="Search the ledger — iron ore, wheat, moonstone…" autocomplete="off" /><kbd>⌘ K</kbd></label>
+          <div class="top-actions"><button class="bell" type="button" aria-label="Three stock alerts">♢<em>3</em></button><button class="help" type="button">?</button><span class="day">5th of Sun's Height<br /><small>4E 2026</small></span></div>
+        </header>
+
+        <section class="prototype-state" aria-label="Prototype state controls">
+          <span>Preview state</span>
+          <select id="state-switcher"><option value="default">Complete data</option><option value="loading">Loading</option><option value="empty">Empty</option><option value="low">Low confidence</option><option value="error">Error</option></select>
+        </section>
+
+        <section id="view-login" class="view login-view" data-view="login">
+          <div class="login-card parchment">
+            <img class="login-emblem" src="../brand/emblem.svg" alt="SkyStore merchant seal" />
+            <div class="login-brand">Sky<span>Store</span></div>
+            <p class="eyebrow">THE ALLIANCE MARKET LEDGER</p>
+            <h1>The market remembers<br />— just not today.</h1>
+            <p class="lede">SkyStore protects active merchants. Public market rates use only approved, anonymized evidence at least <b>seven full days old</b>.</p>
+            <div class="delay-rule"><span>today</span><b>7 days</b><span>published guide</span></div>
+            <button class="discord-button" type="button" data-login>✦ Continue with Discord</button>
+            <p class="fine">Discord only confirms your identity. SkyStore never needs your email, server membership, or customer records.</p>
+          </div>
+          <div class="login-notes"><article><span>01</span><h2>Private by design</h2><p>Stock, counterparties, receipts, and store staff stay inside their own store.</p></article><article><span>02</span><h2>Useful by tomorrow</h2><p>Every approved trade strengthens a delayed range without exposing the trader.</p></article><article><span>03</span><h2>Made for a ledger</h2><p>Store pays and customer pays are always kept separate.</p></article></div>
+        </section>
+
+        <section id="view-public" class="view" data-view="public">
+          <div class="page-heading split"><div><p class="eyebrow">PUBLIC MARKET GUIDE · DISCORD MEMBERS</p><h1>What the market knew <em>seven days ago.</em></h1><p>Rates are anonymized across contributing stores. Current stock and active receipts never leave a store.</p></div><span class="outline access-note">Public viewer · Store access is assigned by an administrator</span></div>
+          <div class="notice delay-notice"><b>◷ Delayed intelligence</b><span>This guide ends on 28th of Last Seed, 4E 2026. Evidence newer than seven days is withheld.</span><a href="#login">How it works</a></div>
+          <div class="guide-grid">
+            <section class="parchment panel price-panel"><div class="panel-head"><div><p class="eyebrow">MARKET INDEX</p><h2>Price guide</h2></div><button class="filter-button">All categories ▾</button></div><label class="table-search"><span>⌕</span><input id="guide-search" type="search" placeholder="Find an item" /></label>
+              <div class="table-wrap"><table><thead><tr><th>Item</th><th>Store pays</th><th>Customer pays</th><th>Confidence</th></tr></thead><tbody id="price-rows"></tbody></table></div>
+              <p class="table-foot">Rates represent the 25th–75th percentile, adjusted for recency. <a href="#item">Open a full item record →</a></p>
+            </section>
+            <aside class="market-aside"><section class="dark-card"><p class="eyebrow">MARKET TEMPERATURE</p><h2>Hot this week</h2><ol class="heat-list"><li><span class="rank">01</span><div><b>Moonstone Ore</b><small>+24% trades</small></div><strong>↗</strong></li><li><span class="rank">02</span><div><b>Fortify Health Potion</b><small>+17% trades</small></div><strong>↗</strong></li><li><span class="rank">03</span><div><b>Leather</b><small>+11% trades</small></div><strong>↗</strong></li></ol></section><section class="parchment compact-card"><p class="eyebrow">READ THE RANGE</p><div class="legend"><i class="swatch brass"></i><span>Official store rule</span><i class="swatch moss"></i><span>Alliance evidence</span><i class="swatch slate"></i><span>Limited evidence</span></div><p class="fine">Three independent stores are required before SkyStore calls a range alliance data.</p></section></aside>
+          </div>
+        </section>
+
+        <section id="view-dashboard" class="view" data-view="dashboard">
+          <div class="page-heading split"><div><p class="eyebrow">WHITERUN GENERAL STORE</p><h1>Good morning, Eiryn.</h1><p>Here is the ledger’s pulse before the next customer walks in.</p></div><div class="button-row"><a class="brass-button" href="operations.html#purchase">＋ Store pays</a><a class="outline" href="operations.html#sale">↗ Customer pays</a></div></div>
+          <div class="metrics"><article><p>Stock value</p><b>12,840 <small>septims</small></b><span class="positive">↗ 6.4% this week</span></article><article><p>Projected gross margin</p><b>34.8<small>%</small></b><span>Target 35.0%</span></article><article><p>Sales · 7 days</p><b>2,165 <small>septims</small></b><span class="positive">↑ 18 receipts</span></article><article><p>Approval queue</p><b>4 <small>items</small></b><a href="operations.html#approvals">Review now →</a></article></div>
+          <div class="dash-grid"><section class="parchment panel"><div class="panel-head"><div><p class="eyebrow">WATCHFUL EYE</p><h2>Stock alerts</h2></div><a href="#inventory">View inventory →</a></div><div class="alerts"><article><span class="alert-icon danger">!</span><div><b>Iron Ore</b><p>6 left · below your minimum of 12</p></div><a href="operations.html#purchase">Record purchase</a></article><article><span class="alert-icon warn">!</span><div><b>Fortify Health Potion</b><p>9 left · moving faster than expected</p></div><a href="#item">Open record</a></article><article><span class="alert-icon good">✓</span><div><b>Leather</b><p>42 left · healthy stock cover</p></div><a href="#inventory">View stock</a></article></div></section><section class="dark-card trade-card"><div class="panel-head"><div><p class="eyebrow">QUICK LEDGER</p><h2>Recent receipts</h2></div><a href="operations.html#approvals">4 pending</a></div><div class="receipt-mini"><p><span>Store pays</span><b>Caravan from Dawnstar</b><small>Iron Ore × 10 · 10 septims</small></p><strong class="out">−10</strong></div><div class="receipt-mini"><p><span>Customer pays</span><b>Hildr’s Hunters</b><small>Leather × 4 · 100 septims</small></p><strong class="in">+100</strong></div><div class="receipt-mini"><p><span>Street report</span><b>Riften market</b><small>Moonstone Ore · seen listing</small></p><strong class="neutral">1h</strong></div></section></div>
+        </section>
+
+        <section id="view-inventory" class="view" data-view="inventory">
+          <div class="page-heading split"><div><p class="eyebrow">WHITERUN GENERAL STORE</p><h1>Inventory <em>on the shelf.</em></h1><p>Confirmed stock is kept apart from movement awaiting approval.</p></div><a class="brass-button" href="operations.html#adjustment">Adjust stock</a></div>
+          <div class="inventory-summary"><span><b>164</b> distinct items</span><span><b>12,840</b> septims at cost</span><span><b class="oxblood">6</b> below minimum</span><span><b class="moss">28</b> moving quickly</span></div>
+          <section class="parchment panel"><div class="inventory-tools"><label class="table-search"><span>⌕</span><input id="inventory-search" type="search" placeholder="Search your stock" /></label><button class="filter-button">All stock ▾</button><button class="filter-button">Category ▾</button><button class="filter-button">Sort: concern ▾</button></div><div class="table-wrap"><table class="inventory-table"><thead><tr><th>Item</th><th>Confirmed</th><th>Pending</th><th>Weighted cost</th><th>Official sale</th><th>Status</th></tr></thead><tbody id="inventory-rows"></tbody></table></div></section>
+        </section>
+
+        <section id="view-item" class="view" data-view="item">
+          <div class="crumbs"><a href="#inventory">Inventory</a><span>/</span><a href="#public">Materials</a><span>/</span><b>Iron Ore</b></div>
+          <div class="item-hero parchment"><div class="item-art iron-art" aria-label="Illustration of iron ore"><span>◇</span></div><div class="item-title"><p class="eyebrow">ORE · SKYRIM.ESM · 00071CF3</p><h1>Iron Ore</h1><p>A common red-brown ore used in smithing. 1 ore can be smelted into an iron ingot.</p><div class="tags"><span>Material</span><span>Weight 1</span><span>Base value 2</span></div></div><div class="item-actions"><a class="brass-button" href="operations.html#purchase">＋ Store pays</a><a class="outline" href="operations.html#sale">Customer pays</a><a class="text-link" href="operations.html#street">Report street information</a></div></div>
+          <div class="item-layout"><div class="item-main"><section class="parchment panel price-record"><div class="panel-head"><div><p class="eyebrow">YOUR STORE</p><h2>Rates &amp; recommendation</h2></div><button class="more" type="button">•••</button></div><div class="rate-cards"><article><p>Weighted cost</p><b>1.2 <small>each</small></b><span>Last store pays: 1.0</span></article><article><p>Official customer pays</p><b>2 <small>each</small></b><span>Whiterun rule</span></article><article><p>Recommended max pays</p><b>1.4 <small>each</small></b><span class="positive">Craft-backed</span></article><article><p>Recommended sale</p><b>2–3 <small>each</small></b><span>35% target markup</span></article></div><div class="formula"><b>How the ceiling is formed</b><span>Expected sale <strong>2.0</strong> ÷ 1.35 target = <strong>1.48</strong></span><i>lower of margin ceiling and verified craft replacement</i></div></section>
+            <section class="parchment panel chart-panel"><div class="panel-head"><div><p class="eyebrow">PRIVATE ALLIANCE MARKET</p><h2>Price evidence <span class="pill success">High confidence</span></h2></div><button class="filter-button">Last 90 days ▾</button></div><div class="chart-legend"><span><i class="line store"></i> Store pays</span><span><i class="line customer"></i> Customer pays</span><span><i class="line official"></i> Official sale</span></div><div class="chart" role="img" aria-label="Iron ore market price trends over 90 days"><span class="axis y1">3.0</span><span class="axis y2">2.0</span><span class="axis y3">1.0</span><span class="axis x1">3rd</span><span class="axis x2">2nd</span><span class="axis x3">1st</span><span class="axis x4">Today</span><svg viewBox="0 0 700 245" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M22,161 C75,156 92,126 140,137 S202,152 237,119 S301,142 341,128 S416,94 457,109 S521,117 562,95 S636,114 678,77 L678,210 L22,210Z"/><path class="paid" d="M22,161 C75,156 92,126 140,137 S202,152 237,119 S301,142 341,128 S416,94 457,109 S521,117 562,95 S636,114 678,77"/><path class="sold" d="M22,102 C66,91 102,110 140,89 S203,86 237,78 S307,78 341,66 S410,81 457,53 S519,70 562,56 S631,63 678,39"/><path class="official" d="M22,70 L678,70"/></svg><div class="chart-label"><b>1.4</b><span>latest store pays range</span></div></div><div class="confidence-strip"><span class="confidence-icon">✓</span><p><b>12 independent stores · 46 signals</b><small>Newest approved evidence: 1 hour ago. Alliance range is available because the three-store threshold is met.</small></p><a href="#public">View delayed public range →</a></div></section>
+            <section class="parchment panel recipe-panel"><div class="panel-head"><div><p class="eyebrow">CATALOG RECIPE</p><h2>Iron ingot smelting</h2></div><span class="pill">Journeyman</span></div><div class="recipe-flow"><div class="recipe-item"><span class="mini-art ore">◇</span><b>Iron Ore</b><small>× 1</small></div><span class="arrow">→</span><div class="recipe-item"><span class="mini-art ore">◇</span><b>Iron Ore</b><small>× 1</small></div><span class="arrow">→</span><div class="recipe-item"><span class="mini-art ingot">▬</span><b>Iron Ingot</b><small>yield × 1</small></div></div><div class="recipe-cost"><span>Material acquisition <b>2.4</b></span><span>Labor / mastery fee <b>0.5</b></span><strong>Replacement cost <b>2.9 septims</b></strong></div></section>
+          </div><aside class="item-side"><section class="dark-card stock-card"><p class="eyebrow">YOUR SHELVES</p><h2>6 <small>confirmed</small></h2><p><b class="pending-dot"></b> 4 more pending approval</p><div class="stock-bar"><i style="width: 30%"></i></div><small>Minimum: 12 · estimated 2 days cover</small><a href="#inventory">Open inventory →</a></section><section class="parchment compact-card"><p class="eyebrow">LAST RECEIPTS</p><dl><div><dt>Store pays</dt><dd>1.0 <small>each · today</small></dd></div><div><dt>Customer pays</dt><dd>2.0 <small>each · 2 days</small></dd></div><div><dt>Street quote</dt><dd>2–3 <small>each · 5 days</small></dd></div></dl></section><section class="parchment compact-card"><p class="eyebrow">CATALOG DETAILS</p><dl><div><dt>Editor ID</dt><dd>OreIron</dd></div><div><dt>Winning record</dt><dd>Skyrim.esm</dd></div><div><dt>Aliases</dt><dd>Iron, Iron ore</dd></div></dl></section></aside></div>
+        </section>
+
+        <section id="view-state" class="view state-view" data-view="state"><div class="state-card parchment"><span id="state-icon">⌛</span><p class="eyebrow" id="state-kicker">SYNCING THE LEDGER</p><h1 id="state-title">Finding your records</h1><p id="state-copy">The newest store data is being gathered. This will only take a moment.</p><button id="state-action" class="brass-button" type="button">Try again</button></div></section>
+      </main>
+    </div>
+    <script src="core.js"></script>
+  </body>
+</html>

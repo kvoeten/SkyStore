@@ -1,0 +1,8 @@
+import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/db/runtime";
+import { auditEvents, stockMovements } from "@/db/schema";
+import { stockCorrectionCommand } from "@/db/commands";
+import { mayManageStore } from "@/lib/authorization";
+import { isStoreAccessFailure, selectStore } from "@/lib/services/store-access";
+
+export async function POST(request: NextRequest) { const store = await selectStore(request); if (isStoreAccessFailure(store)) return NextResponse.json({ error: store.error }, { status: store.status }); if (!mayManageStore(store.access)) return NextResponse.json({ error: "store_management_forbidden" }, { status: 403 }); const parsed = stockCorrectionCommand.safeParse(await request.json().catch(() => null)); if (!parsed.success) return NextResponse.json({ error: "invalid_stock_correction", issues: parsed.error.issues }, { status: 400 }); if (parsed.data.storeId !== store.id) return NextResponse.json({ error: "store_forbidden" }, { status: 403 }); const [movement] = await db.transaction(async (tx) => { const [row] = await tx.insert(stockMovements).values({ storeId: store.id, itemId: parsed.data.itemId, kind: "correction", state: "confirmed", quantityDelta: parsed.data.quantityDelta, reason: parsed.data.reason, createdBy: store.context.userId }).returning(); await tx.insert(auditEvents).values({ actorId: store.context.userId, storeId: store.id, action: "stock.corrected", entityType: "stock_movement", entityId: row.id, after: { itemId: row.itemId, quantityDelta: row.quantityDelta, reason: row.reason } }); return [row]; }); return NextResponse.json({ movement }, { status: 201 }); }

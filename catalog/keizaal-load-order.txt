@@ -1,0 +1,24 @@
+Skyrim.esm
+Update.esm
+Dawnguard.esm
+HearthFires.esm
+Dragonborn.esm
+Sentinel - Master Plugin.esp
+SkyUI_SE.esp
+Keizaal.esp
+CommonClothes.esp
+JK's Whiterun's Outskirts.esp
+Cloaks&Capes.esp
+JKs Whiterun.esp
+MoreCraftableEquipment.esp
+DIS_Heavy_Legion.esp
+Sentinel.esp
+Sentinel - Priests and Acolytes.esp
+evgnnsmpaccessories.esp
+JK's Riverwood.esp
+Kad_MoonMonkRobes.esp
+Sentinel - More Craftable Equipment.esp
+KzlOnlineMods.esp
+MCMHelper.esp
+MoreCraftableEquipment_CloaksandCapes.esp
+Sentinel - City Guards.esp

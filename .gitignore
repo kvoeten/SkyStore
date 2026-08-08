@@ -1,0 +1,40 @@
+# Dependencies and build output
+node_modules/
+.next/
+.turbo/
+coverage/
+output/
+tsconfig.tsbuildinfo
+
+# Local configuration and credentials
+.env*
+!.env.example
+
+# Local runtime data
+data/uploads/
+data/backups/
+.backups/
+playwright-report/
+test-results/
+.playwright-cli/
+*.dump
+*.dump.age
+*.sql.gz
+*.log
+
+# Large reproducible catalog artifacts
+catalog/generated/uesp-icons/assets/
+catalog/generated/skystore-catalog-v*.json
+
+# Generated design captures
+design/mockups/
+
+# .NET build output
+tools/**/bin/
+tools/**/obj/
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

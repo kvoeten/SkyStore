@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="SkyStore operations workflow prototype" />
+    <title>SkyStore — Operations</title>
+    <link rel="stylesheet" href="operations.css" />
+    <style>
+      .mobile-route-label { display: none; }
+      @media (max-width: 600px) {
+        .global-search { display: none; }
+        .mobile-route-label { display: flex; flex: 1; align-items: center; gap: 7px; color: var(--paper); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+        .mobile-route-label select { min-width: 0; width: 100%; padding: 8px 28px 8px 9px; background: var(--slate); color: var(--paper); border: 1px solid #b78a4566; border-radius: 3px; }
+        main { padding-bottom: 72px; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#page">Skip to content</a>
+    <header class="topbar">
+      <a class="brand" href="core.html#dashboard" aria-label="SkyStore home"><img src="../brand/emblem.svg" alt="" /><span>SKYSTORE <small>Merchant ledger</small></span></a>
+      <div class="global-search"><label for="search">Search items</label><input id="search" type="search" placeholder="Iron ore, moonstone, potion…" /><kbd>⌘ K</kbd></div>
+      <label class="mobile-route-label" for="mobile-route">View
+        <select id="mobile-route">
+          <option value="#purchase">Store pays</option>
+          <option value="#sale">Customer pays</option>
+          <option value="#street">Street report</option>
+          <option value="#adjustment">Stock adjustment</option>
+          <option value="#approvals">Approvals</option>
+          <option value="#reports">Reports</option>
+          <option value="#store">Store settings</option>
+          <option value="#platform">Platform</option>
+          <option value="#catalog">Catalog</option>
+          <option value="core.html#dashboard">Dashboard</option>
+          <option value="core.html#public">Price guide</option>
+          <option value="core.html#inventory">Inventory</option>
+        </select>
+      </label>
+      <div class="top-actions"><button class="icon-button" aria-label="Notifications">◌<i>3</i></button><button class="profile" type="button">KA <span>Kaz Arvel</span></button></div>
+    </header>
+    <div class="shell">
+      <aside class="rail" aria-label="Application navigation">
+        <nav>
+          <a href="core.html#dashboard">⌂ <span>Dashboard</span></a>
+          <a href="core.html#public">◈ <span>Price guide</span></a>
+          <a href="core.html#inventory">▦ <span>Stock</span></a>
+          <p>Record</p>
+          <a href="#purchase" data-view="purchase">↓ <span>Store pays</span></a>
+          <a href="#sale" data-view="sale">↑ <span>Customer pays</span></a>
+          <a href="#street" data-view="street">⌁ <span>Street report</span></a>
+          <a href="#adjustment" data-view="adjustment">± <span>Stock adjustment</span></a>
+          <p>Manage</p>
+          <a href="#approvals" data-view="approvals">✓ <span>Approvals</span><b>4</b></a>
+          <a href="#reports" data-view="reports">◫ <span>Reports</span></a>
+          <a href="#store" data-view="store">⚙ <span>Store settings</span></a>
+          <a href="#platform" data-view="platform">◇ <span>Platform</span></a>
+          <a href="#catalog" data-view="catalog">▤ <span>Catalog</span></a>
+        </nav>
+        <div class="store-switch"><small>ACTIVE STORE</small><strong>Whiterun General</strong><span>Verified alliance member</span><button type="button">Switch store ⌄</button></div>
+      </aside>
+      <main id="page" tabindex="-1"></main>
+    </div>
+    <div class="toast" role="status" aria-live="polite"></div>
+    <script src="operations.js"></script>
+  </body>
+</html>

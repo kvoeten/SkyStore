@@ -1,0 +1,6 @@
+import { AppShell, PageHeading } from "@/components/app-shell";
+import { PlatformLive } from "@/components/platform-live";
+import { PublicMarketReportReview } from "@/components/public-market-report-review";
+import { getAccessContext } from "@/lib/authorization";
+export const dynamic="force-dynamic";
+export default async function PlatformPage(){const access=await getAccessContext();if(!access)return <AppShell current="/platform"><div className="page"><section className="card empty"><h1>Sign in required.</h1><p>Platform controls require an authenticated account.</p></section></div></AppShell>;if(access.globalRole!=="platform_admin")return <AppShell current="/platform"><div className="page"><section className="card empty"><h1>Platform administrator access required.</h1><p>This area is restricted to SkyStore platform administrators.</p></section></div></AppShell>;return <AppShell current="/platform" identity={{role:"Platform administrator",verified:true,storeName:"PLATFORM CONTROL"}}><div className="page"><PageHeading eyebrow="PLATFORM ADMINISTRATION" title="Alliance operations."><p className="lede">Review stores, contributor safety actions, and immutable audit activity.</p></PageHeading><PublicMarketReportReview/><PlatformLive/></div></AppShell>}

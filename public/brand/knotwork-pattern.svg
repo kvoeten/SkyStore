@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-labelledby="title desc">
+  <title id="title">SkyStore knotwork pattern</title>
+  <desc id="desc">A subtle original interlocking diamond pattern for decorative backgrounds.</desc>
+  <path d="M0 48L24 24l24 24-24 24L0 48zm48 0l24-24 24 24-24 24-24-24zM24 0l24 24L24 48 0 24 24 0zm48 48l24-24v48L72 96 48 72l24-24z" fill="none" stroke="#B78A45" stroke-width="2" opacity=".35"/>
+  <circle cx="48" cy="48" r="4" fill="#B78A45" opacity=".35"/>
+</svg>

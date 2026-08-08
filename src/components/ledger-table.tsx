@@ -1,0 +1,5 @@
+import Link from "next/link";
+export type TableItem = { readonly slug: string; readonly name: string; readonly category: string; readonly purchase: string; readonly sale: string; readonly stock?: number; readonly pending?: number; readonly cost?: string | number; readonly status?: string };
+export function LedgerTable({ items, inventory = false }: { items: readonly TableItem[]; inventory?: boolean }) {
+ return <div className="table-wrap"><table><thead><tr><th>Item</th>{inventory ? <><th>Approved stock</th><th>Pending change</th><th>Average buying price</th><th>Store selling price</th><th>Status</th></> : <><th>Store buying price</th><th>Store selling price</th></>}</tr></thead><tbody>{items.map((item) => <tr key={item.slug}><td><Link href={`/items/${item.slug}`} className="item-name"><span className="item-dot">◇</span><span>{item.name}<br/><small>{item.category}</small></span></Link></td>{inventory ? <><td>{item.stock ?? 0}</td><td>{item.pending ?? 0}</td><td>{item.cost}</td><td>{item.sale}</td><td><span className="status">{item.status}</span></td></> : <><td>{item.purchase}</td><td>{item.sale}</td></>}</tr>)}</tbody></table></div>;
+}
