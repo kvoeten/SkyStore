@@ -2,15 +2,15 @@
 
 The GitHub release contains `skystore-truenas.yaml` with the exact released container digest already filled in. Use that file instead of the repository template whenever possible.
 
-## Prepare the host paths
+## Storage
 
-Create these datasets or directories:
+SkyStore needs only this single existing host path:
 
-- `/mnt/Atlantis/Vault/Skystore/postgres`
-- `/mnt/Atlantis/Vault/Skystore/uploads`
-- `/mnt/Atlantis/Vault/Skystore/backups`
+```text
+/mnt/Atlantis/Vault/Skystore
+```
 
-Grant the PostgreSQL path to container UID/GID `70:70`. Grant the uploads and backups paths to UID/GID `1001:1001`. Keep all three private from SMB guests and other applications.
+The one-shot `storage-init` service runs before PostgreSQL. It takes ownership of this SkyStore directory, creates `postgres`, `uploads`, and `backups`, and assigns their required container ownership and permissions automatically. You do not need to create additional datasets, subdirectories, ACL entries, or UID mappings. The service does not access anything above or beside the SkyStore directory.
 
 ## Install
 
@@ -21,7 +21,7 @@ Grant the PostgreSQL path to container UID/GID `70:70`. Grant the uploads and ba
    - the same alphanumeric database password in `DATABASE_URL` and `POSTGRES_PASSWORD`;
    - a separate random `AUTH_SECRET` of at least 32 characters;
    - the Discord client secret.
-5. Install the app and wait for `migrate` and `catalog-bootstrap` to complete. They are safe to run again during an update.
+5. Install the app and wait for `storage-init`, `migrate`, and `catalog-bootstrap` to complete. They are safe to run again during an update.
 6. Point the existing Nginx setup at the TrueNAS LAN address on port `13000`. The included `nginx.conf.example` contains the required forwarded headers.
 
 The Discord Developer Portal redirect must be exactly:
