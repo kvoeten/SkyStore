@@ -128,7 +128,7 @@ npm run build
 
 The Compose stack runs the web application, PostgreSQL, a migration job, and a PostgreSQL-backed worker. Only the web service is bound to the host, on loopback by default. Production deployments should put an HTTPS reverse proxy in front of it and use the exact public Discord callback URL.
 
-Tagged releases publish a Linux container to GitHub Container Registry and attach a digest-pinned TrueNAS SCALE YAML. The release image contains the normalized current catalog and verified local item images; it never contains Skyrim plugins, archives, models, textures, or credentials. See the [TrueNAS deployment guide](deploy/truenas/README.md) for the prepared `/mnt/Atlantis/Vault/Skystore` layout, port `13000`, Nginx settings, and Discord callback.
+Tagged releases publish a Linux container to GitHub Container Registry and attach both a `stable`-channel TrueNAS SCALE YAML for normal updates and a digest-pinned YAML for immutable deployments. The release image contains the normalized current catalog and verified local item images; it never contains Skyrim plugins, archives, models, textures, or credentials. See the [TrueNAS deployment guide](deploy/truenas/README.md) for the prepared `/mnt/Atlantis/Vault/Skystore` layout, port `13000`, Nginx settings, Discord callback, and one-time automatic-update setup.
 
 Never commit `.env` files, database dumps, uploads, backups, downloaded image caches, or source game files. Persistent Docker volumes retain PostgreSQL data, uploads, catalog images, and backup staging. Read [operations](docs/operations.md) before upgrading, exposing the service, or configuring encrypted off-site backups.
 

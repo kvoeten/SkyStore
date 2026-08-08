@@ -1,6 +1,11 @@
 # SkyStore on TrueNAS SCALE
 
-The GitHub release contains `skystore-truenas.yaml` with the exact released container digest already filled in. Use that file instead of the repository template whenever possible.
+Each GitHub release contains two prepared configurations:
+
+- `skystore-truenas-auto.yaml` uses the permanent `stable` image channel. Install it once, keep the same YAML and secrets, and use TrueNAS's normal **Update** action whenever it detects a new SkyStore image.
+- `skystore-truenas.yaml` pins one exact image digest for manual, immutable deployments.
+
+The automatic configuration is recommended for the live SkyStore server. Stable releases move the `stable` tag only after the release workflow has validated the application, hydrated the catalog assets, published the image, and successfully pulled and inspected that image.
 
 ## Storage
 
@@ -14,7 +19,7 @@ The one-shot `storage-init` service runs before PostgreSQL. It takes ownership o
 
 ## Install
 
-1. Download `skystore-truenas.yaml` from the intended GitHub release.
+1. Download `skystore-truenas-auto.yaml` from the latest GitHub release. Use `skystore-truenas.yaml` only when deliberately pinning a specific version.
 2. If the GHCR package is private, add a TrueNAS container-registry credential for `ghcr.io` using your GitHub username and a read-only token with `read:packages`.
 3. In TrueNAS SCALE, choose **Apps → Discover Apps → Install via YAML** and paste the release YAML.
 4. Replace the three `REPLACE_WITH_...` values at the top of the YAML:
@@ -36,7 +41,11 @@ Keep the GHCR package private unless you have independently confirmed redistribu
 
 ## Upgrade
 
-Take a database backup, download the new release YAML, copy your existing secret values into it, and replace the custom app YAML. The released file pins the image by digest; it never follows `latest` accidentally.
+With `skystore-truenas-auto.yaml`, enable **Check for docker image updates** in TrueNAS Apps settings (it is enabled by default). When SkyStore publishes a stable release, TrueNAS detects the changed `stable` image and offers its normal **Update** action. The unchanged YAML retains all existing passwords and secrets, while `pull_policy: always` makes the recreated services pull the newly validated image.
+
+The update reruns the one-shot migration and catalog-bootstrap services before starting the new web and worker services. Take a database backup before applying an update. Do not use an unrestricted Docker-socket updater: replacing only the long-running containers would skip those required one-shot services.
+
+Digest-pinned `skystore-truenas.yaml` installations remain manual by design and require replacing the image references for each release.
 
 ## Back up
 

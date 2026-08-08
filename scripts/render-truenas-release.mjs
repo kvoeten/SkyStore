@@ -9,7 +9,10 @@ function argument(name) {
 const template = argument("--template");
 const image = argument("--image");
 const output = argument("--output");
-if (!/^ghcr\.io\/kvoeten\/skystore@sha256:[a-f0-9]{64}$/.test(image)) throw new Error("The release image must be pinned by GHCR digest.");
+const pinnedImage = /^ghcr\.io\/kvoeten\/skystore@sha256:[a-f0-9]{64}$/.test(image);
+const stableImage = image === "ghcr.io/kvoeten/skystore:stable";
+const allowStable = process.argv.includes("--allow-stable");
+if (!pinnedImage && !(allowStable && stableImage)) throw new Error("The release image must be pinned by GHCR digest, or use the explicitly allowed stable channel.");
 const source = await readFile(template, "utf8");
 const placeholder = "ghcr.io/kvoeten/skystore:RELEASE_TAG";
 if ((source.match(new RegExp(placeholder, "g")) ?? []).length !== 5) throw new Error("The TrueNAS template has an unexpected image placeholder count.");
