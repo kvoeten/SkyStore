@@ -1,3 +1,4 @@
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { CatalogBundleError, parseBuilderBundle } from "./bundle";
 import { CatalogImportFileError, resolveCatalogImportFile } from "./import-file";
@@ -45,9 +46,10 @@ describe("builder catalog bundle", () => {
   });
 
   it("does not allow an import path to escape its configured directory", () => {
-    expect(resolveCatalogImportFile("catalog.json", "D:\\SkyStore\\imports")).toBe("D:\\SkyStore\\imports\\catalog.json");
-    expect(() => resolveCatalogImportFile("../secrets.json", "D:\\SkyStore\\imports")).toThrow(CatalogImportFileError);
-    expect(() => resolveCatalogImportFile("C:\\Windows\\system.json", "D:\\SkyStore\\imports")).toThrow(CatalogImportFileError);
+    const importRoot = path.resolve("test-catalog-import");
+    expect(resolveCatalogImportFile("catalog.json", importRoot)).toBe(path.join(importRoot, "catalog.json"));
+    expect(() => resolveCatalogImportFile("../secrets.json", importRoot)).toThrow(CatalogImportFileError);
+    expect(() => resolveCatalogImportFile(path.resolve(importRoot, "..", "secrets.json"), importRoot)).toThrow(CatalogImportFileError);
   });
 
   it("requires a safe category fallback for manual catalog items", () => {
