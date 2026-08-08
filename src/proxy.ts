@@ -2,13 +2,14 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 
 export default auth((request) => {
+  const path = request.nextUrl.pathname;
+  if (path === "/") return NextResponse.next();
   if (!request.auth) {
     const login = new URL("/login", request.nextUrl.origin);
     login.searchParams.set("returnTo", `${request.nextUrl.pathname}${request.nextUrl.search}`);
     return NextResponse.redirect(login);
   }
   if (request.auth.user.quarantined) return NextResponse.redirect(new URL("/login?error=quarantined", request.nextUrl.origin));
-  const path = request.nextUrl.pathname;
   const user = request.auth.user;
   const isAdmin = user.globalRole === "platform_admin";
   if ((path.startsWith("/platform") || path.startsWith("/catalog")) && !isAdmin) {
