@@ -34,5 +34,5 @@ export const config = {
   // Public route handlers enforce their own command authorization. Keeping
   // them outside the redirecting page proxy lets catalog search return JSON
   // and lets an unsigned report POST return a machine-readable 401.
-  matcher: ["/((?!api/auth|api/health|api/v1/market/public|api/v1/market/reports|api/v1/catalog/public-items|_next/static|_next/image|brand/|catalog-icons/|uesp-icons/|favicon.ico|login|logout|guide).*)"]
+  matcher: ["/((?!api/auth|api/health|api/v1/market/public|api/v1/market/reports|api/v1/catalog/public-items|_next/static|_next/image|brand/|catalog-icons/|item-renders/|favicon.ico|login|logout|guide|professions).*)"]
 };

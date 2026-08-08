@@ -55,11 +55,6 @@ jobs:
           npm run typecheck
           npm test
 
-      - name: Verify the tracked catalog mapping
-        run: |
-          npm run catalog:icons:uesp:map
-          git diff --exit-code -- catalog/generated/uesp-icons/uesp-icon-mapping.json
-
       - name: Read the immutable catalog asset lock
         id: catalog
         shell: bash
@@ -70,48 +65,53 @@ jobs:
             echo "release=$(jq -er '.release | select(test("^catalog-assets-[0-9A-Za-z._-]+$"))' "$lock")"
             echo "asset=$(jq -er '.asset | select(test("^[0-9A-Za-z._-]+\\.tar\\.gz$"))' "$lock")"
             echo "sha256=$(jq -er '.sha256 | select(test("^[a-f0-9]{64}$"))' "$lock")"
-            echo "manifest_sha256=$(jq -er '.manifestSha256 | select(test("^[a-f0-9]{64}$"))' "$lock")"
+            echo "targets_sha256=$(jq -er '.targetsSha256 | select(test("^[a-f0-9]{64}$"))' "$lock")"
+            echo "report_sha256=$(jq -er '.reportSha256 | select(test("^[a-f0-9]{64}$"))' "$lock")"
             echo "bytes=$(jq -er '.bytes | select(type == "number" and . > 0)' "$lock")"
             echo "files=$(jq -er '.files | select(type == "number" and . > 0)' "$lock")"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Download and verify the private catalog bundle
+      - name: Download and verify the catalog render bundle
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           ASSET_RELEASE: ${{ steps.catalog.outputs.release }}
           ASSET_NAME: ${{ steps.catalog.outputs.asset }}
           ASSET_SHA256: ${{ steps.catalog.outputs.sha256 }}
-          MANIFEST_SHA256: ${{ steps.catalog.outputs.manifest_sha256 }}
+          TARGETS_SHA256: ${{ steps.catalog.outputs.targets_sha256 }}
+          REPORT_SHA256: ${{ steps.catalog.outputs.report_sha256 }}
           ASSET_BYTES: ${{ steps.catalog.outputs.bytes }}
           ASSET_FILES: ${{ steps.catalog.outputs.files }}
         run: |
           set -euo pipefail
           mkdir -p _catalog-download _catalog-bundle
-          release_id="$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases" \
-            --jq ".[] | select(.tag_name == \"$ASSET_RELEASE\" and .draft == true) | .id" | head -n 1)"
-          test -n "$release_id"
-          asset_id="$(gh api "repos/$GITHUB_REPOSITORY/releases/$release_id/assets" \
-            --jq ".[] | select(.name == \"$ASSET_NAME\" and .state == \"uploaded\") | .id" | head -n 1)"
-          test -n "$asset_id"
-          gh api -H "Accept: application/octet-stream" \
-            "repos/$GITHUB_REPOSITORY/releases/assets/$asset_id" > "_catalog-download/$ASSET_NAME"
+          gh release download "$ASSET_RELEASE" --repo "$GITHUB_REPOSITORY" --pattern "$ASSET_NAME" --dir _catalog-download
           test "$(stat -c %s "_catalog-download/$ASSET_NAME")" = "$ASSET_BYTES"
           printf '%s  %s\n' "$ASSET_SHA256" "_catalog-download/$ASSET_NAME" | sha256sum --check --strict -
           tar -xzf "_catalog-download/$ASSET_NAME" -C _catalog-bundle
-          printf '%s  %s\n' "$MANIFEST_SHA256" "_catalog-bundle/uesp-icons/uesp-icons-manifest.json" | sha256sum --check --strict -
-          test "$(find _catalog-bundle/uesp-icons/assets -type f | wc -l)" = "$ASSET_FILES"
-          npm run catalog:icons:uesp:hydrate -- --output _catalog-bundle/uesp-icons --offline --concurrency 8
+          printf '%s  %s\n' "$TARGETS_SHA256" "_catalog-bundle/item-renders/render-targets.json" | sha256sum --check --strict -
+          printf '%s  %s\n' "$REPORT_SHA256" "_catalog-bundle/item-renders/render-report.json" | sha256sum --check --strict -
+          test "$(find _catalog-bundle/item-renders/images -type f -name '*.png' | wc -l)" = "$ASSET_FILES"
           node --input-type=module <<'NODE'
-          import { readFile } from "node:fs/promises";
+          import { access, readFile } from "node:fs/promises";
           const pairs = [
             ["catalog/generated/skystore-catalog-current.json", "_catalog-bundle/skystore-catalog-current.json"],
-            ["catalog/generated/uesp-icons/uesp-icon-mapping.json", "_catalog-bundle/uesp-icons/uesp-icon-mapping.json"]
+            ["catalog/generated/item-renders/render-targets.json", "_catalog-bundle/item-renders/render-targets.json"],
+            ["catalog/generated/item-renders/render-report.json", "_catalog-bundle/item-renders/render-report.json"],
+            ["catalog/generated/item-renders/artwork-manifest.json", "_catalog-bundle/item-renders/artwork-manifest.json"]
           ];
           for (const [tracked, bundled] of pairs) {
             const left = JSON.stringify(JSON.parse(await readFile(tracked, "utf8")));
             const right = JSON.stringify(JSON.parse(await readFile(bundled, "utf8")));
             if (left !== right) throw new Error(`${bundled} does not match ${tracked}.`);
+          }
+          const artwork = JSON.parse(await readFile("_catalog-bundle/item-renders/artwork-manifest.json", "utf8"));
+          const report = JSON.parse(await readFile("_catalog-bundle/item-renders/render-report.json", "utf8"));
+          if (Object.keys(artwork).length !== report.renderedCount || report.renderedCount !== report.targetCount) throw new Error("Render manifest and report counts differ.");
+          for (const path of Object.values(artwork)) {
+            const match = /^\/item-renders\/([0-9a-f-]{36}-v[0-9]+-[0-9a-f]{12}\.png)$/.exec(path);
+            if (!match) throw new Error(`Unsafe rendered image path ${path}.`);
+            await access(`_catalog-bundle/item-renders/images/${match[1]}`);
           }
           NODE
 
@@ -163,8 +163,9 @@ jobs:
           docker pull "$IMAGE_NAME@$DIGEST"
           docker run --rm --entrypoint sh "$IMAGE_NAME@$DIGEST" -ec '
             test -s /opt/skystore/catalog/skystore-catalog-current.json
-            test -s /opt/skystore/catalog/uesp-icons/uesp-icon-mapping.json
-            test "$(find /var/lib/skystore/catalog-images/uesp -type f | wc -l)" -eq 2973
+            test -s /opt/skystore/catalog/item-renders/render-report.json
+            expected="$(node -p "require('/opt/skystore/catalog/item-renders/render-report.json').renderedCount")"
+            test "$(find /var/lib/skystore/catalog-images/renders -type f -name '*.png' | wc -l)" -eq "$expected"
           '
 
       - name: Publish the stable update channel

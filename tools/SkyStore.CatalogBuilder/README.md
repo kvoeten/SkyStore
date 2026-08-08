@@ -30,11 +30,11 @@ The generated directory contains:
 - `skystore-catalog-current.json` — the currently built normalized bundle.
 - `skystore-catalog-<version>.json` — immutable versioned copy.
 - `skystore-catalog-report.json` — item/category counts and the unresolved-artwork count.
-- `fallbackIcon` values reference the supplied `catalog-icons` PNG set: `food`, `armor`, `weapon`, `book`, `potion`, `misc`, `ore`, `flower`, and `ingot`. Every catalog item has a fallback when no item-specific UESP image is matched.
+- `fallbackIcon` values reference the supplied `catalog-icons` PNG set: `food`, `armor`, `weapon`, `book`, `potion`, `misc`, `ore`, `flower`, and `ingot`. Every catalog item has a fallback when no item-specific NIF render is selected.
 
-The bundle also includes `recipes`, resolved from winning Skyrim `ConstructibleObject` records. A recipe has its output, ingredient quantities, yield, workbench, condition provenance, and explicit unresolved mappings. Profession, mastery, and labor fields remain null unless the installed Keizaal data authoritatively supplies them. See [the Keizaal recipe evidence](docs/keizaal-recipe-evidence.md).
+The bundle also includes `recipes`, resolved from winning Skyrim `ConstructibleObject` records. A recipe has its output, actual ingredient quantities, yield, workbench, condition provenance, and explicit unresolved mappings. The builder maps Keizaal's installed profession/mastery gates plus additional book, perk, and game-record requirements. Consecutive Skyrim `OR` conditions are preserved as alternative requirement groups rather than presented as simultaneous requirements. Unrelated vanilla recipes stay outside the profession UI. See [the Keizaal recipe evidence](docs/keizaal-recipe-evidence.md).
 
-Place the supplied `catalog-icons` PNG set and any rendered WebP images in SkyStore's public catalog-asset volume before activating the catalog version. The builder does not generate or overwrite icon artwork; the JSON only references web paths, and no source game asset is redistributed.
+Place the supplied `catalog-icons` PNG set and rendered PNG images in SkyStore's catalog-asset volume before activating the catalog version. The builder does not generate or overwrite artwork; the JSON only references web paths, and no source NIF or texture is redistributed.
 
 ## What is imported
 
@@ -48,6 +48,6 @@ Commerce categories are curated deterministically from record type and conservat
 dotnet run --project .\tools\SkyStore.CatalogBuilder -- --validate --output ".\output\keizaal-catalog"
 ```
 
-Validation checks schema version, unique stable IDs, names, categories, and that every item has a fallback artwork path. The load-order checksum determines the catalog version and ordering is deterministic. For byte-for-byte reproducible artifacts, set `SOURCE_DATE_EPOCH` before building; otherwise `generatedAt` records the build time.
+Validation checks schema version, unique stable IDs, names, categories, and that every item has a fallback artwork path. The catalog version hashes both the effective load order and plugin contents, so an updated plugin cannot silently reuse an older immutable version. Skyrim's five implicit masters are prepended when they are absent from `plugins.txt`. Ordering is deterministic. For byte-for-byte reproducible artifacts, set `SOURCE_DATE_EPOCH` before building; otherwise `generatedAt` records the build time.
 
 The builder deliberately fails when a listed plugin is not present under `--data`, rather than silently producing a partial economy catalog.

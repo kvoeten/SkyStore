@@ -17,7 +17,8 @@ tsconfig.tsbuildinfo
 README.md
 docs
 scripts
-catalog/generated/uesp-icons/assets
-catalog/generated/uesp-icons/*.json
+catalog/generated/item-renders/images
+catalog/generated/item-renders/work
+catalog/generated/item-renders/*.json
 catalog/generated/skystore-catalog*.json
 catalog/generated/skystore-catalog-report.json

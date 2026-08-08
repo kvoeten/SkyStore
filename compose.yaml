@@ -105,26 +105,6 @@ services:
       - ./catalog/generated:/var/lib/skystore/catalog-import:ro
     networks: [internal]
 
-  uesp-icon-import:
-    image: skystore:local
-    restart: "no"
-    profiles: [setup]
-    env_file:
-      - path: .env
-        required: false
-    environment:
-      NODE_ENV: production
-      SKYSTORE_UESP_MAPPING: /var/lib/skystore/catalog-import/uesp-icons/uesp-icon-mapping.json
-    command: ["./node_modules/.bin/tsx", "src/db/import-uesp-icons.ts"]
-    depends_on:
-      postgres:
-        condition: service_healthy
-      migrate:
-        condition: service_completed_successfully
-    volumes:
-      - ./catalog/generated:/var/lib/skystore/catalog-import:ro
-    networks: [internal]
-
   catalog-image-sync:
     image: skystore:local
     restart: "no"
@@ -133,9 +113,9 @@ services:
     command:
       - sh
       - -c
-      - mkdir -p /var/lib/skystore/catalog-images/uesp && cp -f /source/* /var/lib/skystore/catalog-images/uesp/
+      - mkdir -p /var/lib/skystore/catalog-images/renders && cp -f /source/* /var/lib/skystore/catalog-images/renders/
     volumes:
-      - ./catalog/generated/uesp-icons/assets:/source:ro
+      - ./catalog/generated/item-renders/images:/source:ro
       - catalog_images:/var/lib/skystore/catalog-images
     networks: [internal]
 

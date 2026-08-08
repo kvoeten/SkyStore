@@ -2,6 +2,7 @@
 import { notFound } from "next/navigation";
 import { AppShell, Status } from "@/components/app-shell";
 import { resolveStaffPageStore, staffShellIdentity } from "@/components/staff-page-context";
+import { RecipeRequirements } from "@/components/recipe-requirements";
 import { formatGold, formatHighestUnitGold } from "@/lib/money";
 import { getItemDetail } from "@/lib/services/staff-queries";
 
@@ -60,6 +61,7 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
                 <div><p className="eyebrow">PRIVATE ALLIANCE MARKET</p><h2>Current trading prices</h2></div>
                 <Status kind={customerPays.storeCount >= 3 ? "good" : "pending"}>{customerPays.storeCount} stores</Status>
               </div>
+              {detail.priceFamily.itemIds.length > 1 && <p className="fine">Shared pricing evidence for all {detail.priceFamily.itemIds.length} variants in {detail.priceFamily.displayName}.</p>}
               <div className="grid rates">
                 <article className="rate">
                   <p>Store buying price</p><b>{estimateRate(storePays)}</b>
@@ -101,10 +103,11 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
               </> : <div className="empty"><h2>No receipt history.</h2><p>Approved store trades will appear here.</p></div>}
             </section>
 
-            {detail.recipes.map((recipe) => <section className="panel" key={recipe.id}>
-              <div className="panel-head"><div><p className="eyebrow">CATALOG RECIPE</p><h2>{detail.item.displayName}</h2></div><Status kind="pending">{recipe.masteryTier ?? "No mastery tier"}</Status></div>
-              <div className="recipe"><span>{recipe.ingredients.map((ingredient) => `${ingredient.displayName} × ${ingredient.quantity}`).join(" + ") || "No ingredients recorded"}</span><b>→</b><span>{detail.item.displayName} × {recipe.outputYield}</span><strong>Labor fee: {formatGold(recipe.laborFee)}</strong></div>
-            </section>)}
+            {detail.recipes.length ? detail.recipes.map((recipe) => <section className="panel" key={recipe.id}>
+              <div className="panel-head"><div><p className="eyebrow">CRAFTING RECIPE</p><h2>{detail.item.displayName}</h2></div><Status kind="pending">{[recipe.profession, recipe.masteryTier].filter(Boolean).join(" · ")}</Status></div>
+              <div className="recipe"><span>{recipe.ingredients.map((ingredient) => <a key={ingredient.itemId} href={`/items/${ingredient.itemId}${store.storeQuery}`}>{ingredient.name} × {ingredient.quantity}<br/></a>)}</span><b>→</b><span>{detail.item.displayName} × {recipe.outputYield}</span><strong>Material cost: {recipe.materialCost == null ? "Incomplete" : formatGold(recipe.materialCost)}<br/>Product price: {recipe.productPrice == null ? "Not priced" : formatGold(recipe.productPrice)}</strong></div>
+              <RecipeRequirements requirements={recipe.requirements}/>
+            </section>) : <section className="panel"><div className="panel-head"><div><p className="eyebrow">CRAFTING</p><h2>Used in</h2></div><Status kind={detail.usedIn.length ? "good" : "pending"}>{detail.usedIn.length} recipes</Status></div>{detail.usedIn.length ? <div className="table-wrap"><table className="used-in-list"><thead><tr><th>Craftable item</th><th>Amount used</th><th>Profession</th><th>Mastery</th></tr></thead><tbody>{detail.usedIn.map((recipe) => <tr key={recipe.id}><td><a href={`/items/${recipe.outputItemId}${store.storeQuery}`}>{recipe.outputName}</a><RecipeRequirements requirements={recipe.requirements}/></td><td>{recipe.quantityUsed}</td><td>{recipe.profession}</td><td>{recipe.masteryTier ?? "Not encoded"}</td></tr>)}</tbody></table></div> : <div className="empty compact-empty"><h3>No known crafting use.</h3><p>This item is not part of an active Keizaal profession recipe.</p></div>}</section>}
           </div>
           <aside className="stack">
             <section className="card dark"><p className="eyebrow">YOUR SHELVES</p><h2>{detail.stock.confirmed} <small>confirmed</small></h2><p>◌ {detail.stock.provisional} pending approval</p><a href={`/inventory${store.storeQuery}`}>Open inventory →</a></section>

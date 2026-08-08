@@ -4,6 +4,7 @@ import { submitPublicMarketReportCommand } from "@/db/commands";
 import { db } from "@/db/runtime";
 import { approvals, auditEvents, catalogItems, publicMarketReports, users } from "@/db/schema";
 import { getAccessContext } from "@/lib/authorization";
+import { getTailoringPriceFamily } from "@/lib/services/recipe-queries";
 
 /**
  * A public contribution is never a receipt or an observation. Every one starts
@@ -17,6 +18,7 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ error: "invalid_market_report", issues: parsed.error.issues }, { status: 400 });
 
   const command = parsed.data;
+  const priceFamily = await getTailoringPriceFamily(command.itemId);
   const result = await db.transaction(async (tx) => {
     const [item] = await tx.select({ id: catalogItems.id }).from(catalogItems)
       .where(and(eq(catalogItems.id, command.itemId), eq(catalogItems.status, "active"))).limit(1);
@@ -24,14 +26,11 @@ export async function POST(request: NextRequest) {
 
     const [contributor] = await tx.select({ displayName: users.displayName, name: users.name }).from(users)
       .where(eq(users.id, context.userId)).limit(1);
-    const contributorDisplayName = command.displayName ?? contributor?.displayName ?? contributor?.name;
+    const contributorDisplayName = contributor?.displayName ?? contributor?.name;
     if (!contributorDisplayName) throw new Error("display_name_required");
-    if (command.displayName && command.displayName !== contributor?.displayName) {
-      await tx.update(users).set({ displayName: command.displayName, updatedAt: new Date() }).where(eq(users.id, context.userId));
-    }
 
     const [report] = await tx.insert(publicMarketReports).values({
-      itemId: command.itemId,
+      itemId: priceFamily.canonicalItemId,
       quantity: command.quantity,
       totalSeptims: command.totalSeptims,
       locationType: "street_sale",
@@ -46,7 +45,7 @@ export async function POST(request: NextRequest) {
       action: "public_market_report.submitted",
       entityType: "public_market_report",
       entityId: report.id,
-      after: { itemId: command.itemId, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: "street_sale", contributorDisplayName }
+      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: "street_sale", contributorDisplayName }
     });
     return report;
   }).catch((error: unknown) => ({ error: error instanceof Error ? error.message : "market_report_failed" }));

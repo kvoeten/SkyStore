@@ -110,8 +110,11 @@ export async function stageCatalogBundle(bundle: BuilderCatalogBundle, actorId: 
     }
     for (const batch of chunks(aliasesToInsert, pageSize)) await tx.insert(catalogAliases).values(batch).onConflictDoNothing();
 
-    const currentImages = await tx.select({ itemId: catalogImages.itemId, url: catalogImages.url }).from(catalogImages);
-    const imageKeys = new Set(currentImages.map((image) => `${image.itemId}:${image.url}`));
+    // Artwork is an exact projection of the active catalog manifest. Replacing it
+    // transactionally removes obsolete category art, renderer output, and legacy
+    // web-capture mappings without touching item identities or trade history.
+    await tx.delete(catalogImages);
+    const imageKeys = new Set<string>();
     const imagesToInsert: Array<{ itemId: string; url: string; kind: string; isFallback: boolean }> = [];
     for (const item of stageableItems) {
       const itemId = stagedIds.get(item.stableKey.toLowerCase());

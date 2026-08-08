@@ -1,6 +1,6 @@
 {
   "name": "skystore",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "private": true,
   "engines": {
     "node": ">=24.0.0"
@@ -18,11 +18,7 @@
     "db:seed": "tsx src/db/seed.ts",
     "db:references": "tsx src/db/import-references.ts",
     "catalog:import": "tsx src/db/import-catalog.ts",
-    "catalog:icons:uesp:ingest": "tsx tools/uesp-icons/ingest.ts",
-    "catalog:icons:uesp:hydrate": "tsx tools/uesp-icons/hydrate.ts",
-    "catalog:icons:fallbacks:build": "tsx tools/uesp-icons/build-category-fallback.ts",
-    "catalog:icons:uesp:map": "tsx tools/uesp-icons/map.ts",
-    "catalog:icons:uesp:import": "tsx src/db/import-uesp-icons.ts",
+    "catalog:assets:package": "node scripts/package-catalog-assets.mjs",
     "worker": "tsx src/worker.ts"
   },
   "dependencies": {

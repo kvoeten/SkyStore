@@ -23,7 +23,8 @@ test-results/
 *.log
 
 # Large reproducible catalog artifacts
-catalog/generated/uesp-icons/assets/
+catalog/generated/item-renders/images/
+catalog/generated/item-renders/work/
 catalog/generated/skystore-catalog-v*.json
 
 # Generated design captures

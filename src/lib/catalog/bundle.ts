@@ -33,7 +33,7 @@ const builderItemSchema = z.object({
 }).strict();
 
 const builderRecipeIngredientSchema = z.object({
-  itemStableKey: z.string().min(3).max(180).nullable(),
+  itemStableKey: z.string().min(3).max(180).nullable().optional().default(null),
   sourceFormKey: z.string().min(1).max(255),
   quantity: z.number().int().positive()
 }).strict();

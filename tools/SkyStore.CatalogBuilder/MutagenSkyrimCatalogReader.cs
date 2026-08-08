@@ -20,19 +20,20 @@ internal static class MutagenSkyrimCatalogReader
 
     public static Task<CatalogBundle> BuildAsync(BuilderOptions options)
     {
-        var plugins = ReadLoadOrder(options.LoadOrderPath);
-        var checksum = StableIdentity.LoadOrderChecksum(plugins);
+        var plugins = WithImplicitMasters(ReadLoadOrder(options.LoadOrderPath), options.DataFolder);
+        foreach (var plugin in plugins)
+        {
+            var pluginPath = Path.Combine(options.DataFolder, plugin);
+            if (!File.Exists(pluginPath)) throw new FileNotFoundException($"Load-order plugin was not found under the supplied Data folder: {plugin}", pluginPath);
+        }
+        var checksum = StableIdentity.LoadOrderContentChecksum(options.DataFolder, plugins);
         var winningRecords = new Dictionary<string, RecordCandidate>(StringComparer.OrdinalIgnoreCase);
         var winningRecipes = new Dictionary<string, RecordCandidate>(StringComparer.OrdinalIgnoreCase);
+        var professionGates = new ProfessionGateCatalog();
 
         foreach (var plugin in plugins)
         {
             var pluginPath = Path.Combine(options.DataFolder, plugin);
-            if (!File.Exists(pluginPath))
-            {
-                throw new FileNotFoundException($"Load-order plugin was not found under the supplied Data folder: {plugin}", pluginPath);
-            }
-
             // Mutagen reads the binary plugin. Replacing an earlier FormKey is the winning-override traversal.
             var mod = SkyrimMod.CreateFromBinaryOverlay(pluginPath, SkyrimRelease.SkyrimSE);
             foreach (var record in mod.EnumerateMajorRecords())
@@ -43,6 +44,7 @@ internal static class MutagenSkyrimCatalogReader
                 if (string.IsNullOrWhiteSpace(formKey) || string.IsNullOrWhiteSpace(formId)) continue;
                 // FormKey includes the record's origin plugin. Local IDs alone can collide between plugins.
                 var candidate = new RecordCandidate(OriginPlugin(formKey) ?? plugin, plugin, formId, type, record);
+                professionGates.Add(formKey, ReadString(record, "EditorID"), ReadTranslatedString(record, "Name"), type);
                 if (InventoryTypes.Contains(type)) winningRecords[formKey] = candidate;
                 if (type == "ConstructibleObject") winningRecipes[formKey] = candidate;
             }
@@ -61,7 +63,7 @@ internal static class MutagenSkyrimCatalogReader
             pair => StableItemKey(pair.Value.IdentityPlugin, pair.Value.FormId),
             StringComparer.OrdinalIgnoreCase);
         var recipes = winningRecipes.Values
-            .Select(candidate => ToRecipe(candidate, itemStableKeys, workbenchOverrides))
+            .Select(candidate => ToRecipe(candidate, itemStableKeys, workbenchOverrides, professionGates))
             .OrderBy(recipe => recipe.StableKey, StringComparer.Ordinal)
             .ToList();
 
@@ -116,7 +118,7 @@ internal static class MutagenSkyrimCatalogReader
             metadata);
     }
 
-    private static CatalogRecipe ToRecipe(RecordCandidate candidate, IReadOnlyDictionary<string, string> itemStableKeys, IReadOnlyList<WorkbenchOverride> workbenchOverrides)
+    private static CatalogRecipe ToRecipe(RecordCandidate candidate, IReadOnlyDictionary<string, string> itemStableKeys, IReadOnlyList<WorkbenchOverride> workbenchOverrides, ProfessionGateCatalog professionGates)
     {
         var outputFormKey = FormKeyText(ReadProperty(candidate.Record, "CreatedObject"));
         var outputStableKey = outputFormKey is not null && itemStableKeys.TryGetValue(outputFormKey, out var resolvedOutput) ? resolvedOutput : null;
@@ -130,7 +132,9 @@ internal static class MutagenSkyrimCatalogReader
                 var sourceFormKey = entry is IContainerEntryGetter containerEntry
                     ? containerEntry.Item.Item.FormKey.ToString()
                     : FormKeyText(ReadProperty(entry!, "Item"));
-                var quantity = ReadPositiveInt(ReadProperty(entry!, "Data") ?? entry!, "Count") ?? 1;
+                var quantity = entry is IContainerEntryGetter typedEntry
+                    ? Math.Max(1, typedEntry.Item.Count)
+                    : ReadPositiveInt(ReadProperty(entry!, "Data") ?? entry!, "Count") ?? 1;
                 var ingredientStableKey = sourceFormKey is not null && itemStableKeys.TryGetValue(sourceFormKey, out var resolvedIngredient) ? resolvedIngredient : null;
                 if (ingredientStableKey is null) unresolved.Add(new RecipeMappingIssue("ingredient", sourceFormKey, "The ingredient reference is not an inventory-capable catalog item in this load order."));
                 ingredients.Add(new CatalogRecipeIngredient(ingredientStableKey, sourceFormKey ?? "unresolved", quantity));
@@ -149,6 +153,8 @@ internal static class MutagenSkyrimCatalogReader
         if (distinctWorkbenches.Length > 1) unresolved.Add(new RecipeMappingIssue("workbench", null, "Multiple SkyPatcher workbench rules matched this recipe with different values; the plugin value was retained."));
         var sources = new List<string> { $"plugin:{candidate.WinningPlugin}" };
         sources.AddRange(matchingOverrides.Select(rule => $"sky-patcher:{rule.Source}").Distinct(StringComparer.Ordinal));
+        var conditions = ReadConditions(candidate.Record, professionGates, out var professionGate);
+        var inferred = InferProfession(editorId, workbench, candidate, professionGate);
 
         return new CatalogRecipe(
             StableIdentity.RecipeId(candidate.IdentityPlugin, candidate.FormId),
@@ -160,10 +166,10 @@ internal static class MutagenSkyrimCatalogReader
             ReadPositiveInt(candidate.Record, "CreatedObjectCount") ?? 1,
             ingredients,
             workbench,
+            inferred?.Profession,
+            inferred?.MasteryTier,
             null,
-            null,
-            null,
-            ReadConditions(candidate.Record),
+            conditions,
             unresolved,
             sources);
     }
@@ -192,11 +198,108 @@ internal static class MutagenSkyrimCatalogReader
         catch (FormatException) { return null; }
     }
 
-    private static IReadOnlyList<string> ReadConditions(object record)
+    private static IReadOnlyList<string> ReadConditions(object record, ProfessionGateCatalog professionGates, out ProfessionGate? professionGate)
     {
+        professionGate = null;
         if (ReadProperty(record, "Conditions") is not IEnumerable conditions) return [];
-        return conditions.Cast<object?>().Where(condition => condition is not null).Select(condition => condition!.ToString() ?? string.Empty)
-            .Where(condition => !string.IsNullOrWhiteSpace(condition)).Distinct(StringComparer.Ordinal).OrderBy(condition => condition, StringComparer.Ordinal).ToArray();
+        var descriptions = new SortedSet<string>(StringComparer.Ordinal);
+        var pendingAlternatives = new List<string>();
+        var alternativeGroup = 0;
+        foreach (var condition in conditions.Cast<object?>().Where(condition => condition is not null))
+        {
+            var references = FindConditionFormKeys(condition!).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+            var gates = references.Select(reference => professionGates.TryGet(reference, out var gate) ? gate : null).Where(gate => gate is not null).Cast<ProfessionGate>().ToArray();
+            var conditionDescriptions = new List<string>();
+            if (gates.Length > 0)
+            {
+                professionGate ??= gates.OrderByDescending(gate => ProfessionGateCatalog.TierRank(gate.MasteryTier)).First();
+                foreach (var gate in gates) conditionDescriptions.Add($"requires:profession:{gate.Profession}:{gate.MasteryTier}");
+            }
+            foreach (var reference in references.Where(reference => !professionGates.TryGet(reference, out _) && !IsIncidentalConditionReference(reference))) conditionDescriptions.Add(professionGates.Requirement(reference));
+            if (conditionDescriptions.Count == 0)
+            {
+                var function = ReadProperty(ReadProperty(condition!, "Data") ?? condition!, "Function")?.ToString();
+                conditionDescriptions.Add(string.IsNullOrWhiteSpace(function) ? "condition:unmapped" : $"condition:{function}");
+            }
+
+            var joinsNext = ReadProperty(condition!, "Flags")?.ToString()?.Split(',', StringSplitOptions.TrimEntries).Contains("OR", StringComparer.OrdinalIgnoreCase) == true;
+            if (joinsNext || pendingAlternatives.Count > 0)
+            {
+                pendingAlternatives.AddRange(conditionDescriptions);
+                if (joinsNext) continue;
+                foreach (var description in pendingAlternatives.Distinct(StringComparer.Ordinal))
+                {
+                    descriptions.Add(description.StartsWith("requires:", StringComparison.Ordinal)
+                        ? $"requires:any:{alternativeGroup}:{description["requires:".Length..]}"
+                        : description);
+                }
+                pendingAlternatives.Clear();
+                alternativeGroup++;
+                continue;
+            }
+            foreach (var description in conditionDescriptions) descriptions.Add(description);
+        }
+        if (pendingAlternatives.Count > 0)
+        {
+            foreach (var description in pendingAlternatives.Distinct(StringComparer.Ordinal))
+            {
+                descriptions.Add(description.StartsWith("requires:", StringComparison.Ordinal)
+                    ? $"requires:any:{alternativeGroup}:{description["requires:".Length..]}"
+                    : description);
+            }
+        }
+        return descriptions.ToArray();
+    }
+
+    private static bool IsIncidentalConditionReference(string formKey) => formKey.Equals("000014:Skyrim.esm", StringComparison.OrdinalIgnoreCase);
+
+    private static IEnumerable<string> FindConditionFormKeys(object source)
+    {
+        var visited = new HashSet<object>(ReferenceEqualityComparer.Instance);
+        var pending = new Stack<object>();
+        pending.Push(source);
+        while (pending.Count > 0)
+        {
+            var current = pending.Pop();
+            if (!visited.Add(current)) continue;
+            if (ExplicitFormKeyText(current) is { } text) yield return text;
+            foreach (var property in current.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (property.GetIndexParameters().Length > 0 || property.Name is "Registration" or "TranslationMask" or "RecordType" or "Type" or "Assembly" or "ImplementedInterfaces") continue;
+                object? value;
+                try { value = property.GetValue(current); } catch { continue; }
+                if (value is null || value is string || value.GetType().IsPrimitive || value is decimal || value is Enum) continue;
+                if (value is IEnumerable enumerable)
+                {
+                    foreach (var child in enumerable.Cast<object?>().Where(child => child is not null).Take(64)) pending.Push(child!);
+                }
+                else if (value.GetType().Namespace?.StartsWith("Mutagen", StringComparison.Ordinal) == true) pending.Push(value);
+            }
+        }
+    }
+
+    private static string? ExplicitFormKeyText(object source)
+    {
+        var typeName = source.GetType().FullName ?? string.Empty;
+        if (typeName.EndsWith("FormKey", StringComparison.Ordinal)) return FormKeyText(source);
+        var value = ReadProperty(source, "FormKey") ?? source.GetType().GetField("FormKey", BindingFlags.Public | BindingFlags.Instance)?.GetValue(source);
+        return value is null ? null : FormKeyText(value);
+    }
+
+    private static RecipeClassification? InferProfession(string? editorId, string? workbench, RecordCandidate candidate, ProfessionGate? gate)
+    {
+        if (gate is not null) return new RecipeClassification(gate.Profession, gate.MasteryTier);
+        var id = editorId ?? string.Empty;
+        if (id.StartsWith("KzlRecipePot_", StringComparison.OrdinalIgnoreCase) || workbench?.Equals("042E6B:Keizaal.esp", StringComparison.OrdinalIgnoreCase) == true)
+            return new RecipeClassification("Alchemy", "Novice");
+        if (id.StartsWith("KzlRecipeFood_", StringComparison.OrdinalIgnoreCase))
+            return new RecipeClassification("Cooking", "Novice");
+        if (id.StartsWith("KzlRecipeCharcoalTier1", StringComparison.OrdinalIgnoreCase))
+            return new RecipeClassification("Woodworking", "Novice");
+        if (Regex.IsMatch(id, "(MCERecipeClothes|Recipe.*(Clothes|Robe|Tunic|Apron|Dress|Boots|Gloves|Hat|Cowl|Cape|Cloak|Scarf|Mantle|Gaiter))", RegexOptions.IgnoreCase) &&
+            (candidate.IdentityPlugin.Contains("Craftable", StringComparison.OrdinalIgnoreCase) || candidate.IdentityPlugin.Contains("CommonClothes", StringComparison.OrdinalIgnoreCase) || candidate.WinningPlugin.Contains("KzlOnlineMods", StringComparison.OrdinalIgnoreCase)))
+            return new RecipeClassification("Tailoring", "Novice");
+        return null;
     }
 
     private static IReadOnlyList<string> ReadLoadOrder(string path)
@@ -215,6 +318,17 @@ internal static class MutagenSkyrimCatalogReader
         }
         if (plugins.Count == 0) throw new ArgumentException("The supplied load order contains no .esm, .esp, or .esl plugins.");
         return plugins;
+    }
+
+    private static IReadOnlyList<string> WithImplicitMasters(IReadOnlyList<string> configuredPlugins, string dataFolder)
+    {
+        // Skyrim does not write its five always-loaded masters to plugins.txt. They are still
+        // part of the effective load order and contain most inventory records and base recipes.
+        var implicitMasters = new[] { "Skyrim.esm", "Update.esm", "Dawnguard.esm", "HearthFires.esm", "Dragonborn.esm" };
+        var seen = configuredPlugins.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        return implicitMasters.Where(plugin => File.Exists(Path.Combine(dataFolder, plugin)) && seen.Add(plugin))
+            .Concat(configuredPlugins)
+            .ToArray();
     }
 
     private static string RecordType(IMajorRecordGetter record)
@@ -299,7 +413,23 @@ internal static class MutagenSkyrimCatalogReader
     private static string? ReadModelPath(object source)
     {
         var model = ReadProperty(source, "Model");
-        return model is null ? null : ReadString(model, "File");
+        var direct = model is null ? null : ReadString(model, "File");
+        if (!string.IsNullOrWhiteSpace(direct)) return direct;
+
+        // ARMO records keep their inventory/ground model in WorldModel rather than Model.
+        // Prefer the male model because Skyrim normally supplies it even for unisex items,
+        // then fall back to the female entry for female-only clothing and armor.
+        var worldModel = ReadProperty(source, "WorldModel");
+        foreach (var variantName in new[] { "Male", "Female" })
+        {
+            var variant = worldModel is null ? null : ReadProperty(worldModel, variantName);
+            if (variant is null) continue;
+            var nestedModel = ReadProperty(variant, "Model");
+            var path = nestedModel is null ? ReadString(variant, "File") : ReadString(nestedModel, "File");
+            if (!string.IsNullOrWhiteSpace(path)) return path;
+        }
+
+        return null;
     }
 
     private static IReadOnlyList<string> BuildAliases(string name, string? editorId)
@@ -342,6 +472,66 @@ internal static class MutagenSkyrimCatalogReader
 }
 
 internal sealed record WorkbenchOverride(string EditorIdContains, string? WorkbenchKey, string Source);
+internal sealed record ProfessionGate(string Profession, string MasteryTier, string EditorId);
+internal sealed record RecipeClassification(string Profession, string MasteryTier);
+internal sealed record ConditionReference(string Label, string Kind);
+
+internal sealed class ProfessionGateCatalog
+{
+    private readonly Dictionary<string, ProfessionGate> byFormKey = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, ConditionReference> references = new(StringComparer.OrdinalIgnoreCase);
+
+    public void Add(string formKey, string? editorId, string? displayName, string recordType)
+    {
+        var label = !string.IsNullOrWhiteSpace(displayName) && !displayName.Equals(editorId, StringComparison.OrdinalIgnoreCase)
+            ? displayName
+            : Humanize(editorId) ?? formKey;
+        var kind = recordType switch { "Book" => "book", "Perk" => "perk", _ => "record" };
+        references[formKey] = new ConditionReference(label, kind);
+        var gate = Parse(editorId);
+        if (gate is null) return;
+        byFormKey[formKey] = gate;
+    }
+
+    public bool TryGet(string formKey, out ProfessionGate gate) => byFormKey.TryGetValue(formKey, out gate!);
+    public string Requirement(string formKey)
+    {
+        var reference = references.GetValueOrDefault(formKey) ?? new ConditionReference(formKey, "record");
+        return $"requires:{reference.Kind}:{reference.Label}";
+    }
+
+    public static int TierRank(string tier) => tier switch { "Master" => 4, "Expert" => 3, "Advanced" => 2, _ => 1 };
+
+    private static string? Humanize(string? editorId)
+    {
+        if (string.IsNullOrWhiteSpace(editorId)) return null;
+        var value = Regex.Replace(editorId, "^(Kzl|KZL)", string.Empty);
+        value = Regex.Replace(value, "([a-z0-9])([A-Z])", "$1 $2");
+        value = Regex.Replace(value, "[_-]+", " ");
+        return Regex.Replace(value, "\\s+", " ").Trim();
+    }
+
+    private static ProfessionGate? Parse(string? editorId)
+    {
+        if (string.IsNullOrWhiteSpace(editorId)) return null;
+        var custom = Regex.Match(editorId, "^Kzl(Alchemy|Cooking|Mining|Smithing|Tailor|Woodcutter)(Novice|Advanced|Expert|Master)$", RegexOptions.IgnoreCase);
+        if (custom.Success)
+        {
+            var profession = custom.Groups[1].Value.ToLowerInvariant() switch
+            {
+                "tailor" => "Tailoring",
+                "woodcutter" => "Woodworking",
+                var value => char.ToUpperInvariant(value[0]) + value[1..],
+            };
+            var tier = char.ToUpperInvariant(custom.Groups[2].Value[0]) + custom.Groups[2].Value[1..].ToLowerInvariant();
+            return new ProfessionGate(profession, tier, editorId);
+        }
+        var alchemist = Regex.Match(editorId, "^Alchemist(00|20|40|60)$", RegexOptions.IgnoreCase);
+        if (!alchemist.Success) return null;
+        var mastery = alchemist.Groups[1].Value switch { "20" => "Advanced", "40" => "Expert", "60" => "Master", _ => "Novice" };
+        return new ProfessionGate("Alchemy", mastery, editorId);
+    }
+}
 
 internal static class SkyPatcherWorkbenchOverrides
 {

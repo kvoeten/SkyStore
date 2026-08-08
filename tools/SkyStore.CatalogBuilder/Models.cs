@@ -91,9 +91,26 @@ internal static class StableIdentity
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(normalized))).ToLowerInvariant();
     }
 
+    public static string LoadOrderContentChecksum(string dataFolder, IEnumerable<string> plugins)
+    {
+        using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        foreach (var plugin in plugins)
+        {
+            var name = Encoding.UTF8.GetBytes(plugin.Trim().ToLowerInvariant() + "\n");
+            hash.AppendData(name);
+            using var stream = File.OpenRead(Path.Combine(dataFolder, plugin));
+            var buffer = new byte[1024 * 1024];
+            int read;
+            while ((read = stream.Read(buffer, 0, buffer.Length)) > 0) hash.AppendData(buffer, 0, read);
+        }
+        return Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant();
+    }
+
     public static string CatalogVersion(string loadOrderChecksum)
     {
-        return $"v1-{loadOrderChecksum[..12]}";
+        // The major prefix is the extractor schema. Bump it when normalized catalog semantics
+        // change so an unchanged game load order can still activate a new immutable bundle.
+        return $"v4-{loadOrderChecksum[..12]}";
     }
 
     private static Guid CreateVersion5(Guid namespaceId, string name)

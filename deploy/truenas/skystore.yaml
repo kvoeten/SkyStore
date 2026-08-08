@@ -69,7 +69,7 @@ services:
     command:
       - sh
       - -ec
-      - ./node_modules/.bin/tsx src/db/import-catalog.ts && ./node_modules/.bin/tsx src/db/import-uesp-icons.ts
+      - ./node_modules/.bin/tsx src/db/import-catalog.ts
     depends_on:
       migrate:
         condition: service_completed_successfully

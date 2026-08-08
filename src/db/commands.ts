@@ -28,7 +28,6 @@ export const submitPublicMarketReportCommand = z.object({
   itemId: uuid,
   quantity,
   totalSeptims: septims,
-  displayName: z.string().trim().min(1).max(120).optional(),
   note: z.string().trim().max(10_000).optional()
 }).strict();
 

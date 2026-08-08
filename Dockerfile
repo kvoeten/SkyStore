@@ -49,7 +49,7 @@ LABEL org.opencontainers.image.title="SkyStore" \
       org.opencontainers.image.version=$SKYSTORE_RELEASE_VERSION \
       org.opencontainers.image.revision=$SKYSTORE_RELEASE_REVISION
 ENV SKYSTORE_CATALOG_IMPORT_DIR=/opt/skystore/catalog \
-    SKYSTORE_UESP_MAPPING=/opt/skystore/catalog/uesp-icons/uesp-icon-mapping.json
+    SKYSTORE_ITEM_RENDER_ROOT=/var/lib/skystore/catalog-images/renders
 COPY --from=catalog_bundle --chown=skystore:skystore skystore-catalog-current.json skystore-catalog-report.json /opt/skystore/catalog/
-COPY --from=catalog_bundle --chown=skystore:skystore uesp-icons/uesp-icon-mapping.json uesp-icons/uesp-icons-manifest.json /opt/skystore/catalog/uesp-icons/
-COPY --from=catalog_bundle --chown=skystore:skystore uesp-icons/assets/ /var/lib/skystore/catalog-images/uesp/
+COPY --from=catalog_bundle --chown=skystore:skystore item-renders/render-targets.json item-renders/render-report.json item-renders/artwork-manifest.json /opt/skystore/catalog/item-renders/
+COPY --from=catalog_bundle --chown=skystore:skystore item-renders/images/ /var/lib/skystore/catalog-images/renders/

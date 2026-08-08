@@ -1,25 +1,22 @@
-# Keizaal recipe evidence (installed build inspected 2026-08-05)
+# Keizaal recipe evidence (installed build inspected 2026-08-08)
 
-SkyStore's recipe bundle is based on the actual winning `ConstructibleObject` (COBJ) records in the supplied Keizaal load order, rather than on a guessed profession price list.
+SkyStore's recipe bundle is based on the effective `ConstructibleObject` (COBJ) records in the installed Keizaal load order. The web application never reads game files.
 
-## Recoverable recipe data
+## Confirmed custom recipe data
 
-- The full installed load order resolves **2,982** winning COBJ records.
-- Each emitted recipe preserves its COBJ identity, output FormLink, output count, ingredient FormLinks/counts, workbench FormLink, editor ID, and source plugin.
-- FormLinks are mapped only when they point to a catalog inventory item. Missing outputs or ingredients are emitted in `unresolvedMappings`; they are not substituted with a similarly named item.
-- The inspected build yielded **2,832** recipes with no unresolved mapping. The remaining 150 have explicit unresolved mappings: 55 outputs are not inventory-capable catalog records, 73 building/layout records contain no material entries, and 34 have conflicting runtime workbench overrides.
+- The current build emits 12,732 inventory items and 3,014 raw crafting records.
+- Keizaal potion recipes use the dedicated alchemy workbench and explicit Alchemist gates. For example, Minor Healing is 7 Wheat + 15 Blue Mountain Flowers; Healing adds 8 Imp Stool and reduces flowers to 10; Plentiful Healing also adds 2 Eye of Sabre Cat.
+- `Alchemist00`, `Alchemist20`, `Alchemist40`, and `Alchemist60` map to Novice, Advanced, Expert, and Master.
+- Keizaal records also define `KzlAlchemy*`, `KzlCooking*`, `KzlMining*`, `KzlSmithing*`, `KzlTailor*`, and `KzlWoodcutter*` mastery gates. `Tailor` is presented as Tailoring and `Woodcutter` as Woodworking.
+- Tailoring recipes include the installed clothing plugins and Keizaal overrides. Confirmed examples include Common Clothes (1 Tundra Cotton + 1 Leather, Advanced) and Fine Clothes Wolfsbane (16 Thread + 2 Leather + 2 Gold + 2 Silver, Master).
+- Additional gates are retained separately from mastery. Confirmed examples include Expert Alchemy elixirs requiring `Special Elixir Recipes`, College robes requiring both their Tailoring level and `College Recipe Book`, and faction clothing accepting one of multiple recipe books.
+- Skyrim condition `OR` flags are carried into the normalized bundle as alternative groups. This prevents alternatives such as Cultist or Priests recipe books from being displayed as if both were required.
+- Ingredient counts come directly from Mutagen's typed container entry. Zero/omitted game counts normalize to one; non-unit counts are never replaced with one.
 
-## Non-standard Keizaal files examined
+## Runtime boundary
 
-| Location | Evidence | Recipe interpretation |
-|---|---|---|
-| `Data/SKSE/Plugins/SkyPatcher/constructibleObject/` | 37 INI files, 49 `filterByEditorIdContains=…:workbenchKeyword=…` rules. Example: `a. Fur1/Sentinel.esp.ini` changes `RecipeArmorTH_Fur1` to `Skyrim.esm|00088105`. | These alter an existing COBJ's workbench availability; they do not declare an output, materials, output yield, profession tier, labor, or fee. The builder applies a single unambiguous matching rule (262 recipes in this build) and preserves its file as a recipe source. Conflicting rules are emitted as unresolved mappings; no arbitrary rule order is assumed. |
-| `Data/SKSE/Plugins/CraftingCategories/*.json` | 11 JSON files; `Sentinel.json` declares UI sections/keyword categories such as weapons and armor. | UI categorization only, not recipe material or profession data. |
-| `Data/SKSE/Plugins/InventoryInjector/MoreCraftableEquipment.json` | One JSON file assigns UI icons/subtypes to form IDs. | Icon metadata only, not a recipe definition. |
-| `Data/Platform/` and `Data/NirnLabUIPlatform/` readable configuration/source | No human-readable profession/mastery/labor recipe specification was found. The shipped multiplayer client bundle is opaque and is not treated as an authoritative recipe source. | No profession/mastery/fee is inferred. |
+The inspected multiplayer client sends a generic craft command containing a workbench, inputs, and result. No second static recipe list was found in the client. The server may still validate entitlement at runtime, but the installed plugins are the authoritative offline source currently available for recipe materials and profession gates.
 
-## Deliberate nulls
+SkyPatcher workbench overrides are preserved as provenance. Crafting-category JSON and inventory-injector metadata affect UI grouping/icons, not material quantities or mastery. Records without a recognized Keizaal profession gate or confirmed Keizaal recipe/workbench pattern remain in the raw bundle for auditability but are not assigned a speculative profession tier. The installed build contains no recipe using the `Alchemist60` Master gate; SkyStore leaves that tier empty rather than inventing a mapping that may only exist server-side.
 
-Skyrim COBJ conditions can encode game perk gates, but this installed Keizaal build contains no separately authored mapping from those conditions to the RP server's professions or mastery labels. Therefore bundle fields `profession`, `masteryTier`, and `laborFee` are `null`. SkyStore must not equate vanilla perk names with RP mastery tiers without an authoritative server-side mapping.
-
-When Keizaal publishes a profession mapping or a custom recipe data file, add an explicit importer with source provenance rather than changing these nulls by heuristic.
+Labor fees remain zero unless an explicit SkyStore recipe supplies one; the installed game records do not define RP labor fees.

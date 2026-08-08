@@ -17,13 +17,14 @@ The public guide is available without an account and shows store selling prices 
 ## What is included
 
 - Public Store Prices, visual price trends, Hot Items, All-Time Favorites, catalog search, and item pages.
+- Profession recipe browsers grouped by Novice, Advanced, Expert, and Master, with separate material cost and finished-product price columns plus explicit profession, recipe-book, perk, and alternative requirements.
 - Private store buying and selling prices, street-price comparisons, current market information, and recommendations.
 - Fast multi-line store-sale and store-purchase recording plus independent street-price reports.
 - Stock tracking that never blocks a valid sale, with direct reconciliation to the real in-game inventory.
 - Per-store approval queues, verified contributors, staff display names, reports, pricing targets, and immutable audits.
 - Platform administration for stores, users, catalog activation, unresolved mappings, and quarantined contributors.
-- A normalized Keizaal catalog containing 12,714 items and 3,007 extracted crafting recipes.
-- Consistent category artwork in dense lists, with optional locally stored item-specific imagery on item pages.
+- A normalized Keizaal catalog containing 12,732 items and 3,014 extracted crafting records, including Keizaal profession and mastery gates.
+- Consistent category artwork in dense lists, with offline NIF renders for craftable items and their materials on detail pages.
 
 Public price information may be up to seven days behind current market activity. Private receipts, stock, staff identities, and store-specific evidence are never exposed through the public guide.
 
@@ -85,24 +86,22 @@ Verify the running application:
 Invoke-RestMethod http://127.0.0.1:3000/api/health/ready
 ```
 
-## Optional item-specific images
+## Item-specific images
 
-The repository includes flat category artwork, so every item has a usable icon without any additional download. Item-specific UESP captures are a separate, reproducible operator step and are deliberately not committed to Git.
+Every item has a flat SkyStore category icon. The offline item renderer additionally creates transparent PNGs directly from the winning NIF ground models for profession recipe outputs, ingredients, and inventory-backed requirements. It does not start Skyrim, capture the game, scrape a website, or ship source game assets to the running application.
+
+Run the [item renderer](tools/SkyStore.ItemRenderer/README.md) after extracting a refreshed catalog, then pass its `artwork-manifest.json` to the catalog builder for the final normalized bundle. Local Docker testing can copy the generated images into its catalog volume:
 
 ```powershell
-npm ci
-npm run catalog:icons:uesp:ingest -- --concurrency 3
-npm run catalog:icons:fallbacks:build
-npm run catalog:icons:uesp:map
 docker compose --profile setup run --rm catalog-image-sync
-docker compose --profile setup run --rm uesp-icon-import
+docker compose --profile setup run --rm catalog-import
 ```
 
-This downloads bounded local copies and records provenance; the website never hotlinks UESP. See the [catalog image policy](docs/catalog-image-policy.md) for matching and display rules.
+Release images receive the same rendered PNG set as an immutable, verified catalog bundle. See the [catalog image policy](docs/catalog-image-policy.md) for the exact scope and runtime boundary.
 
 ## Refresh the Keizaal catalog
 
-Catalog extraction is intentionally separate from the website. The offline .NET builder reads the exact Keizaal load order and Skyrim Data directory, resolves winning records and crafting recipes, then emits normalized JSON. Original plugins, archives, models, and textures never enter Git or the Docker image.
+Catalog extraction and rendering are intentionally separate from the website. The offline .NET tools read the exact Keizaal load order and Skyrim Data directory, resolve winning records and crafting recipes, extract only selected NIF/DDS dependencies, and emit normalized JSON plus transparent PNGs. Original plugins, archives, NIFs, and textures never enter Git or the Docker image.
 
 Follow the [catalog builder instructions](tools/SkyStore.CatalogBuilder/README.md), place the generated bundle under `catalog/generated/`, then activate it explicitly:
 

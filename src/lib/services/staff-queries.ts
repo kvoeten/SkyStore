@@ -1,12 +1,13 @@
 import { and, desc, eq, gte, ilike, inArray, isNull, lte, or, sql } from "drizzle-orm";
 import { db } from "@/db/runtime";
-import { approvals, catalogAliases, catalogImages, catalogItems, memberships, officialPriceRules, observations, publicMarketReports, receiptLines, receipts, recipeIngredients, recipes, stockMovements, users } from "@/db/schema";
+import { approvals, catalogAliases, catalogImages, catalogItems, memberships, officialPriceRules, observations, publicMarketReports, receiptLines, receipts, recipes, stockMovements, users } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
 import { estimateMarket, recommendedMaximumPurchase, saleFloor, type MarketSignal } from "@/lib/market";
 import { prioritizeMarketGuideRows } from "@/lib/market/guide-ranking";
 import { formatGold, formatHighestUnitGold } from "@/lib/money";
 import { asNumber, calculateSalesReport, mapApprovalSummary, mapInventoryRow, type ReportLine } from "./staff-mappers";
 import { mapStockBalance } from "./stock-policy";
+import { getCatalogRecipesForItem, getRecipesUsingItem, getTailoringPriceFamily } from "./recipe-queries";
 
 const confirmed = sql<string>`coalesce(sum(case when ${stockMovements.state} = 'confirmed' then ${stockMovements.quantityDelta} else 0 end), 0)`;
 const provisional = sql<string>`coalesce(sum(case when ${stockMovements.state} = 'provisional' then ${stockMovements.quantityDelta} else 0 end), 0)`;
@@ -123,26 +124,27 @@ export async function getDashboard(storeId: string) {
 export async function getItemDetail(storeId: string, itemId: string, targetMarkupBps: number) {
   const now = new Date();
   const marketWindowStart = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+  const priceFamily = await getTailoringPriceFamily(itemId);
   const [item] = await db.select().from(catalogItems).where(eq(catalogItems.id, itemId)).limit(1);
   if (!item) return null;
-  const [image] = await db.select({ url: catalogImages.url, isFallback: catalogImages.isFallback }).from(catalogImages).where(eq(catalogImages.itemId, itemId)).orderBy(sql`case when ${catalogImages.kind} = 'uesp' then 0 when ${catalogImages.kind} = 'skystore_category_art' then 1 else 2 end`, catalogImages.url).limit(1);
+  const [image] = await db.select({ url: catalogImages.url, isFallback: catalogImages.isFallback }).from(catalogImages).where(eq(catalogImages.itemId, itemId)).orderBy(sql`case when ${catalogImages.kind} = 'render' then 0 when ${catalogImages.kind} = 'fallback' then 1 else 2 end`, catalogImages.url).limit(1);
   const [stock] = await db.select({ confirmed, provisional }).from(stockMovements).where(and(eq(stockMovements.storeId, storeId), eq(stockMovements.itemId, itemId)));
   const history = await db.select({ id: receipts.id, direction: receipts.direction, occurrenceAt: receipts.occurrenceAt, quantity: receiptLines.quantity, totalSeptims: receiptLines.totalSeptims, status: receipts.status })
     .from(receiptLines).innerJoin(receipts, eq(receiptLines.receiptId, receipts.id)).where(and(eq(receipts.storeId, storeId), eq(receiptLines.itemId, itemId))).orderBy(desc(receipts.occurrenceAt)).limit(100);
   const priceRules = await db.select({ side: officialPriceRules.side, minimumSeptims: officialPriceRules.minimumSeptims, maximumSeptims: officialPriceRules.maximumSeptims, quantity: officialPriceRules.quantity, maximumQuantity: officialPriceRules.maximumQuantity, effectiveFrom: officialPriceRules.effectiveFrom, effectiveTo: officialPriceRules.effectiveTo, sourceLabel: officialPriceRules.sourceLabel })
-    .from(officialPriceRules).where(and(eq(officialPriceRules.itemId, itemId), or(isNull(officialPriceRules.storeId), eq(officialPriceRules.storeId, storeId)), lte(officialPriceRules.effectiveFrom, now), or(isNull(officialPriceRules.effectiveTo), gte(officialPriceRules.effectiveTo, now))));
+    .from(officialPriceRules).where(and(inArray(officialPriceRules.itemId, priceFamily.itemIds), or(isNull(officialPriceRules.storeId), eq(officialPriceRules.storeId, storeId)), lte(officialPriceRules.effectiveFrom, now), or(isNull(officialPriceRules.effectiveTo), gte(officialPriceRules.effectiveTo, now))));
   // Private estimates use only approved evidence. Receipt I/O and independent
   // street observations deliberately remain in separate signal sets.
   const [receiptEvidence, streetEvidence, publicReportEvidence] = await Promise.all([
     db.select({ storeId: receipts.storeId, direction: receipts.direction, quantity: receiptLines.quantity, totalSeptims: receiptLines.totalSeptims, occurrenceAt: receipts.occurrenceAt })
       .from(receiptLines).innerJoin(receipts, eq(receiptLines.receiptId, receipts.id)).innerJoin(users, eq(receipts.submittedBy, users.id))
-      .where(and(eq(receiptLines.itemId, itemId), eq(receipts.status, "approved"), gte(receipts.occurrenceAt, marketWindowStart), isNull(users.quarantinedAt))),
+      .where(and(inArray(receiptLines.itemId, priceFamily.itemIds), eq(receipts.status, "approved"), gte(receipts.occurrenceAt, marketWindowStart), isNull(users.quarantinedAt))),
     db.select({ storeId: observations.storeId, side: observations.side, kind: observations.kind, quantity: observations.quantity, totalSeptims: observations.totalSeptims, occurrenceAt: observations.occurrenceAt, expiresAt: observations.expiresAt })
       .from(observations).innerJoin(users, eq(observations.submittedBy, users.id))
-      .where(and(eq(observations.itemId, itemId), eq(observations.approval, "approved"), gte(observations.occurrenceAt, marketWindowStart), isNull(observations.quarantinedAt), isNull(users.quarantinedAt), or(isNull(observations.expiresAt), gte(observations.expiresAt, now)))),
+      .where(and(inArray(observations.itemId, priceFamily.itemIds), eq(observations.approval, "approved"), gte(observations.occurrenceAt, marketWindowStart), isNull(observations.quarantinedAt), isNull(users.quarantinedAt), or(isNull(observations.expiresAt), gte(observations.expiresAt, now)))),
     db.select({ locationType: publicMarketReports.locationType, quantity: publicMarketReports.quantity, totalSeptims: publicMarketReports.totalSeptims, occurrenceAt: publicMarketReports.createdAt })
       .from(publicMarketReports).innerJoin(users, eq(publicMarketReports.submittedBy, users.id))
-      .where(and(eq(publicMarketReports.itemId, itemId), eq(publicMarketReports.status, "approved"), gte(publicMarketReports.createdAt, marketWindowStart), isNull(publicMarketReports.quarantinedAt), isNull(users.quarantinedAt)))
+      .where(and(inArray(publicMarketReports.itemId, priceFamily.itemIds), eq(publicMarketReports.status, "approved"), gte(publicMarketReports.createdAt, marketWindowStart), isNull(publicMarketReports.quarantinedAt), isNull(users.quarantinedAt)))
   ]);
   const receiptSignals: MarketSignal[] = receiptEvidence.map((entry) => ({
     itemId,
@@ -190,8 +192,8 @@ export async function getItemDetail(storeId: string, itemId: string, targetMarku
     store: (["store_pays", "customer_pays"] as const).map((side) => estimateMarket(receiptSignals, itemId, side, now)),
     street: (["store_pays", "customer_pays"] as const).map((side) => estimateMarket(streetSignals, itemId, side, now))
   };
-  const recipeRows = await db.select().from(recipes).where(and(eq(recipes.outputItemId, itemId), eq(recipes.approval, "approved"), or(eq(recipes.storeId, storeId), eq(recipes.isCatalogDefault, true))));
-  const ingredients = recipeRows.length ? await db.select({ recipeId: recipeIngredients.recipeId, itemId: catalogItems.id, displayName: catalogItems.displayName, quantity: recipeIngredients.quantity }).from(recipeIngredients).innerJoin(catalogItems, eq(recipeIngredients.itemId, catalogItems.id)).where(inArray(recipeIngredients.recipeId, recipeRows.map((recipe) => recipe.id))) : [];
+  const itemRecipes = await getCatalogRecipesForItem(itemId, storeId, priceFamily);
+  const usedIn = itemRecipes.length ? [] : await getRecipesUsingItem(itemId, storeId);
   const lastPurchase = history.find((entry) => entry.direction === "store_purchase" && entry.status === "approved") ?? null;
   const lastSale = history.find((entry) => entry.direction === "store_sale" && entry.status === "approved") ?? null;
   const effectiveCost = lastPurchase ? lastPurchase.totalSeptims / lastPurchase.quantity : null;
@@ -201,9 +203,9 @@ export async function getItemDetail(storeId: string, itemId: string, targetMarku
   const stockBalance = mapStockBalance(stock?.confirmed, stock?.provisional);
   return {
     item, image: image ?? null, stock: { confirmed: stockBalance.confirmedStock, provisional: stockBalance.provisionalStock, available: stockBalance.availableStock, ledgerConfirmed: stockBalance.ledgerConfirmedStock, ledgerAvailable: stockBalance.ledgerAvailableStock }, history,
-    lastPurchase, lastSale, officialRates: priceRules, privateSignals,
+    lastPurchase, lastSale, officialRates: priceRules.sort((left, right) => (right.maximumSeptims / right.quantity) - (left.maximumSeptims / left.quantity)), privateSignals, priceFamily,
     recommendations: { effectiveCost, targetMarkup, saleFloor: effectiveCost == null ? null : saleFloor(effectiveCost, targetMarkup), maximumPurchase: recommendedMaximumPurchase(expectedSale, targetMarkup, null) },
-    recipes: recipeRows.map((recipe) => ({ ...recipe, ingredients: ingredients.filter((ingredient) => ingredient.recipeId === recipe.id) }))
+    recipes: itemRecipes, usedIn
   };
 }
 

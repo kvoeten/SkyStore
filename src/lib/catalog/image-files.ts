@@ -1,6 +1,6 @@
 import { basename, extname, resolve } from "node:path";
 
-export const CATALOG_IMAGE_ROOT = "/var/lib/skystore/catalog-images/uesp";
+export const CATALOG_IMAGE_ROOT = "/var/lib/skystore/catalog-images/renders";
 
 const CONTENT_TYPES: Record<string, string> = {
   ".gif": "image/gif",
