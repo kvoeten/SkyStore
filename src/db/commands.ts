@@ -21,16 +21,16 @@ export const submitObservationCommand = z.object({
   storeId: uuid, itemId: uuid, quantity, totalSeptims: septims
 });
 
-// A public report intentionally has no storeId and no occurrence override. It is
-// always queued for platform review and the recorded time is its submission time.
+// A public report intentionally has no storeId, location choice, or occurrence
+// override. It is always a street-price report, is queued for platform review,
+// and uses its submission time.
 export const submitPublicMarketReportCommand = z.object({
   itemId: uuid,
   quantity,
   totalSeptims: septims,
-  locationType: z.enum(["store_sale", "street_sale"]),
   displayName: z.string().trim().min(1).max(120).optional(),
   note: z.string().trim().max(10_000).optional()
-});
+}).strict();
 
 export const reviewPublicMarketReportCommand = z.object({
   decision: z.enum(["approved", "rejected"]),

@@ -4,14 +4,14 @@ import { createReceiptCommand, stockReconciliationCommand, submitObservationComm
 const itemId = "d3aa78a5-a1b6-49f1-a706-4d54c698711e";
 
 describe("public market report command", () => {
-  it("accepts a bounded authenticated contribution", () => {
-    expect(submitPublicMarketReportCommand.safeParse({ itemId, quantity: 10, totalSeptims: 25, locationType: "store_sale", displayName: "Aela of Whiterun" }).success).toBe(true);
+  it("accepts a bounded street-price contribution without a location choice", () => {
+    expect(submitPublicMarketReportCommand.safeParse({ itemId, quantity: 10, totalSeptims: 25, displayName: "Aela of Whiterun" }).success).toBe(true);
   });
 
   it.each([
-    { quantity: 0, totalSeptims: 2, locationType: "store_sale" },
-    { quantity: 1, totalSeptims: -1, locationType: "street_sale" },
-    { quantity: 1, totalSeptims: 1, locationType: "unknown" }
+    { quantity: 0, totalSeptims: 2 },
+    { quantity: 1, totalSeptims: -1 },
+    { quantity: 1, totalSeptims: 1, locationType: "store_sale" }
   ])("rejects invalid report values", (input) => {
     expect(submitPublicMarketReportCommand.safeParse({ itemId, ...input }).success).toBe(false);
   });

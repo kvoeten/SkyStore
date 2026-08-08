@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       itemId: command.itemId,
       quantity: command.quantity,
       totalSeptims: command.totalSeptims,
-      locationType: command.locationType,
+      locationType: "street_sale",
       note: command.note,
       submittedBy: context.userId,
       contributorDisplayName,
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       action: "public_market_report.submitted",
       entityType: "public_market_report",
       entityId: report.id,
-      after: { itemId: command.itemId, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: command.locationType, contributorDisplayName }
+      after: { itemId: command.itemId, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: "street_sale", contributorDisplayName }
     });
     return report;
   }).catch((error: unknown) => ({ error: error instanceof Error ? error.message : "market_report_failed" }));

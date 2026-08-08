@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AppShell, PageHeading } from "@/components/app-shell";
 import { DelayedMarketTable } from "@/components/delayed-market-table";
 import { PrivateMarketTable } from "@/components/private-market-table";
@@ -31,7 +32,7 @@ export default async function GuidePage({ searchParams }: { searchParams: Promis
     </div></AppShell>;
   }
   return <AppShell current="/guide" publicView publicAccount={Boolean(access) || authFailed} searchPublicView={forcePublic}><div className="page">
-    <PageHeading eyebrow="SKYSTORE" title="Public price guide"><p className="lede">Search Store Prices from participating stores.</p></PageHeading>
+    <PageHeading eyebrow="SKYSTORE" title="Public price guide" actions={<Link className="button public-report-button" href="/guide/report-price">REPORT PRICE</Link>}><p className="lede">Search Store Prices from participating stores.</p></PageHeading>
     <div className="grid guide-grid"><section className="panel"><DelayedMarketTable query={q}/><p className="market-footnote">Public price information can be up to 7 days behind on real market trends. Visit your local store for up-to-date pricing information.</p></section><aside className="stack"><PublicMarketHighlights/><section className="card"><p className="eyebrow">PRICE GUIDE</p><p>Prices shown are customer-facing Store Prices.</p></section></aside></div>
   </div></AppShell>;
 }
