@@ -100,8 +100,18 @@ jobs:
           printf '%s  %s\n' "$MANIFEST_SHA256" "_catalog-bundle/uesp-icons/uesp-icons-manifest.json" | sha256sum --check --strict -
           test "$(find _catalog-bundle/uesp-icons/assets -type f | wc -l)" = "$ASSET_FILES"
           npm run catalog:icons:uesp:hydrate -- --output _catalog-bundle/uesp-icons --offline --concurrency 8
-          cmp catalog/generated/skystore-catalog-current.json _catalog-bundle/skystore-catalog-current.json
-          cmp catalog/generated/uesp-icons/uesp-icon-mapping.json _catalog-bundle/uesp-icons/uesp-icon-mapping.json
+          node --input-type=module <<'NODE'
+          import { readFile } from "node:fs/promises";
+          const pairs = [
+            ["catalog/generated/skystore-catalog-current.json", "_catalog-bundle/skystore-catalog-current.json"],
+            ["catalog/generated/uesp-icons/uesp-icon-mapping.json", "_catalog-bundle/uesp-icons/uesp-icon-mapping.json"]
+          ];
+          for (const [tracked, bundled] of pairs) {
+            const left = JSON.stringify(JSON.parse(await readFile(tracked, "utf8")));
+            const right = JSON.stringify(JSON.parse(await readFile(bundled, "utf8")));
+            if (left !== right) throw new Error(`${bundled} does not match ${tracked}.`);
+          }
+          NODE
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
