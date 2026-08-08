@@ -161,12 +161,11 @@ jobs:
         run: |
           set -euo pipefail
           docker pull "$IMAGE_NAME@$DIGEST"
-          docker run --rm --entrypoint sh "$IMAGE_NAME@$DIGEST" -ec '
-            test -s /opt/skystore/catalog/skystore-catalog-current.json
-            test -s /opt/skystore/catalog/item-renders/render-report.json
-            expected="$(node -p "require('/opt/skystore/catalog/item-renders/render-report.json').renderedCount")"
-            test "$(find /var/lib/skystore/catalog-images/renders -type f -name '*.png' | wc -l)" -eq "$expected"
-          '
+          docker run --rm --entrypoint test "$IMAGE_NAME@$DIGEST" -s /opt/skystore/catalog/skystore-catalog-current.json
+          docker run --rm --entrypoint test "$IMAGE_NAME@$DIGEST" -s /opt/skystore/catalog/item-renders/render-report.json
+          expected="$(docker run --rm --entrypoint node "$IMAGE_NAME@$DIGEST" -p "require('/opt/skystore/catalog/item-renders/render-report.json').renderedCount")"
+          actual="$(docker run --rm --entrypoint sh "$IMAGE_NAME@$DIGEST" -c "find /var/lib/skystore/catalog-images/renders -type f -name '*.png' | wc -l")"
+          test "$actual" -eq "$expected"
 
       - name: Publish the stable update channel
         shell: bash
