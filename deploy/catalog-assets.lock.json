@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "release": "catalog-assets-2026-08-08",
+  "asset": "skystore-catalog-assets-2026-08-08.tar.gz",
+  "bytes": 437005255,
+  "sha256": "01e8963bd3fd050df7e39badf8e930ee38915b0c382e8ded61223b075af3f662",
+  "manifestSha256": "3347d724fa5be3096d8387902d7aca6eac7cc300ba083109535d74e68d07bba2",
+  "catalogVersion": "v1-ea022b7ee4c9",
+  "files": 2973
+}

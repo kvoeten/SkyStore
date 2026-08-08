@@ -55,19 +55,53 @@ jobs:
           npm run typecheck
           npm test
 
-      - name: Restore the verified icon cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: catalog/generated/uesp-icons/assets
-          key: uesp-icons-${{ runner.os }}-${{ hashFiles('catalog/generated/uesp-icons/uesp-icons-manifest.json') }}
-          restore-keys: |
-            uesp-icons-${{ runner.os }}-
-
-      - name: Hydrate and verify release imagery
+      - name: Verify the tracked catalog mapping
         run: |
-          npm run catalog:icons:uesp:hydrate -- --concurrency 3
           npm run catalog:icons:uesp:map
           git diff --exit-code -- catalog/generated/uesp-icons/uesp-icon-mapping.json
+
+      - name: Read the immutable catalog asset lock
+        id: catalog
+        shell: bash
+        run: |
+          set -euo pipefail
+          lock=deploy/catalog-assets.lock.json
+          echo "release=$(jq -er '.release | select(test("^catalog-assets-[0-9A-Za-z._-]+$"))' "$lock")" >> "$GITHUB_OUTPUT"
+          echo "asset=$(jq -er '.asset | select(test("^[0-9A-Za-z._-]+\\.tar\\.gz$"))' "$lock")" >> "$GITHUB_OUTPUT"
+          echo "sha256=$(jq -er '.sha256 | select(test("^[a-f0-9]{64}$"))' "$lock")" >> "$GITHUB_OUTPUT"
+          echo "manifest_sha256=$(jq -er '.manifestSha256 | select(test("^[a-f0-9]{64}$"))' "$lock")" >> "$GITHUB_OUTPUT"
+          echo "bytes=$(jq -er '.bytes | select(type == "number" and . > 0)' "$lock")" >> "$GITHUB_OUTPUT"
+          echo "files=$(jq -er '.files | select(type == "number" and . > 0)' "$lock")" >> "$GITHUB_OUTPUT"
+
+      - name: Download and verify the private catalog bundle
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSET_RELEASE: ${{ steps.catalog.outputs.release }}
+          ASSET_NAME: ${{ steps.catalog.outputs.asset }}
+          ASSET_SHA256: ${{ steps.catalog.outputs.sha256 }}
+          MANIFEST_SHA256: ${{ steps.catalog.outputs.manifest_sha256 }}
+          ASSET_BYTES: ${{ steps.catalog.outputs.bytes }}
+          ASSET_FILES: ${{ steps.catalog.outputs.files }}
+        run: |
+          set -euo pipefail
+          mkdir -p _catalog-download _catalog-bundle
+          release_id="$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases" \
+            --jq ".[] | select(.tag_name == \"$ASSET_RELEASE\" and .draft == true) | .id" | head -n 1)"
+          test -n "$release_id"
+          asset_id="$(gh api "repos/$GITHUB_REPOSITORY/releases/$release_id/assets" \
+            --jq ".[] | select(.name == \"$ASSET_NAME\" and .state == \"uploaded\") | .id" | head -n 1)"
+          test -n "$asset_id"
+          gh api -H "Accept: application/octet-stream" \
+            "repos/$GITHUB_REPOSITORY/releases/assets/$asset_id" > "_catalog-download/$ASSET_NAME"
+          test "$(stat -c %s "_catalog-download/$ASSET_NAME")" = "$ASSET_BYTES"
+          printf '%s  %s\n' "$ASSET_SHA256" "_catalog-download/$ASSET_NAME" | sha256sum --check --strict -
+          tar -xzf "_catalog-download/$ASSET_NAME" -C _catalog-bundle
+          printf '%s  %s\n' "$MANIFEST_SHA256" "_catalog-bundle/uesp-icons/uesp-icons-manifest.json" | sha256sum --check --strict -
+          test "$(find _catalog-bundle/uesp-icons/assets -type f | wc -l)" = "$ASSET_FILES"
+          npm run catalog:icons:uesp:hydrate -- --output _catalog-bundle/uesp-icons --offline --concurrency 8
+          cmp catalog/generated/skystore-catalog-current.json _catalog-bundle/skystore-catalog-current.json
+          cmp catalog/generated/uesp-icons/uesp-icon-mapping.json _catalog-bundle/uesp-icons/uesp-icon-mapping.json
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
@@ -95,7 +129,7 @@ jobs:
             SKYSTORE_RELEASE_VERSION=${{ github.ref_name }}
             SKYSTORE_RELEASE_REVISION=${{ github.sha }}
           build-contexts: |
-            catalog_bundle=./catalog/generated
+            catalog_bundle=./_catalog-bundle
           cache-from: type=gha,scope=skystore-release-amd64
           cache-to: type=gha,mode=max,scope=skystore-release-amd64
           provenance: false

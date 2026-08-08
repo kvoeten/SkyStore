@@ -24,6 +24,10 @@ function argument(name: string, fallback: string): string {
   return index < 0 ? fallback : process.argv[index + 1] ?? fallback;
 }
 
+function flag(name: string): boolean {
+  return process.argv.includes(name);
+}
+
 function positiveInteger(name: string, fallback: number): number {
   const value = Number(argument(name, String(fallback)));
   if (!Number.isInteger(value) || value < 1 || value > 32) throw new Error(`${name} must be between 1 and 32.`);
@@ -53,9 +57,10 @@ async function validExisting(filePath: string, entry: IconEntry): Promise<boolea
   }
 }
 
-async function hydrate(entry: IconEntry, assetDirectory: string): Promise<"cached" | "downloaded"> {
+async function hydrate(entry: IconEntry, assetDirectory: string, offline: boolean): Promise<"cached" | "downloaded"> {
   const target = join(assetDirectory, targetName(entry));
   if (await validExisting(target, entry)) return "cached";
+  if (offline) throw new Error(`Missing or invalid offline asset for ${entry.title}.`);
   const partial = `${target}.part`;
   await unlink(partial).catch(() => undefined);
   let lastError: unknown;
@@ -92,6 +97,7 @@ async function runPool<T>(values: T[], concurrency: number, work: (value: T) => 
 async function main() {
   const output = argument("--output", DEFAULT_OUTPUT);
   const concurrency = positiveInteger("--concurrency", 6);
+  const offline = flag("--offline");
   const manifest = JSON.parse(await readFile(join(output, "uesp-icons-manifest.json"), "utf8")) as Manifest;
   if (manifest.schemaVersion !== "1" || manifest.incomplete || !Array.isArray(manifest.files) || manifest.files.length === 0) {
     throw new Error("A complete UESP icon manifest is required.");
@@ -101,11 +107,11 @@ async function main() {
   let cached = 0;
   let downloaded = 0;
   await runPool(manifest.files, concurrency, async (entry) => {
-    const result = await hydrate(entry, assetDirectory);
+    const result = await hydrate(entry, assetDirectory, offline);
     if (result === "cached") cached++;
     else downloaded++;
   });
-  console.log(JSON.stringify({ status: "complete", files: manifest.files.length, cached, downloaded }));
+  console.log(JSON.stringify({ status: "complete", files: manifest.files.length, cached, downloaded, offline }));
 }
 
 main().catch((error) => {
