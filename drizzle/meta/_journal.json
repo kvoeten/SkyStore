@@ -43,6 +43,13 @@
       "when": 1785981050806,
       "tag": "0005_charming_umar",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786262186373,
+      "tag": "0006_cold_sunset_bain",
+      "breakpoints": true
     }
   ]
 }

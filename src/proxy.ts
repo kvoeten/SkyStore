@@ -31,8 +31,8 @@ export default auth((request) => {
 });
 
 export const config = {
-  // Public route handlers enforce their own command authorization. Keeping
-  // them outside the redirecting page proxy lets catalog search return JSON
-  // and lets an unsigned report POST return a machine-readable 401.
+  // Public catalog and reporting routes stay outside the redirecting page
+  // proxy. Every anonymous report is forced into platform approval by its
+  // route handler and never has a stock effect.
   matcher: ["/((?!api/auth|api/health|api/v1/market/public|api/v1/market/reports|api/v1/catalog/public-items|_next/static|_next/image|brand/|catalog-icons/|item-renders/|favicon.ico|login|logout|guide|professions).*)"]
 };

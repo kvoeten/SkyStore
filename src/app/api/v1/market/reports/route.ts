@@ -13,7 +13,6 @@ import { getTailoringPriceFamily } from "@/lib/services/recipe-queries";
  */
 export async function POST(request: NextRequest) {
   const context = await getAccessContext();
-  if (!context) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const parsed = submitPublicMarketReportCommand.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "invalid_market_report", issues: parsed.error.issues }, { status: 400 });
 
@@ -24,10 +23,9 @@ export async function POST(request: NextRequest) {
       .where(and(eq(catalogItems.id, command.itemId), eq(catalogItems.status, "active"))).limit(1);
     if (!item) throw new Error("catalog_item_not_found");
 
-    const [contributor] = await tx.select({ displayName: users.displayName, name: users.name }).from(users)
-      .where(eq(users.id, context.userId)).limit(1);
-    const contributorDisplayName = contributor?.displayName ?? contributor?.name;
-    if (!contributorDisplayName) throw new Error("display_name_required");
+    const [contributor] = context ? await tx.select({ displayName: users.displayName, name: users.name }).from(users)
+      .where(eq(users.id, context.userId)).limit(1) : [];
+    const contributorDisplayName = contributor?.displayName ?? contributor?.name ?? "Anonymous visitor";
 
     const [report] = await tx.insert(publicMarketReports).values({
       itemId: priceFamily.canonicalItemId,
@@ -35,23 +33,23 @@ export async function POST(request: NextRequest) {
       totalSeptims: command.totalSeptims,
       locationType: "street_sale",
       note: command.note,
-      submittedBy: context.userId,
+      submittedBy: context?.userId ?? null,
       contributorDisplayName,
       status: "pending"
     }).returning({ id: publicMarketReports.id, status: publicMarketReports.status, createdAt: publicMarketReports.createdAt });
-    await tx.insert(approvals).values({ targetType: "public_market_report", targetId: report.id, requestedBy: context.userId });
+    await tx.insert(approvals).values({ targetType: "public_market_report", targetId: report.id, requestedBy: context?.userId ?? null });
     await tx.insert(auditEvents).values({
-      actorId: context.userId,
+      actorId: context?.userId ?? null,
       action: "public_market_report.submitted",
       entityType: "public_market_report",
       entityId: report.id,
-      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: "street_sale", contributorDisplayName }
+      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: "street_sale", contributorDisplayName, authenticated: Boolean(context) }
     });
     return report;
   }).catch((error: unknown) => ({ error: error instanceof Error ? error.message : "market_report_failed" }));
 
   if ("error" in result) {
-    const status = result.error === "catalog_item_not_found" ? 404 : result.error === "display_name_required" ? 400 : 409;
+    const status = result.error === "catalog_item_not_found" ? 404 : 409;
     return NextResponse.json(result, { status });
   }
   return NextResponse.json(result, { status: 201 });

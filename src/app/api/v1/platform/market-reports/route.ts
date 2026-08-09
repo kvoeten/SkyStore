@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     reviewedAt: publicMarketReports.reviewedAt,
     reviewNote: publicMarketReports.reviewNote
   }).from(publicMarketReports).innerJoin(catalogItems, eq(publicMarketReports.itemId, catalogItems.id))
-    .innerJoin(users, eq(publicMarketReports.submittedBy, users.id))
+    .leftJoin(users, eq(publicMarketReports.submittedBy, users.id))
     .where(status ? and(eq(publicMarketReports.status, status as "pending" | "approved" | "rejected")) : undefined)
     .orderBy(desc(publicMarketReports.createdAt)).limit(200);
   return NextResponse.json({ reports });

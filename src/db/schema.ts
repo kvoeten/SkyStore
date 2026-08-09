@@ -162,7 +162,9 @@ export const publicMarketReports = pgTable("public_market_reports", {
   totalSeptims: integer("total_septims").notNull(),
   locationType: publicMarketReportLocation("location_type").notNull(),
   note: text("note"),
-  submittedBy: uuid("submitted_by").notNull().references(() => users.id),
+  // Authenticated contributors retain their user identity. Anonymous public
+  // submissions deliberately leave this null and are still fully reviewable.
+  submittedBy: uuid("submitted_by").references(() => users.id),
   contributorDisplayName: varchar("contributor_display_name", { length: 120 }).notNull(),
   status: approvalDecision("status").notNull().default("pending"),
   reviewedBy: uuid("reviewed_by").references(() => users.id),
@@ -180,7 +182,9 @@ export const publicMarketReports = pgTable("public_market_reports", {
 
 export const approvals = pgTable("approvals", {
   id: uuid("id").defaultRandom().primaryKey(), storeId: uuid("store_id").references(() => stores.id), targetType: approvalTarget("target_type").notNull(), targetId: uuid("target_id").notNull(), decision: approvalDecision("decision").notNull().default("pending"),
-  requestedBy: uuid("requested_by").notNull().references(() => users.id), reviewedBy: uuid("reviewed_by").references(() => users.id), note: text("note"), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(), reviewedAt: timestamp("reviewed_at", { withTimezone: true })
+  // Store workflow approvals always have a requester. Anonymous public market
+  // reports are the sole case where the requester is intentionally unknown.
+  requestedBy: uuid("requested_by").references(() => users.id), reviewedBy: uuid("reviewed_by").references(() => users.id), note: text("note"), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(), reviewedAt: timestamp("reviewed_at", { withTimezone: true })
 }, (t) => [uniqueIndex("approvals_target_unique").on(t.targetType, t.targetId), index("approvals_queue_idx").on(t.storeId, t.decision, t.createdAt)]);
 
 export const officialPriceRules = pgTable("official_price_rules", {

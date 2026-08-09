@@ -41,7 +41,7 @@ async function createPublicSnapshot(now = new Date()) {
     union all
     select p.item_id, i.display_name, null::uuid as store_id, p.total_septims, p.quantity, p.created_at as occurrence_at, 'direct_quote'::text as kind
     from public_market_reports p
-    join users u on u.id = p.submitted_by
+    left join users u on u.id = p.submitted_by
     join catalog_items i on i.id = p.item_id
     where p.status = 'approved' and p.location_type = 'store_sale'
       and p.created_at <= ${cutoffIso}::timestamptz

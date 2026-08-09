@@ -1,10 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function PublicMarketReportForm({ itemId, itemName, appliesToCount = 1, onChangeItem }: { itemId: string; itemName: string; appliesToCount?: number; onChangeItem?: () => void }) {
-  const router = useRouter();
   const [state, setState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -19,7 +17,6 @@ export function PublicMarketReportForm({ itemId, itemName, appliesToCount = 1, o
         totalSeptims: Number(values.get("totalSeptims"))
       })
     });
-    if (response.status === 401) { router.push(`/login?returnTo=${encodeURIComponent(`/guide/items/${itemId}#market-report`)}`); return; }
     if (!response.ok) { const body = await response.json().catch(() => null) as { error?: string } | null; setState("error"); setMessage(body?.error === "invalid_market_report" ? "Check the quantity and total paid." : "Your report could not be submitted. Please try again."); return; }
     form.reset(); setState("success"); setMessage("Thank you. Your report is pending administrator review and will not change store stock.");
   }

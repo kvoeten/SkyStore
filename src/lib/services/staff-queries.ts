@@ -143,7 +143,7 @@ export async function getItemDetail(storeId: string, itemId: string, targetMarku
       .from(observations).innerJoin(users, eq(observations.submittedBy, users.id))
       .where(and(inArray(observations.itemId, priceFamily.itemIds), eq(observations.approval, "approved"), gte(observations.occurrenceAt, marketWindowStart), isNull(observations.quarantinedAt), isNull(users.quarantinedAt), or(isNull(observations.expiresAt), gte(observations.expiresAt, now)))),
     db.select({ locationType: publicMarketReports.locationType, quantity: publicMarketReports.quantity, totalSeptims: publicMarketReports.totalSeptims, occurrenceAt: publicMarketReports.createdAt })
-      .from(publicMarketReports).innerJoin(users, eq(publicMarketReports.submittedBy, users.id))
+      .from(publicMarketReports).leftJoin(users, eq(publicMarketReports.submittedBy, users.id))
       .where(and(inArray(publicMarketReports.itemId, priceFamily.itemIds), eq(publicMarketReports.status, "approved"), gte(publicMarketReports.createdAt, marketWindowStart), isNull(publicMarketReports.quarantinedAt), isNull(users.quarantinedAt)))
   ]);
   const receiptSignals: MarketSignal[] = receiptEvidence.map((entry) => ({
