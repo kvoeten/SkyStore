@@ -12,7 +12,7 @@ type GroupableRecipe = {
   missingPriceCount: number;
 };
 
-export type TailoringRecipeGroup<T extends GroupableRecipe> = T & {
+export type RecipeVariantGroup<T extends GroupableRecipe> = T & {
   displayName: string;
   variants: T[];
   priceReportItemId: string;
@@ -42,7 +42,7 @@ function rangeLabel(base: string, names: NumberedName[]) {
   return `${base} ${first}–${last}`;
 }
 
-export function groupTailoringRecipeVariants<T extends GroupableRecipe>(recipes: T[]): TailoringRecipeGroup<T>[] {
+export function groupRecipeVariants<T extends GroupableRecipe>(recipes: T[]): RecipeVariantGroup<T>[] {
   const groups = new Map<string, Array<{ recipe: T; name: NumberedName }>>();
   const singles: Array<{ index: number; recipe: T }> = [];
 
@@ -56,7 +56,7 @@ export function groupTailoringRecipeVariants<T extends GroupableRecipe>(recipes:
     groups.set(key, [...(groups.get(key) ?? []), { recipe, name }]);
   });
 
-  const rows: Array<{ index: number; group: TailoringRecipeGroup<T> }> = singles.map(({ index, recipe }) => ({
+  const rows: Array<{ index: number; group: RecipeVariantGroup<T> }> = singles.map(({ index, recipe }) => ({
     index, group: { ...recipe, displayName: recipe.outputName, variants: [recipe], priceReportItemId: recipe.outputItemId },
   }));
 
@@ -85,3 +85,6 @@ export function groupTailoringRecipeVariants<T extends GroupableRecipe>(recipes:
 
   return rows.sort((a, b) => a.index - b.index).map((row) => row.group);
 }
+
+export const groupTailoringRecipeVariants = groupRecipeVariants;
+export type TailoringRecipeGroup<T extends GroupableRecipe> = RecipeVariantGroup<T>;

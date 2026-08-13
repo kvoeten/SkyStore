@@ -110,7 +110,7 @@ internal static class StableIdentity
     {
         // The major prefix is the extractor schema. Bump it when normalized catalog semantics
         // change so an unchanged game load order can still activate a new immutable bundle.
-        return $"v4-{loadOrderChecksum[..12]}";
+        return $"v5-{loadOrderChecksum[..12]}";
     }
 
     private static Guid CreateVersion5(Guid namespaceId, string name)

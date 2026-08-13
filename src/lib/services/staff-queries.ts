@@ -2,6 +2,7 @@ import { and, desc, eq, gte, ilike, inArray, isNull, lte, or, sql } from "drizzl
 import { db } from "@/db/runtime";
 import { approvals, catalogAliases, catalogImages, catalogItems, memberships, officialPriceRules, observations, publicMarketReports, receiptLines, receipts, recipes, stockMovements, users } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
+import { collapseItemFamilies } from "@/lib/catalog/item-families";
 import { estimateMarket, recommendedMaximumPurchase, saleFloor, type MarketSignal } from "@/lib/market";
 import { prioritizeMarketGuideRows } from "@/lib/market/guide-ranking";
 import { formatGold, formatHighestUnitGold } from "@/lib/money";
@@ -50,14 +51,22 @@ export async function getPrivateMarketGuide(storeId: string, query = "") {
     ilike(catalogItems.editorId, pattern),
     sql`exists (select 1 from ${catalogAliases} where ${catalogAliases.itemId} = ${catalogItems.id} and ${catalogAliases.alias} ilike ${pattern})`
   );
-  const candidates = await db.select({ itemId: catalogItems.id, displayName: catalogItems.displayName, category: catalogItems.category, editorId: catalogItems.editorId })
+  const rawCandidates = await db.select({
+    id: catalogItems.id, name: catalogItems.displayName, category: catalogItems.category, editorId: catalogItems.editorId, recordType: catalogItems.recordType,
+    craftSignature: sql<string | null>`(
+      select string_agg(ri.item_id::text || ':' || ri.quantity::text, '|' order by ri.item_id::text)
+      from recipes guide_recipe join recipe_ingredients ri on ri.recipe_id = guide_recipe.id
+      where guide_recipe.output_item_id = ${catalogItems.id} and guide_recipe.approval = 'approved' and guide_recipe.is_catalog_default = true
+    )`
+  })
     .from(catalogItems)
     .where(and(eq(catalogItems.status, "active"), trimmedQuery ? searchFilter : or(currentPriceExists, recentSaleExists)))
     .orderBy(catalogItems.displayName)
-    .limit(200);
+    .limit(400);
+  const candidates = collapseItemFamilies(rawCandidates).slice(0, 200);
   if (!candidates.length) return [];
 
-  const itemIds = candidates.map((item) => item.itemId);
+  const itemIds = [...new Set(candidates.flatMap((item) => item.familyItemIds))];
   const [rules, sales] = await Promise.all([
     db.select({ itemId: officialPriceRules.itemId, storeId: officialPriceRules.storeId, side: officialPriceRules.side, minimumSeptims: officialPriceRules.minimumSeptims, maximumSeptims: officialPriceRules.maximumSeptims, quantity: officialPriceRules.quantity, maximumQuantity: officialPriceRules.maximumQuantity, effectiveFrom: officialPriceRules.effectiveFrom })
       .from(officialPriceRules)
@@ -85,19 +94,23 @@ export async function getPrivateMarketGuide(storeId: string, query = "") {
   }
 
   return prioritizeMarketGuideRows(candidates.map((item) => {
-    const storePays = preferredRules.get(`${item.itemId}:store_pays`) ?? null;
-    const customerPays = preferredRules.get(`${item.itemId}:customer_pays`) ?? null;
-    const lastSale = latestSales.get(item.itemId) ?? null;
+    const familyRules = (side: "store_pays" | "customer_pays") => item.familyItemIds.map((id) => preferredRules.get(`${id}:${side}`)).filter(Boolean).sort((left, right) => (right!.maximumSeptims / right!.quantity) - (left!.maximumSeptims / left!.quantity))[0] ?? null;
+    const storePays = familyRules("store_pays");
+    const customerPays = familyRules("customer_pays");
+    const lastSale = item.familyItemIds.map((id) => latestSales.get(id)).filter(Boolean).sort((left, right) => right!.occurrenceAt.getTime() - left!.occurrenceAt.getTime())[0] ?? null;
     return {
-      ...item,
-      name: item.displayName,
-      imageUrl: categoryIconPath({ name: item.displayName, category: item.category, editorId: item.editorId }),
+      itemId: item.id,
+      displayName: item.familyName,
+      category: item.category ?? "Miscellaneous",
+      editorId: item.editorId,
+      name: item.familyName,
+      imageUrl: categoryIconPath({ name: item.familyName, category: item.category ?? "Miscellaneous", editorId: item.editorId }),
       storePays,
       customerPays,
       lastSale,
       hasPrice: Boolean(storePays || customerPays),
       lastSoldAt: lastSale?.occurrenceAt ?? null,
-      recentUnitsSold: recentUnits.get(item.itemId) ?? 0
+      recentUnitsSold: item.familyItemIds.reduce((total, id) => total + (recentUnits.get(id) ?? 0), 0)
     };
   }));
 }

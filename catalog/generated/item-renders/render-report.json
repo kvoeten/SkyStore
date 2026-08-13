@@ -1,7 +1,7 @@
 {
-  "catalogVersion": "v4-46a45b8c08a1",
-  "targetCount": 594,
-  "renderedCount": 594,
+  "catalogVersion": "v5-69a647be2499",
+  "targetCount": 1288,
+  "renderedCount": 1288,
   "missingModelCount": 0,
   "assetErrorCount": 0,
   "outcomes": [
@@ -38,6 +38,24 @@
     {
       "stableKey": "dawnguard.esm:0000c815",
       "name": "Ancient Falmer Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000c814",
+      "name": "Ancient Falmer Crown",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000c816",
+      "name": "Ancient Falmer Cuirass",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000c817",
+      "name": "Ancient Falmer Gauntlets",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -110,6 +128,54 @@
     {
       "stableKey": "sentinel - priests and acolytes.esp:00000867",
       "name": "Azura Robes",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013948",
+      "name": "Banded Iron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001394b",
+      "name": "Banded Iron Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000818",
+      "name": "Banded Northern Iron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000081c",
+      "name": "Banded Northern Iron Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000081f",
+      "name": "Banded Rugged Iron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000823",
+      "name": "Banded Rugged Iron Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000826",
+      "name": "Banded Runic Iron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000082b",
+      "name": "Banded Wrought Iron Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -204,8 +270,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0004b28b",
+      "name": "Blades Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0004b288",
       "name": "Blades Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0004b28d",
+      "name": "Blades Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0004b28f",
+      "name": "Blades Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0004f912",
+      "name": "Blades Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0003aeb9",
+      "name": "Blades Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "keizaal.esp:00dbf8c1",
+      "name": "Blank Spellbook",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -230,6 +332,84 @@
     {
       "stableKey": "skyrim.esm:000a199b",
       "name": "Blue Robes",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0001aa0b",
+      "name": "Bone Hawk Amulet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00011cf7",
+      "name": "Bone Hawk Claw",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00002994",
+      "name": "Bone Hawk Feathers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00011cf5",
+      "name": "Bone Hawk Ring",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00002993",
+      "name": "Bone Hawk Skull",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00034cdd",
+      "name": "Bone Meal",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd93",
+      "name": "Bonemold Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd92",
+      "name": "Bonemold Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd94",
+      "name": "Bonemold Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00037564",
+      "name": "Bonemold Guard Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd95",
+      "name": "Bonemold Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00037563",
+      "name": "Bonemold Pauldron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00026234",
+      "name": "Bonemold Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -294,8 +474,26 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000846",
+      "name": "Bosmer Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b34",
+      "name": "Bosmer Blade",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000845",
       "name": "Bosmer Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b33",
+      "name": "Bosmer Bow",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -306,8 +504,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000847",
+      "name": "Bosmer Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000848",
+      "name": "Bosmer Hood",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000849",
+      "name": "Bosmer Mask",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000084d",
+      "name": "Bosmer Plate Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:0000084c",
       "name": "Bosmer Plate Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000084e",
+      "name": "Bosmer Plate Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000084f",
+      "name": "Bosmer Plate Helmet",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -420,6 +654,12 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00033760",
+      "name": "Charcoal",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "keizaal.esp:00015484",
       "name": "Charcoal Briquette",
       "status": "rendered",
@@ -468,8 +708,62 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dragonborn.esm:0001cd87",
+      "name": "Chitin Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd86",
+      "name": "Chitin Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd88",
+      "name": "Chitin Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd8a",
+      "name": "Chitin Heavy Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd82",
+      "name": "Chitin Heavy Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd8b",
+      "name": "Chitin Heavy Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd8c",
+      "name": "Chitin Heavy Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd89",
+      "name": "Chitin Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dragonborn.esm:0002b04e",
       "name": "Chitin Plate",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00026235",
+      "name": "Chitin Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -570,6 +864,30 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000904",
+      "name": "Common Aketon",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b25",
+      "name": "Common Arming Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b29",
+      "name": "Common Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b28",
+      "name": "Common Bearded Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000901",
       "name": "Common Boots",
       "status": "rendered",
@@ -584,6 +902,30 @@
     {
       "stableKey": "sentinel.esp:00000903",
       "name": "Common Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b2d",
+      "name": "Common Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000905",
+      "name": "Common Brigandine",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b2b",
+      "name": "Common Broadaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000907",
+      "name": "Common Chain Mail",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -840,8 +1182,50 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000b2c",
+      "name": "Common Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000906",
+      "name": "Common Gambeson",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000090f",
+      "name": "Common Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000090e",
+      "name": "Common Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b2a",
+      "name": "Common Hafted Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b27",
+      "name": "Common Hand Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "common clothing expanded.esp:00000004",
       "name": "Common Hood",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000090b",
+      "name": "Common Lamellar Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -990,8 +1374,50 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000b24",
+      "name": "Common Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b26",
+      "name": "Common War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008dc",
+      "name": "Companion Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:000008db",
       "name": "Companion Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008de",
+      "name": "Companion Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008df",
+      "name": "Companion Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008e0",
+      "name": "Companion Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000721e8",
+      "name": "Cooked Beef",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1038,6 +1464,18 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dawnguard.esm:00000801",
+      "name": "Crossbow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "keizaal.esp:00dde4da",
+      "name": "Crossbow Schematics",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000cee78",
       "name": "Cuffed Boots",
       "status": "rendered",
@@ -1068,8 +1506,110 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0001396b",
+      "name": "Daedric Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139c0",
+      "name": "Daedric Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b4",
+      "name": "Daedric Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001396a",
+      "name": "Daedric Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b5",
+      "name": "Daedric Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b6",
+      "name": "Daedric Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001396c",
+      "name": "Daedric Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b7",
+      "name": "Daedric Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001396d",
+      "name": "Daedric Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b8",
+      "name": "Daedric Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008a3",
+      "name": "Daedric Scaled Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:000008a2",
       "name": "Daedric Scaled Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008a4",
+      "name": "Daedric Scaled Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008a5",
+      "name": "Daedric Scaled Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001396e",
+      "name": "Daedric Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b9",
+      "name": "Daedric Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b3",
+      "name": "Daedric War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139ba",
+      "name": "Daedric Warhammer",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1092,14 +1632,80 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dawnguard.esm:0000f3fb",
+      "name": "Dawnguard Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000f402",
+      "name": "Dawnguard Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000f404",
+      "name": "Dawnguard Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dawnguard.esm:0000f400",
       "name": "Dawnguard Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dawnguard.esm:000050d0",
+      "name": "Dawnguard Full Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000f3fe",
+      "name": "Dawnguard Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000f3f7",
+      "name": "Dawnguard Heavy Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000f3fa",
+      "name": "Dawnguard Heavy Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dawnguard.esm:00014757",
       "name": "Dawnguard Heavy Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00014758",
+      "name": "Dawnguard Heavy Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:000150b8",
+      "name": "Dawnguard Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000d098",
+      "name": "Dawnguard War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000dd55",
+      "name": "Dawnguard Warhammer",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1112,6 +1718,12 @@
     {
       "stableKey": "skyrim.esm:0003ad90",
       "name": "Deer Hide",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00063b47",
+      "name": "Diamond",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1134,8 +1746,140 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0003ada4",
+      "name": "Dragon Bone",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0003ada3",
+      "name": "Dragon Scales",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000889a2",
       "name": "Dragon\u0027s Tongue",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:000176f4",
+      "name": "Dragonbone Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00014fc3",
+      "name": "Dragonbone Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:000176f1",
+      "name": "Dragonbone Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:00000818",
+      "name": "Dragonbone Crown",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00014fcb",
+      "name": "Dragonbone Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00014fcc",
+      "name": "Dragonbone Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00014fcd",
+      "name": "Dragonbone Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00014fce",
+      "name": "Dragonbone Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00014fcf",
+      "name": "Dragonbone War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00014fd0",
+      "name": "Dragonbone Warhammer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013966",
+      "name": "Dragonplate Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013965",
+      "name": "Dragonplate Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013967",
+      "name": "Dragonplate Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013969",
+      "name": "Dragonplate Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013968",
+      "name": "Dragonplate Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001393e",
+      "name": "Dragonscale Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001393d",
+      "name": "Dragonscale Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001393f",
+      "name": "Dragonscale Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013940",
+      "name": "Dragonscale Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013941",
+      "name": "Dragonscale Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1254,14 +1998,188 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0001394d",
+      "name": "Dwarven Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139bc",
+      "name": "Dwarven Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013994",
+      "name": "Dwarven Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000d099",
+      "name": "Dwarven Bolt",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001394c",
+      "name": "Dwarven Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013995",
+      "name": "Dwarven Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013996",
+      "name": "Dwarven Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001394e",
+      "name": "Dwarven Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013997",
+      "name": "Dwarven Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001394f",
+      "name": "Dwarven Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013998",
+      "name": "Dwarven Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000db8a2",
       "name": "Dwarven Metal Ingot",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00013950",
+      "name": "Dwarven Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013999",
+      "name": "Dwarven Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013993",
+      "name": "Dwarven War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001399a",
+      "name": "Dwarven Warhammer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013961",
+      "name": "Ebony Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139bf",
+      "name": "Ebony Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139ac",
+      "name": "Ebony Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013960",
+      "name": "Ebony Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139ad",
+      "name": "Ebony Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139ae",
+      "name": "Ebony Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013962",
+      "name": "Ebony Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139af",
+      "name": "Ebony Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013963",
+      "name": "Ebony Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0005ad9d",
       "name": "Ebony Ingot",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b0",
+      "name": "Ebony Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013964",
+      "name": "Ebony Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b1",
+      "name": "Ebony Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139ab",
+      "name": "Ebony War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139b2",
+      "name": "Ebony Warhammer",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1286,6 +2204,96 @@
     {
       "stableKey": "skyrim.esm:000f4320",
       "name": "Elsweyr Fondue",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000896a3",
+      "name": "Elven Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139bd",
+      "name": "Elven Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001399c",
+      "name": "Elven Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001391a",
+      "name": "Elven Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001399d",
+      "name": "Elven Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001399e",
+      "name": "Elven Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001391c",
+      "name": "Elven Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001392a",
+      "name": "Elven Gilded Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001399f",
+      "name": "Elven Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001391d",
+      "name": "Elven Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a0",
+      "name": "Elven Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001391e",
+      "name": "Elven Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a1",
+      "name": "Elven Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001399b",
+      "name": "Elven War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a2",
+      "name": "Elven Warhammer",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1338,8 +2346,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "evgnnsmpaccessories.esp:00000828",
+      "name": "Exquisite Cloak",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000829",
+      "name": "Exquisite Cloak",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000082a",
+      "name": "Exquisite Cloak",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000082b",
+      "name": "Exquisite Cloak",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0006bc07",
       "name": "Eye of Sabre Cat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000b83cb",
+      "name": "Falmer Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00038341",
+      "name": "Falmer Arrow",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1350,8 +2394,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00038340",
+      "name": "Falmer Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000b83cf",
+      "name": "Falmer Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000e8de",
+      "name": "Falmer Hardened Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dawnguard.esm:0000e8dd",
       "name": "Falmer Hardened Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000e8df",
+      "name": "Falmer Hardened Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0000e8e0",
+      "name": "Falmer Hardened Helm",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:000023e9",
+      "name": "Falmer Heavy Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1362,8 +2442,62 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dawnguard.esm:000023ed",
+      "name": "Falmer Heavy Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:000023eb",
+      "name": "Falmer Heavy Helm",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0004c3cb",
+      "name": "Falmer Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0005c06c",
+      "name": "Falmer Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0002e6d1",
+      "name": "Falmer Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000302cd",
+      "name": "Falmer War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "keizaal.esp:00dfd181",
       "name": "Farmer\u0027s Magical Milk",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e8a",
+      "name": "Fastened Scarf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e8b",
+      "name": "Fastened Scarf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e8c",
+      "name": "Fastened Scarf",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1566,6 +2700,42 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0006851e",
+      "name": "Flawless Amethyst",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0006851f",
+      "name": "Flawless Diamond",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00068520",
+      "name": "Flawless Emerald",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00068521",
+      "name": "Flawless Garnet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00068522",
+      "name": "Flawless Ruby",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00068523",
+      "name": "Flawless Sapphire",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0004da00",
       "name": "Fly Amanita",
       "status": "rendered",
@@ -1584,8 +2754,50 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:000d8d50",
+      "name": "Forsworn Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000cee9e",
+      "name": "Forsworn Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000cc829",
+      "name": "Forsworn Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000d8d4e",
       "name": "Forsworn Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000cee9b",
+      "name": "Forsworn Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000d8d55",
+      "name": "Forsworn Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000d8d52",
+      "name": "Forsworn Headdress",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000cade9",
+      "name": "Forsworn Sword",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1602,44 +2814,56 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0006f393",
+      "name": "Fur Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0010594b",
+      "name": "Fur Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0010594d",
+      "name": "Fur Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0010594f",
+      "name": "Fur Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000a6d7f",
       "name": "Fur Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002883",
-      "name": "Fur Cloak (Black)",
+      "stableKey": "skyrim.esm:0006f39b",
+      "name": "Fur Bracers",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002884",
-      "name": "Fur Cloak (Brown)",
-      "status": "rendered",
-      "detail": "Existing PNG retained; pass --force to regenerate it."
-    },
-    {
-      "stableKey": "cloaks\u0026capes.esp:00002885",
-      "name": "Fur Cloak (Snowy Sabre)",
-      "status": "rendered",
-      "detail": "Existing PNG retained; pass --force to regenerate it."
-    },
-    {
-      "stableKey": "cloaks\u0026capes.esp:00002886",
-      "name": "Fur Cloak (Vale Sabre)",
-      "status": "rendered",
-      "detail": "Existing PNG retained; pass --force to regenerate it."
-    },
-    {
-      "stableKey": "cloaks\u0026capes.esp:00001d8e",
-      "name": "Fur Cloak (White)",
+      "stableKey": "sentinel.esp:00000911",
+      "name": "Fur Collar",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
       "stableKey": "skyrim.esm:000a6d7d",
       "name": "Fur Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0006f39e",
+      "name": "Fur Helmet",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1674,8 +2898,62 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00063b45",
+      "name": "Garnet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e4c",
+      "name": "Gathered Scarf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e4d",
+      "name": "Gathered Scarf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e50",
+      "name": "Gathered Scarf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0005cbfe",
+      "name": "General Tullius\u0027 Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "morecraftableequipment.esp:0000081d",
       "name": "Giant Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:0000081e",
+      "name": "Giant Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:0000088b",
+      "name": "Giant Bracers (Unfitted)",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:0000081c",
+      "name": "Giant Clothes",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:00000889",
+      "name": "Giant Clothes (Unfitted)",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1692,8 +2970,80 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:0000088f",
+      "name": "Gilded Ebony Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b1e",
+      "name": "Gilded Ebony Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:0000088e",
       "name": "Gilded Ebony Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b1c",
+      "name": "Gilded Ebony Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000890",
+      "name": "Gilded Ebony Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b1d",
+      "name": "Gilded Ebony Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000891",
+      "name": "Gilded Ebony Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b1b",
+      "name": "Gilded Ebony Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000892",
+      "name": "Gilded Ebony Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b19",
+      "name": "Gilded Ebony Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b1a",
+      "name": "Gilded Ebony War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b1f",
+      "name": "Gilded Ebony Warhammer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000894",
+      "name": "Gilded Noble Ebony Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1704,8 +3054,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000895",
+      "name": "Gilded Noble Ebony Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000896",
+      "name": "Gilded Noble Ebony Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000897",
+      "name": "Gilded Noble Ebony Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000872",
+      "name": "Gilded Steel Plate Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000871",
       "name": "Gilded Steel Plate Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000873",
+      "name": "Gilded Steel Plate Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000874",
+      "name": "Gilded Steel Plate Helmet",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1746,8 +3132,110 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00013939",
+      "name": "Glass Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139be",
+      "name": "Glass Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a4",
+      "name": "Glass Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013938",
+      "name": "Glass Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a5",
+      "name": "Glass Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a6",
+      "name": "Glass Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001393a",
+      "name": "Glass Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a7",
+      "name": "Glass Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001393b",
+      "name": "Glass Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a8",
+      "name": "Glass Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001393c",
+      "name": "Glass Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a9",
+      "name": "Glass Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139a3",
+      "name": "Glass War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139aa",
+      "name": "Glass Warhammer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000261c1",
       "name": "Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000084a",
+      "name": "Glowdust Gem Backpack",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000084c",
+      "name": "Glowdust Gem Backpack",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000853",
+      "name": "Glowdust Gem Backpack",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1782,8 +3270,56 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:000877f1",
+      "name": "Gold Diamond Necklace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000877c9",
+      "name": "Gold Diamond Ring",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000877ca",
+      "name": "Gold Emerald Ring",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0005ad9e",
       "name": "Gold Ingot",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00087835",
+      "name": "Gold Jeweled Necklace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000877d5",
+      "name": "Gold Necklace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001cf2b",
+      "name": "Gold Ring",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000877dc",
+      "name": "Gold Ruby Necklace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000877cb",
+      "name": "Gold Sapphire Ring",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1842,14 +3378,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:000e8947",
+      "name": "Grilled Chicken Breast",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:00000813",
+      "name": "Guild Master\u0027s Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "morecraftableequipment.esp:00000814",
       "name": "Guild Master\u0027s Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "morecraftableequipment.esp:00000815",
+      "name": "Guild Master\u0027s Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:00000816",
+      "name": "Guild Master\u0027s Hood",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0007bc19",
       "name": "Hammerfell Garb",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008dd",
+      "name": "Harbinger Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -1884,8 +3450,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:000be25e",
+      "name": "Headsman\u0027s Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "commonclothes.esp:00001de3",
       "name": "Heavy Quilted Surcoat 01",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013911",
+      "name": "Hide Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013910",
+      "name": "Hide Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013912",
+      "name": "Hide Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013913",
+      "name": "Hide Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013914",
+      "name": "Hide Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2004,6 +3606,12 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0007224e",
+      "name": "Horker Loaf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:00065c9b",
       "name": "Horker Meat",
       "status": "rendered",
@@ -2012,6 +3620,18 @@
     {
       "stableKey": "skyrim.esm:000f4315",
       "name": "Horker Stew",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000722b0",
+      "name": "Horse Haunch",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00065c9c",
+      "name": "Horse Meat",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2028,8 +3648,50 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000808",
+      "name": "Hunter\u0027s Fur Coat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000809",
+      "name": "Hunter\u0027s Fur Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000080a",
+      "name": "Hunter\u0027s Fur Hat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000080b",
+      "name": "Hunter\u0027s Fur Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013985",
+      "name": "Hunting Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0004da23",
       "name": "Imp Stool",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008d8",
+      "name": "Imperial Battlemage Hood",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008d7",
+      "name": "Imperial Battlemage Robes",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2040,14 +3702,212 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00013841",
+      "name": "Imperial Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:00005937",
+      "name": "Imperial Bracer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000136d4",
+      "name": "Imperial Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000136cf",
+      "name": "Imperial Captain\u0027s Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013ed8",
+      "name": "Imperial Chainmail",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000135ba",
+      "name": "Imperial Heavy Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013edc",
+      "name": "Imperial Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:0000593f",
+      "name": "Imperial Helmet Medium",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0009610d",
+      "name": "Imperial Legate Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013ed9",
+      "name": "Imperial Light Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:00013ed7",
       "name": "Imperial Light Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00013eda",
+      "name": "Imperial Light Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013edb",
+      "name": "Imperial Light Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013ab2",
+      "name": "Imperial Light Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000136d5",
+      "name": "Imperial Soldier\u0027s Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000135b8",
+      "name": "Imperial Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0003ab26",
+      "name": "Improved Bonemold Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0003ab25",
+      "name": "Improved Bonemold Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0003ab22",
+      "name": "Improved Bonemold Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0003ab23",
+      "name": "Improved Bonemold Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0003ab24",
+      "name": "Improved Bonemold Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00012e49",
+      "name": "Iron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001397d",
+      "name": "Iron Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013980",
+      "name": "Iron Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00012e4b",
+      "name": "Iron Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001397e",
+      "name": "Iron Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00012e46",
+      "name": "Iron Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001359d",
+      "name": "Iron Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00012e4d",
+      "name": "Iron Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0005ace4",
       "name": "Iron Ingot",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013982",
+      "name": "Iron Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00012eb6",
+      "name": "Iron Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00012eb7",
+      "name": "Iron Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013790",
+      "name": "Iron War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013981",
+      "name": "Iron Warhammer",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2076,8 +3936,32 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000855",
+      "name": "Jerall Dwarven Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000854",
       "name": "Jerall Dwarven Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000856",
+      "name": "Jerall Dwarven Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000857",
+      "name": "Jerall Dwarven Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000858",
+      "name": "Jerall Dwarven Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2124,14 +4008,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:000e35e8",
+      "name": "Karliah\u0027s Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000e35e7",
       "name": "Karliah\u0027s Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:000e35e9",
+      "name": "Karliah\u0027s Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000e35ea",
+      "name": "Karliah\u0027s Hood",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "keizaal.esp:00e6d873",
       "name": "Kha\u0027Jay Recipe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0006bc0a",
+      "name": "Large Antlers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000912",
+      "name": "Large Fur Collar",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2154,8 +4068,26 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002def",
-      "name": "Leather Cape",
+      "stableKey": "skyrim.esm:0003619e",
+      "name": "Leather Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013920",
+      "name": "Leather Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013921",
+      "name": "Leather Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013922",
+      "name": "Leather Helmet",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2172,44 +4104,50 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002dee",
-      "name": "Linen Cape (Black)",
+      "stableKey": "skyrim.esm:00065c9a",
+      "name": "Leg of Goat",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002887",
-      "name": "Linen Cape (Blue)",
+      "stableKey": "skyrim.esm:0007224c",
+      "name": "Leg of Goat Roast",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002888",
-      "name": "Linen Cape (Green)",
+      "stableKey": "skyrim.esm:0002e4e4",
+      "name": "Lesser Soul Gem",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002889",
-      "name": "Linen Cape (Purple)",
+      "stableKey": "skyrim.esm:00034cd6",
+      "name": "Linen Wrap",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:000012c7",
-      "name": "Linen Cape (Red)",
+      "stableKey": "skyrim.esm:0003b562",
+      "name": "Long Bow",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002ded",
-      "name": "Linen Cape (White)",
+      "stableKey": "evgnnsmpaccessories.esp:00000e26",
+      "name": "Loose Neck Gaiter",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "cloaks\u0026capes.esp:00002dec",
-      "name": "Linen Cape (Yellow)",
+      "stableKey": "evgnnsmpaccessories.esp:00000e2b",
+      "name": "Loose Neck Gaiter",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e2c",
+      "name": "Loose Neck Gaiter",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2304,6 +4242,42 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "commonclothes.esp:00010f63",
+      "name": "Mail and Hide Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "commonclothes.esp:00001873",
+      "name": "Mail and Jacket",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "commonclothes.esp:00001872",
+      "name": "Mail and Surcoat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "commonclothes.esp:00001871",
+      "name": "Mail Tunic",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000669a4",
+      "name": "Mammoth Snout",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000722bb",
+      "name": "Mammoth Steak",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0010d664",
       "name": "Master Robes",
       "status": "rendered",
@@ -2334,6 +4308,228 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "kad_moonmonkrobes.esp:00000804",
+      "name": "Moon Monk\u0027s Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000086d",
+      "name": "Moon Monk\u0027s Boots - Dark",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000086c",
+      "name": "Moon Monk\u0027s Boots - Jone\u0027s Light",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000887",
+      "name": "Moon Monk\u0027s Boots - Pride of Alkosh",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000086b",
+      "name": "Moon Monk\u0027s Boots - Rajhin\u0027s Shadow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000802",
+      "name": "Moon Monk\u0027s Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:000008d7",
+      "name": "Moon Monk\u0027s Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000865",
+      "name": "Moon Monk\u0027s Gauntlets - Jone\u0027s Light",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:000008db",
+      "name": "Moon Monk\u0027s Gauntlets - Jone\u0027s Light",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000886",
+      "name": "Moon Monk\u0027s Gauntlets - Pride of Alkosh",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:000008d9",
+      "name": "Moon Monk\u0027s Gauntlets - Pride of Alkosh",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000864",
+      "name": "Moon Monk\u0027s Gauntlets - Rajhin\u0027s Shadow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:000008d8",
+      "name": "Moon Monk\u0027s Gauntlets - Rajhin\u0027s Shadow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000838",
+      "name": "Moon Monk\u0027s Gauntlets - Water Clan",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:000008da",
+      "name": "Moon Monk\u0027s Gauntlets - Water Clan",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000803",
+      "name": "Moon Monk\u0027s Mask",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000822",
+      "name": "Moon Monk\u0027s Mask - Anequina Sunset",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000869",
+      "name": "Moon Monk\u0027s Mask - Imperial Emissary",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000867",
+      "name": "Moon Monk\u0027s Mask - Jone\u0027s Light",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000868",
+      "name": "Moon Monk\u0027s Mask - Nahfahlaar\u0027s Flame",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000885",
+      "name": "Moon Monk\u0027s Mask - Pride of Alkosh",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000081b",
+      "name": "Moon Monk\u0027s Mask - Ra\u0027kazra\u0027s Might",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000866",
+      "name": "Moon Monk\u0027s Mask - Rajhin\u0027s Shadow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000830",
+      "name": "Moon Monk\u0027s Mask - Regal",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000839",
+      "name": "Moon Monk\u0027s Mask - Water Clan",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000801",
+      "name": "Moon Monk\u0027s Robes",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000823",
+      "name": "Moon Monk\u0027s Robes - Anequina Sunset",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000088b",
+      "name": "Moon Monk\u0027s Robes - Assassin",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000086a",
+      "name": "Moon Monk\u0027s Robes - Imperial Emissary",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000870",
+      "name": "Moon Monk\u0027s Robes - Jone\u0027s Light",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000873",
+      "name": "Moon Monk\u0027s Robes - Khenarthi\u0027s Breath",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000086e",
+      "name": "Moon Monk\u0027s Robes - Nahfahlaar\u0027s Flame",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000884",
+      "name": "Moon Monk\u0027s Robes - Pride of Alkosh",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000081c",
+      "name": "Moon Monk\u0027s Robes - Ra\u0027kazra\u0027s Might",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000086f",
+      "name": "Moon Monk\u0027s Robes - Rajhin\u0027s Shadow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:00000831",
+      "name": "Moon Monk\u0027s Robes - Regal",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "kad_moonmonkrobes.esp:0000083a",
+      "name": "Moon Monk\u0027s Robes - Water Clan",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000d8e3f",
       "name": "Moon Sugar",
       "status": "rendered",
@@ -2346,8 +4542,26 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dragonborn.esm:000292ac",
+      "name": "Morag Tong Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dragonborn.esm:000292ab",
       "name": "Morag Tong Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:000292ad",
+      "name": "Morag Tong Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:000292ae",
+      "name": "Morag Tong Hood",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2430,6 +4644,12 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dragonborn.esm:0001cd72",
+      "name": "Netch Jelly",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dragonborn.esm:0001cd7c",
       "name": "Netch Leather",
       "status": "rendered",
@@ -2448,14 +4668,80 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:0000088a",
+      "name": "Noble Ebony Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000889",
       "name": "Noble Ebony Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:0000088b",
+      "name": "Noble Ebony Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000088c",
+      "name": "Noble Ebony Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000088d",
+      "name": "Noble Ebony Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:00034c5d",
       "name": "Nord Mead",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0002623b",
+      "name": "Nordic Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdad",
+      "name": "Nordic Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00026232",
+      "name": "Nordic Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd97",
+      "name": "Nordic Carved Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000087d",
+      "name": "Nordic Carved Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000881",
+      "name": "Nordic Carved Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd96",
+      "name": "Nordic Carved Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2472,8 +4758,128 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dragonborn.esm:0001cd98",
+      "name": "Nordic Carved Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000087e",
+      "name": "Nordic Carved Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000882",
+      "name": "Nordic Carved Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd99",
+      "name": "Nordic Carved Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdae",
+      "name": "Nordic Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdaf",
+      "name": "Nordic Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb0",
+      "name": "Nordic Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00026236",
+      "name": "Nordic Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000087f",
+      "name": "Nordic Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000883",
+      "name": "Nordic Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb1",
+      "name": "Nordic Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb2",
+      "name": "Nordic War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb3",
+      "name": "Nordic Warhammer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000800",
       "name": "Northern Fur Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000801",
+      "name": "Northern Fur Coat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000802",
+      "name": "Northern Fur Coat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000803",
+      "name": "Northern Fur Coat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000804",
+      "name": "Northern Fur Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000805",
+      "name": "Northern Fur Hat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000806",
+      "name": "Northern Fur Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000080d",
+      "name": "Northern Hide Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2484,8 +4890,92 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:0000080f",
+      "name": "Northern Hide Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000810",
+      "name": "Northern Hide Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000817",
+      "name": "Northern Iron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b17",
+      "name": "Northern Iron Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000816",
       "name": "Northern Iron Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b15",
+      "name": "Northern Iron Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000819",
+      "name": "Northern Iron Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b16",
+      "name": "Northern Iron Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000081a",
+      "name": "Northern Iron Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b14",
+      "name": "Northern Iron Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000081b",
+      "name": "Northern Iron Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b12",
+      "name": "Northern Iron Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b13",
+      "name": "Northern Iron War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000b18",
+      "name": "Northern Iron Warhammer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000830",
+      "name": "Northern Leather Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2496,8 +4986,56 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000831",
+      "name": "Northern Leather Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000832",
+      "name": "Northern Leather Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000869",
+      "name": "Northern Plate Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000868",
       "name": "Northern Plate Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000086a",
+      "name": "Northern Plate Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000086b",
+      "name": "Northern Plate Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000086c",
+      "name": "Northern Plate Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000085e",
+      "name": "Northern Scaled Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000085f",
+      "name": "Northern Scaled Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2508,8 +5046,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000860",
+      "name": "Northern Scaled Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000861",
+      "name": "Northern Scaled Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000839",
+      "name": "Northern Steel Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000838",
       "name": "Northern Steel Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000083a",
+      "name": "Northern Steel Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000083b",
+      "name": "Northern Steel Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000080e",
+      "name": "Northern Studded Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2526,8 +5100,62 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "keizaal.esp:00dbf8ba",
+      "name": "Novice Spellmaking",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "commonclothes.esp:00010f64",
+      "name": "Oiled Mail and Hide Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "commonclothes.esp:00001878",
+      "name": "Oiled Mail and Jacket",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "commonclothes.esp:00001877",
+      "name": "Oiled Mail Hauberk",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:00005eb4",
+      "name": "Old Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dis_heavy_legion.esp:00005eb2",
       "name": "Old Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:00005ec2",
+      "name": "Old Captain Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:00005eb6",
+      "name": "Old Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:00005ebb",
+      "name": "Old Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:00005ebd",
+      "name": "Old Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2538,8 +5166,116 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00013957",
+      "name": "Orcish Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000139bb",
+      "name": "Orcish Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001398c",
+      "name": "Orcish Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013956",
+      "name": "Orcish Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001398d",
+      "name": "Orcish Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001398e",
+      "name": "Orcish Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013958",
+      "name": "Orcish Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001398f",
+      "name": "Orcish Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013959",
+      "name": "Orcish Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000878",
+      "name": "Orcish Hide Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000877",
       "name": "Orcish Hide Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000087a",
+      "name": "Orcish Hide Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000087b",
+      "name": "Orcish Hide Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013990",
+      "name": "Orcish Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013946",
+      "name": "Orcish Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000879",
+      "name": "Orcish Studded Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013991",
+      "name": "Orcish Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001398b",
+      "name": "Orcish War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013992",
+      "name": "Orcish Warhammer",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2550,8 +5286,50 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "evgnnsmpaccessories.esp:00000803",
+      "name": "Patchwork Satchel",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000080b",
+      "name": "Patchwork Satchel",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "windhelmsse.esp:002ba5f0",
+      "name": "Pelt of Karhu",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "windhelmsse.esp:002ba5f2",
+      "name": "Pelt of Karhu",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000d3ea0",
+      "name": "Penitus Oculatus Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000d3ea7",
       "name": "Penitus Oculatus Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000d3eab",
+      "name": "Penitus Oculatus Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000d3eaa",
+      "name": "Penitus Oculatus Helmet",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2564,6 +5342,18 @@
     {
       "stableKey": "skyrim.esm:00065c9d",
       "name": "Pheasant Breast",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000722c7",
+      "name": "Pheasant Roast",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000e3c16",
+      "name": "Pickaxe",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2760,6 +5550,12 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "evgnnsmpaccessories.esp:0000082d",
+      "name": "Quilted Mantle",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "commonclothes.esp:00001de1",
       "name": "Quilted Surcoat 01",
       "status": "rendered",
@@ -2796,6 +5592,12 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:000722c2",
+      "name": "Rabbit Haunch",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:00013106",
       "name": "Ragged Boots",
       "status": "rendered",
@@ -2822,6 +5624,12 @@
     {
       "stableKey": "skyrim.esm:00065c99",
       "name": "Raw Beef",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00065c9e",
+      "name": "Raw Rabbit Leg",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2874,14 +5682,128 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "evgnnsmpaccessories.esp:0000083a",
+      "name": "Reinforced Backpack",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000083b",
+      "name": "Reinforced Backpack",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000089f",
+      "name": "Reinforced Backpack",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000de7",
+      "name": "Reinforced Backpack",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000083e",
+      "name": "Reinforced Backpack \u0026 Lantern",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000083f",
+      "name": "Reinforced Backpack \u0026 Lantern",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:000008a0",
+      "name": "Reinforced Backpack \u0026 Lantern",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000de8",
+      "name": "Reinforced Backpack \u0026 Lantern",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000834",
+      "name": "Reinforced Mantle",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000835",
+      "name": "Reinforced Mantle",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000836",
+      "name": "Reinforced Mantle",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000080d",
+      "name": "Reinforced Satchel",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000811",
+      "name": "Reinforced Satchel",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000866",
+      "name": "Robed Steel Plate Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0007e8c8",
       "name": "Rock Warbler Egg",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000812",
+      "name": "Rogue\u0027s Hide Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000811",
       "name": "Rogue\u0027s Hide Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000813",
+      "name": "Rogue\u0027s Hide Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000814",
+      "name": "Rogue\u0027s Hood",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000815",
+      "name": "Rogue\u0027s Hood, Lowered",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00033761",
+      "name": "Roll of Paper",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2898,8 +5820,68 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "evgnnsmpaccessories.esp:00000886",
+      "name": "Rugged Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000887",
+      "name": "Rugged Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e36",
+      "name": "Rugged Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e64",
+      "name": "Rugged Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e65",
+      "name": "Rugged Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000081e",
+      "name": "Rugged Iron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:0000081d",
       "name": "Rugged Iron Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000820",
+      "name": "Rugged Iron Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000821",
+      "name": "Rugged Iron Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000822",
+      "name": "Rugged Iron Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000834",
+      "name": "Rugged Leather Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2910,8 +5892,80 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000835",
+      "name": "Rugged Leather Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000836",
+      "name": "Rugged Leather Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000837",
+      "name": "Rugged Leather Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000087b",
+      "name": "Rugged Mask",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000880",
+      "name": "Rugged Mask",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000881",
+      "name": "Rugged Mask",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000896",
+      "name": "Rugged Mask",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000897",
+      "name": "Rugged Mask",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000086e",
+      "name": "Rugged Plate Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:0000086d",
       "name": "Rugged Plate Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000086f",
+      "name": "Rugged Plate Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000870",
+      "name": "Rugged Plate Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000863",
+      "name": "Rugged Scaled Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2922,8 +5976,50 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000864",
+      "name": "Rugged Scaled Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000865",
+      "name": "Rugged Scaled Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000083d",
+      "name": "Rugged Steel Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:0000083c",
       "name": "Rugged Steel Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000083e",
+      "name": "Rugged Steel Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000083f",
+      "name": "Rugged Steel Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000840",
+      "name": "Rugged Steel Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000825",
+      "name": "Runic Iron Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2934,8 +6030,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000827",
+      "name": "Runic Iron Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000828",
+      "name": "Runic Iron Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:00005945",
+      "name": "Rust Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dis_heavy_legion.esp:00005943",
       "name": "Rust Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:00005947",
+      "name": "Rust Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:0000594c",
+      "name": "Rust Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dis_heavy_legion.esp:0000594e",
+      "name": "Rust Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2946,14 +6078,26 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "skyrim.esm:0003ad6e",
-      "name": "Sabre Cat Snow Pelt",
+      "stableKey": "skyrim.esm:0006bc04",
+      "name": "Sabre Cat Tooth",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
       "stableKey": "hearthfires.esm:00003538",
       "name": "Sack of Flour",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00065c9f",
+      "name": "Salmon Meat",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "hearthfires.esm:00003541",
+      "name": "Salmon Steak",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2970,8 +6114,56 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0001b3a3",
+      "name": "Scaled Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001b39f",
+      "name": "Scaled Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001b3a0",
+      "name": "Scaled Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001b3a1",
+      "name": "Scaled Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0006f950",
       "name": "Scaly Pholiota",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0007a91a",
+      "name": "Scimitar",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:000195aa",
+      "name": "Shellbug Chitin",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00012e8a",
+      "name": "Shellbug Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000426c8",
+      "name": "Shiv",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -2994,8 +6186,68 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "evgnnsmpaccessories.esp:00000824",
+      "name": "Short Cloth Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000825",
+      "name": "Short Cloth Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000826",
+      "name": "Short Cloth Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000827",
+      "name": "Short Cloth Cape",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000876",
+      "name": "Short Woven Scarf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000879",
+      "name": "Short Woven Scarf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000e88",
+      "name": "Short Woven Scarf",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0010eb5b",
+      "name": "Shrouded Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0010eb5c",
       "name": "Shrouded Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0010eb5d",
+      "name": "Shrouded Cowl",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0010eb5e",
+      "name": "Shrouded Gloves",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3012,6 +6264,12 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "morecraftableequipment.esp:00000802",
+      "name": "Shrouded Masked Cowl",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "morecraftableequipment.esp:00000806",
       "name": "Shrouded Robes",
       "status": "rendered",
@@ -3020,6 +6278,18 @@
     {
       "stableKey": "morecraftableequipment.esp:00000807",
       "name": "Shrouded Shoes",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:00000805",
+      "name": "Shrouded Short-Sleeved Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000877a7",
+      "name": "Silver Amethyst Ring",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3036,8 +6306,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00087833",
+      "name": "Silver Emerald Necklace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000877ab",
+      "name": "Silver Garnet Ring",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0010c6fb",
+      "name": "Silver Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008ea",
+      "name": "Silver Hand Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:000008e4",
       "name": "Silver Hand Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008ed",
+      "name": "Silver Hand Cuirass",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008e5",
+      "name": "Silver Hand Gambeson",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3054,14 +6360,74 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008ee",
+      "name": "Silver Hand Great Helm",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:000008e9",
       "name": "Silver Hand Greaves",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008e7",
+      "name": "Silver Hand Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008ec",
+      "name": "Silver Hand Sallet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008e8",
+      "name": "Silver Hand Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0005ace3",
       "name": "Silver Ingot",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00087834",
+      "name": "Silver Jeweled Necklace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0009171b",
+      "name": "Silver Necklace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0003b97c",
+      "name": "Silver Ring",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000877b1",
+      "name": "Silver Ruby Ring",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00087832",
+      "name": "Silver Sapphire Necklace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0010aa19",
+      "name": "Silver Sword",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3096,14 +6462,20 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "keizaal.esp:00e682e4",
+      "name": "Skyguard\u0027s Forge Manual",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0007e8c5",
       "name": "Slaughterfish Egg",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
-      "stableKey": "skyrim.esm:0003ad54",
-      "name": "Snow Bear Pelt",
+      "stableKey": "skyrim.esm:0006bc0b",
+      "name": "Small Antlers",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3126,6 +6498,126 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:0009cd51",
+      "name": "Spell Tome: Flames",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0002b06b",
+      "name": "Stalhrim",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd9f",
+      "name": "Stalhrim Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00026239",
+      "name": "Stalhrim Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb4",
+      "name": "Stalhrim Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd9e",
+      "name": "Stalhrim Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00026231",
+      "name": "Stalhrim Bow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb5",
+      "name": "Stalhrim Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cda0",
+      "name": "Stalhrim Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb6",
+      "name": "Stalhrim Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cda1",
+      "name": "Stalhrim Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cda2",
+      "name": "Stalhrim Light Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cd7e",
+      "name": "Stalhrim Light Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cda5",
+      "name": "Stalhrim Light Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cda3",
+      "name": "Stalhrim Light Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb7",
+      "name": "Stalhrim Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:00026237",
+      "name": "Stalhrim Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb8",
+      "name": "Stalhrim Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdb9",
+      "name": "Stalhrim War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dragonborn.esm:0001cdba",
+      "name": "Stalhrim Warhammer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "keizaal.esp:00e58ef5",
       "name": "Stallion\u0027s Elixir",
       "status": "rendered",
@@ -3138,8 +6630,86 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000842",
+      "name": "Steel Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000843",
+      "name": "Steel Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013952",
+      "name": "Steel Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000f6f22",
+      "name": "Steel Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001397f",
+      "name": "Steel Arrow",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013984",
+      "name": "Steel Battleaxe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:00000bb3",
+      "name": "Steel Bolt",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000841",
       "name": "Steel Cuffed Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013951",
+      "name": "Steel Cuffed Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013986",
+      "name": "Steel Dagger",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013987",
+      "name": "Steel Greatsword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013954",
+      "name": "Steel Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000f6f24",
+      "name": "Steel Horned Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000f6f23",
+      "name": "Steel Imperial Gauntlets",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3150,8 +6720,116 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:00013988",
+      "name": "Steel Mace",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000844",
+      "name": "Steel Nordic Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013953",
+      "name": "Steel Nordic Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001395c",
+      "name": "Steel Plate Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001395b",
+      "name": "Steel Plate Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000867",
+      "name": "Steel Plate Bracers",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001395d",
+      "name": "Steel Plate Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001395e",
+      "name": "Steel Plate Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013955",
+      "name": "Steel Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000f6f21",
+      "name": "Steel Shin Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013989",
+      "name": "Steel Sword",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:00013983",
+      "name": "Steel War Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001398a",
+      "name": "Steel Warhammer",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008bc",
+      "name": "Stormcloak Braided Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008bd",
+      "name": "Stormcloak Chainmail Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008c7",
+      "name": "Stormcloak Conical Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000a6d7b",
       "name": "Stormcloak Cuirass",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008cb",
+      "name": "Stormcloak Heavy Iron Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008bf",
+      "name": "Stormcloak Heavy Lamellar Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3162,8 +6840,26 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008c4",
+      "name": "Stormcloak Heavy Lamellar Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:000008b7",
       "name": "Stormcloak Heavy Soldier Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008c2",
+      "name": "Stormcloak Heavy Soldier Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008c9",
+      "name": "Stormcloak Heavy Soldier Helmet",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3174,14 +6870,62 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008ba",
+      "name": "Stormcloak Hide Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:000008b5",
       "name": "Stormcloak Hide Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008c0",
+      "name": "Stormcloak Hide Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008c5",
+      "name": "Stormcloak Hide Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008ca",
+      "name": "Stormcloak Iron Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008be",
+      "name": "Stormcloak Lamellar Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:000008b8",
       "name": "Stormcloak Lamellar Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008c3",
+      "name": "Stormcloak Lamellar Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008c6",
+      "name": "Stormcloak Leather Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008cd",
+      "name": "Stormcloak Light Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3210,8 +6954,26 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008cc",
+      "name": "Stormcloak Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:000008b6",
       "name": "Stormcloak Soldier Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008c1",
+      "name": "Stormcloak Soldier Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008c8",
+      "name": "Stormcloak Soldier Helmet",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3224,6 +6986,36 @@
     {
       "stableKey": "keizaal.esp:0005219c",
       "name": "Stros M\u0027kai Rum Recipe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0001b3a2",
+      "name": "Studded Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000814",
+      "name": "Sturdy Pouch (Left)",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000815",
+      "name": "Sturdy Pouch (Left)",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000df3",
+      "name": "Sturdy Pouch (Right)",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000df4",
+      "name": "Sturdy Pouch (Right)",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3276,8 +7068,56 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008a7",
+      "name": "Thalmor Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008a6",
+      "name": "Thalmor Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:00065bac",
       "name": "Thalmor Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008a9",
+      "name": "Thalmor Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008a8",
+      "name": "Thalmor Gilded Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008b0",
+      "name": "Thalmor Glass Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008b2",
+      "name": "Thalmor Glass Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008b3",
+      "name": "Thalmor Glass Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008b4",
+      "name": "Thalmor Glass Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3288,8 +7128,38 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008aa",
+      "name": "Thalmor Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "morecraftableequipment.esp:00000821",
       "name": "Thalmor Hood",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008ad",
+      "name": "Thalmor Light Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008ac",
+      "name": "Thalmor Light Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008ae",
+      "name": "Thalmor Light Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008af",
+      "name": "Thalmor Light Helmet",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3300,14 +7170,62 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008ab",
+      "name": "Thalmor Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:0000080e",
+      "name": "Thieves Guild Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "morecraftableequipment.esp:0000080f",
       "name": "Thieves Guild Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "skyrim.esm:000e35df",
+      "name": "Thieves Guild Cowl",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:00000810",
+      "name": "Thieves Guild Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000e35da",
       "name": "Thieves Guild Gray Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000e35dd",
+      "name": "Thieves Guild Gray Cowl",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000e35dc",
+      "name": "Thieves Guild Gray Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000e35db",
+      "name": "Thieves Guild Gray Sleeveless Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "morecraftableequipment.esp:00000811",
+      "name": "Thieves Guild Hood",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3324,6 +7242,30 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "evgnnsmpaccessories.esp:0000086f",
+      "name": "Tied Linen Pouch (Left)",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000870",
+      "name": "Tied Linen Pouch (Left)",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000df5",
+      "name": "Tied Linen Pouch (Right)",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000df6",
+      "name": "Tied Linen Pouch (Right)",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:00064b42",
       "name": "Tomato",
       "status": "rendered",
@@ -3336,8 +7278,56 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "evgnnsmpaccessories.esp:00000809",
+      "name": "Toothlock Satchel",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:0000080a",
+      "name": "Toothlock Satchel",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dawnguard.esm:0001a3e8",
       "name": "Touching the Sky",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000856",
+      "name": "Trader\u0027s Resource",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000dc4",
+      "name": "Trader\u0027s Resource",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000dc6",
+      "name": "Trader\u0027s Resource",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000dba",
+      "name": "Trader\u0027s Resource \u0026 Lantern",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000dc5",
+      "name": "Trader\u0027s Resource \u0026 Lantern",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "evgnnsmpaccessories.esp:00000dc7",
+      "name": "Trader\u0027s Resource \u0026 Lantern",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3444,6 +7434,24 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "dawnguard.esm:000142c7",
+      "name": "Vampire Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:000191f2",
+      "name": "Vampire Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:000191f3",
+      "name": "Vampire Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "dawnguard.esm:0000b5de",
       "name": "Vampire Boots",
       "status": "rendered",
@@ -3452,6 +7460,12 @@
     {
       "stableKey": "dawnguard.esm:00019ae1",
       "name": "Vampire Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "dawnguard.esm:0001a51f",
+      "name": "Vampire Gauntlets",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3474,8 +7488,20 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "morecraftableequipment.esp:00000833",
+      "name": "Vampire Royal Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000f431e",
       "name": "Vegetable Soup",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000085a",
+      "name": "Velothi Dwarven Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3486,8 +7512,26 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:0000085b",
+      "name": "Velothi Dwarven Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000085c",
+      "name": "Velothi Dwarven Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:000669a2",
       "name": "Venison",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000722bd",
+      "name": "Venison Chop",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3498,14 +7542,62 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000df8",
+      "name": "Vigil Hood",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000df7",
+      "name": "Vigil Plate Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000e0e",
+      "name": "Vigil Plate Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000df9",
+      "name": "Vigil Robes",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0003ad60",
       "name": "Void Salts",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000885",
+      "name": "Vvardenfell Glass Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000884",
       "name": "Vvardenfell Glass Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000886",
+      "name": "Vvardenfell Glass Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000887",
+      "name": "Vvardenfell Glass Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000888",
+      "name": "Vvardenfell Glass Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3534,14 +7626,44 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000851",
+      "name": "Wild Hunt Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000850",
       "name": "Wild Hunt Boots",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:00000852",
+      "name": "Wild Hunt Gloves",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:00000853",
+      "name": "Wild Hunt Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:000214eb",
+      "name": "Windhelm Guard\u0027s Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "skyrim.esm:0003133c",
       "name": "Wine",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008e2",
+      "name": "Wolf Armor",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
@@ -3558,8 +7680,50 @@
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },
     {
+      "stableKey": "sentinel.esp:000008e3",
+      "name": "Wolf Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:000008da",
+      "name": "Wolf Shield",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "skyrim.esm:0002f2f4",
+      "name": "Woodcutter\u0027s Axe",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000082a",
+      "name": "Wrought Iron Armor",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
       "stableKey": "sentinel.esp:00000829",
       "name": "Wrought Iron Boots",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000082c",
+      "name": "Wrought Iron Gauntlets",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000082d",
+      "name": "Wrought Iron Helmet",
+      "status": "rendered",
+      "detail": "Existing PNG retained; pass --force to regenerate it."
+    },
+    {
+      "stableKey": "sentinel.esp:0000082e",
+      "name": "Wrought Iron Shield",
       "status": "rendered",
       "detail": "Existing PNG retained; pass --force to regenerate it."
     },

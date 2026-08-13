@@ -1,11 +1,11 @@
 {
   "schemaVersion": 2,
-  "release": "catalog-assets-2026-08-08-nif-v1",
-  "asset": "skystore-catalog-assets-2026-08-08-nif-v1.tar.gz",
-  "bytes": 97526894,
-  "sha256": "a4d1d4d529b50bad155e438889996360b246ab8e57f24a9e465e657f8195dd01",
-  "targetsSha256": "6c3501c0eb2a858efdb16c5a1af44fa52be67288b3da0ba07550dda32f2d3189",
-  "reportSha256": "338dd4154033a7bd57ef7b79255340842af663ccfd242452b53642e2b789ad6e",
-  "catalogVersion": "v4-46a45b8c08a1",
-  "files": 594
+  "release": "catalog-assets-2026-08-13-v5",
+  "asset": "skystore-catalog-assets-2026-08-13-v5.tar.gz",
+  "bytes": 200979609,
+  "sha256": "004de1bca575083be45801f7d466360da460ee25a6c0e7bd56fd4450ce941d56",
+  "targetsSha256": "2b0f84e96b728690e30292328671aacf320dc2aa3503bb704bfd38d507033e91",
+  "reportSha256": "089a0d5c71a2ad000e0a1fe9c8b7920e62ca8452dfa591bf5866f4e49cf80095",
+  "catalogVersion": "v5-69a647be2499",
+  "files": 1288
 }

@@ -1,12 +1,13 @@
-import { and, eq, inArray, isNotNull, isNull, lte, gte, or } from "drizzle-orm";
+import { and, eq, ilike, inArray, isNotNull, isNull, lte, gte, or } from "drizzle-orm";
 import { db } from "@/db/runtime";
 import { catalogItems, officialPriceRules, recipeIngredients, recipes } from "@/db/schema";
 import { MASTERY_TIERS } from "@/lib/professions";
 import { getPublicMarketOverview } from "@/lib/public-market";
 import { parseRecipeRequirements, type RecipeRequirement } from "@/lib/recipe-requirements";
-import { groupTailoringRecipeVariants } from "@/lib/tailoring-recipe-groups";
+import { itemFamilyBaseName } from "@/lib/catalog/item-families";
+import { groupRecipeVariants } from "@/lib/tailoring-recipe-groups";
 
-export type RecipeIngredientView = { itemId: string; name: string; quantity: number };
+export type RecipeIngredientView = { itemId: string; name: string; quantity: number; unitPrice: number | null };
 export type RecipeView = {
   id: string; outputItemId: string; outputName: string; outputYield: number;
   profession: string | null; masteryTier: string | null; laborFee: number;
@@ -14,7 +15,7 @@ export type RecipeView = {
   ingredients: RecipeIngredientView[]; materialCost: number | null; productPrice: number | null; missingPriceCount: number;
 };
 
-export type TailoringPriceFamily = {
+export type CatalogPriceFamily = {
   canonicalItemId: string;
   displayName: string;
   itemIds: string[];
@@ -65,7 +66,7 @@ function normalizeConditions(value: unknown): string[] {
 
 function assemble(rows: Array<{ id: string; outputItemId: string; outputName: string; outputYield: number; profession: string | null; masteryTier: string | null; laborFee: number; conditions: unknown }>, ingredients: Array<{ recipeId: string; itemId: string; name: string; quantity: number }>, materialPrices: Map<string, number>, productPrices: Map<string, number>): RecipeView[] {
   return rows.map((recipe) => {
-    const inputs = ingredients.filter((ingredient) => ingredient.recipeId === recipe.id).map((ingredient) => ({ itemId: ingredient.itemId, name: ingredient.name, quantity: ingredient.quantity }));
+    const inputs = ingredients.filter((ingredient) => ingredient.recipeId === recipe.id).map((ingredient) => ({ itemId: ingredient.itemId, name: ingredient.name, quantity: ingredient.quantity, unitPrice: materialPrices.get(ingredient.itemId) ?? null }));
     const missingPriceCount = inputs.filter((ingredient) => !materialPrices.has(ingredient.itemId)).length;
     const total = inputs.reduce((sum, ingredient) => sum + (materialPrices.get(ingredient.itemId) ?? 0) * ingredient.quantity, recipe.laborFee);
     const conditions = normalizeConditions(recipe.conditions);
@@ -84,23 +85,33 @@ function deduplicate(recipesToCheck: RecipeView[]): RecipeView[] {
   });
 }
 
-export async function getTailoringPriceFamily(itemId: string): Promise<TailoringPriceFamily> {
-  const [item] = await db.select({ id: catalogItems.id, name: catalogItems.displayName }).from(catalogItems).where(eq(catalogItems.id, itemId)).limit(1);
+export async function getCatalogPriceFamily(itemId: string): Promise<CatalogPriceFamily> {
+  const [item] = await db.select({ id: catalogItems.id, name: catalogItems.displayName, recordType: catalogItems.recordType }).from(catalogItems).where(eq(catalogItems.id, itemId)).limit(1);
   if (!item) return { canonicalItemId: itemId, displayName: "Catalog item", itemIds: [itemId] };
 
-  const result = await recipeRowsFor(eq(recipes.profession, "Tailoring"));
+  const result = await recipeRowsFor(isNotNull(recipes.profession));
   const recipeViews = deduplicate(assemble(result.rows, result.ingredients, new Map(), new Map()));
-  const candidates = groupTailoringRecipeVariants(recipeViews)
+  const candidates = groupRecipeVariants(recipeViews)
     .filter((group) => group.variants.some((variant) => variant.outputItemId === itemId))
     .sort((left, right) => right.variants.length - left.variants.length);
   const family = candidates[0];
-  if (!family || family.variants.length < 2) return { canonicalItemId: itemId, displayName: item.name, itemIds: [itemId] };
-  return {
-    canonicalItemId: family.priceReportItemId,
-    displayName: family.displayName,
-    itemIds: family.variants.map((variant) => variant.outputItemId),
-  };
+  if (family && family.variants.length > 1) return { canonicalItemId: family.priceReportItemId, displayName: family.displayName, itemIds: family.variants.map((variant) => variant.outputItemId) };
+
+  if (!recipeViews.some((recipe) => recipe.outputItemId === itemId)) {
+    const base = itemFamilyBaseName(item.name);
+    const possible = await db.select({ id: catalogItems.id, name: catalogItems.displayName }).from(catalogItems)
+      .where(and(eq(catalogItems.status, "active"), eq(catalogItems.recordType, item.recordType), ilike(catalogItems.displayName, `${base}%`)));
+    const members = possible.filter((candidate) => itemFamilyBaseName(candidate.name).toLocaleLowerCase("en-US") === base.toLocaleLowerCase("en-US"));
+    if (members.length > 1) {
+      const canonical = members.slice().sort((left, right) => Number(left.name !== base) - Number(right.name !== base) || left.name.localeCompare(right.name))[0];
+      return { canonicalItemId: canonical.id, displayName: base, itemIds: members.map((member) => member.id) };
+    }
+  }
+  return { canonicalItemId: itemId, displayName: item.name, itemIds: [itemId] };
 }
+
+export const getTailoringPriceFamily = getCatalogPriceFamily;
+export type TailoringPriceFamily = CatalogPriceFamily;
 
 export async function getProfessionRecipes(profession: string, storeId?: string) {
   const result = await recipeRowsFor(eq(recipes.profession, profession));
@@ -114,9 +125,9 @@ export async function getProfessionRecipes(profession: string, storeId?: string)
   });
 }
 
-export async function getCatalogRecipesForItem(itemId: string, storeId?: string, knownPriceFamily?: TailoringPriceFamily) {
+export async function getCatalogRecipesForItem(itemId: string, storeId?: string, knownPriceFamily?: CatalogPriceFamily) {
   const result = await recipeRowsFor(eq(recipes.outputItemId, itemId));
-  const family = knownPriceFamily ?? await getTailoringPriceFamily(itemId);
+  const family = knownPriceFamily ?? await getCatalogPriceFamily(itemId);
   const [materialPrices, familyProductPrices] = await Promise.all([
     pricesFor([...new Set(result.ingredients.map((ingredient) => ingredient.itemId))], storeId, "store_pays"),
     pricesFor(family.itemIds, storeId, "customer_pays")

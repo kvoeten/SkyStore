@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Field } from "@/components/forms";
 import { Status } from "@/components/app-shell";
 import type { CatalogVersionAdminView } from "@/lib/catalog/admin-data";
+import { ItemCategoryManager } from "@/components/item-category-manager";
 
 const iconOptions = [
   ["/catalog-icons/misc.png", "Miscellaneous & materials"],
@@ -105,6 +106,7 @@ export function CatalogOperations({ versions }: { versions: CatalogVersionAdminV
       {issueRows.length === 0 ? <div className="notice success"><b>No unresolved mappings.</b><span>There are no recorded import issues for the current staged or active versions.</span></div> : <ul className="list">{issueRows.map((issue, index) => <li key={`${issue.version}:${issue.stableKey}:${issue.code}:${index}`}><span><b>{issue.stableKey}</b><br/><small>{issue.version} · {issue.detail}</small></span><Status kind={issue.blocking ? "warn" : "pending"}>{issue.blocking ? "Blocks activation" : "Fallback retained"}</Status></li>)}</ul>}
       <p className="fine">Ambiguous aliases are withheld. Unresolved artwork uses its catalog category fallback. Historic items are preserved; no receipt or stock reference is deleted during activation.</p>
     </section>
+    <ItemCategoryManager />
   </>;
 }
 

@@ -63,7 +63,7 @@ internal static class MutagenSkyrimCatalogReader
             pair => StableItemKey(pair.Value.IdentityPlugin, pair.Value.FormId),
             StringComparer.OrdinalIgnoreCase);
         var recipes = winningRecipes.Values
-            .Select(candidate => ToRecipe(candidate, itemStableKeys, workbenchOverrides, professionGates))
+            .Select(candidate => ToRecipe(candidate, winningRecords, itemStableKeys, workbenchOverrides, professionGates))
             .OrderBy(recipe => recipe.StableKey, StringComparer.Ordinal)
             .ToList();
 
@@ -118,10 +118,16 @@ internal static class MutagenSkyrimCatalogReader
             metadata);
     }
 
-    private static CatalogRecipe ToRecipe(RecordCandidate candidate, IReadOnlyDictionary<string, string> itemStableKeys, IReadOnlyList<WorkbenchOverride> workbenchOverrides, ProfessionGateCatalog professionGates)
+    private static CatalogRecipe ToRecipe(
+        RecordCandidate candidate,
+        IReadOnlyDictionary<string, RecordCandidate> itemRecords,
+        IReadOnlyDictionary<string, string> itemStableKeys,
+        IReadOnlyList<WorkbenchOverride> workbenchOverrides,
+        ProfessionGateCatalog professionGates)
     {
         var outputFormKey = FormKeyText(ReadProperty(candidate.Record, "CreatedObject"));
         var outputStableKey = outputFormKey is not null && itemStableKeys.TryGetValue(outputFormKey, out var resolvedOutput) ? resolvedOutput : null;
+        var outputRecord = outputFormKey is not null ? itemRecords.GetValueOrDefault(outputFormKey) : null;
         var unresolved = new List<RecipeMappingIssue>();
         if (outputStableKey is null) unresolved.Add(new RecipeMappingIssue("output", outputFormKey, "The recipe output is not an inventory-capable catalog item in this load order."));
         var ingredients = new List<CatalogRecipeIngredient>();
@@ -154,7 +160,8 @@ internal static class MutagenSkyrimCatalogReader
         var sources = new List<string> { $"plugin:{candidate.WinningPlugin}" };
         sources.AddRange(matchingOverrides.Select(rule => $"sky-patcher:{rule.Source}").Distinct(StringComparer.Ordinal));
         var conditions = ReadConditions(candidate.Record, professionGates, out var professionGate);
-        var inferred = InferProfession(editorId, workbench, candidate, professionGate);
+        var inferred = InferProfession(editorId, workbench, candidate, outputRecord, professionGate, conditions, matchingOverrides);
+        if (inferred is not null) sources.Add($"classification:{inferred.Evidence}");
 
         return new CatalogRecipe(
             StableIdentity.RecipeId(candidate.IdentityPlugin, candidate.FormId),
@@ -286,20 +293,53 @@ internal static class MutagenSkyrimCatalogReader
         return value is null ? null : FormKeyText(value);
     }
 
-    private static RecipeClassification? InferProfession(string? editorId, string? workbench, RecordCandidate candidate, ProfessionGate? gate)
+    private static RecipeClassification? InferProfession(
+        string? editorId,
+        string? workbench,
+        RecordCandidate candidate,
+        RecordCandidate? outputRecord,
+        ProfessionGate? gate,
+        IReadOnlyList<string> conditions,
+        IReadOnlyList<WorkbenchOverride> matchingOverrides)
     {
-        if (gate is not null) return new RecipeClassification(gate.Profession, gate.MasteryTier);
+        if (gate is not null) return new RecipeClassification(gate.Profession, gate.MasteryTier, $"explicit-profession-gate:{gate.EditorId}");
         var id = editorId ?? string.Empty;
         if (id.StartsWith("KzlRecipePot_", StringComparison.OrdinalIgnoreCase) || workbench?.Equals("042E6B:Keizaal.esp", StringComparison.OrdinalIgnoreCase) == true)
-            return new RecipeClassification("Alchemy", "Novice");
-        if (id.StartsWith("KzlRecipeFood_", StringComparison.OrdinalIgnoreCase))
-            return new RecipeClassification("Cooking", "Novice");
+            return new RecipeClassification("Alchemy", "Novice", "keizaal-alchemy-recipe-pattern");
+        if (id.StartsWith("KzlRecipeFood_", StringComparison.OrdinalIgnoreCase) || workbench?.Equals("0A5CB3:Skyrim.esm", StringComparison.OrdinalIgnoreCase) == true)
+            return new RecipeClassification("Cooking", "Novice", id.StartsWith("KzlRecipeFood_", StringComparison.OrdinalIgnoreCase) ? "keizaal-cooking-recipe-pattern" : "cooking-pot-workbench");
         if (id.StartsWith("KzlRecipeCharcoalTier1", StringComparison.OrdinalIgnoreCase))
-            return new RecipeClassification("Woodworking", "Novice");
+            return new RecipeClassification("Woodworking", "Novice", "keizaal-charcoal-recipe-pattern");
         if (Regex.IsMatch(id, "(MCERecipeClothes|Recipe.*(Clothes|Robe|Tunic|Apron|Dress|Boots|Gloves|Hat|Cowl|Cape|Cloak|Scarf|Mantle|Gaiter))", RegexOptions.IgnoreCase) &&
             (candidate.IdentityPlugin.Contains("Craftable", StringComparison.OrdinalIgnoreCase) || candidate.IdentityPlugin.Contains("CommonClothes", StringComparison.OrdinalIgnoreCase) || candidate.WinningPlugin.Contains("KzlOnlineMods", StringComparison.OrdinalIgnoreCase)))
-            return new RecipeClassification("Tailoring", "Novice");
+            return new RecipeClassification("Tailoring", "Novice", "keizaal-tailoring-record-pattern");
+        if (workbench?.Equals("088105:Skyrim.esm", StringComparison.OrdinalIgnoreCase) == true &&
+            outputRecord?.RecordType is "Weapon" or "Armor" or "Ammunition")
+        {
+            var mastery = InferSmithingMastery(conditions, matchingOverrides);
+            return new RecipeClassification("Smithing", mastery.Tier, $"forge-workbench;{mastery.Evidence}");
+        }
         return null;
+    }
+
+    private static TierInference InferSmithingMastery(IReadOnlyList<string> conditions, IReadOnlyList<WorkbenchOverride> matchingOverrides)
+    {
+        var requirements = string.Join("|", conditions);
+        if (Regex.IsMatch(requirements, "(Glass Smithing|Ebony Smithing|Daedric Smithing|Dragon Armor)", RegexOptions.IgnoreCase))
+            return new TierInference("Master", "high-tier-smithing-perk");
+        if (Regex.IsMatch(requirements, "(Orcish Smithing|Elven Smithing|Dwarven Smithing|Advanced Armors)", RegexOptions.IgnoreCase))
+            return new TierInference("Expert", "specialist-smithing-perk");
+        if (requirements.Contains("Steel Smithing", StringComparison.OrdinalIgnoreCase))
+            return new TierInference("Advanced", "steel-smithing-perk");
+
+        var overrideSources = string.Join("|", matchingOverrides.Select(rule => rule.Source));
+        if (Regex.IsMatch(overrideSources, "(Glass|Ebony|Daedric)", RegexOptions.IgnoreCase))
+            return new TierInference("Master", "sky-patcher-material-family");
+        if (Regex.IsMatch(overrideSources, "(Bosmer|Dwarven|Scaled|Plate|Orc)", RegexOptions.IgnoreCase))
+            return new TierInference("Expert", "sky-patcher-material-family");
+        if (Regex.IsMatch(overrideSources, "(Steel|Nord|Sons)", RegexOptions.IgnoreCase))
+            return new TierInference("Advanced", "sky-patcher-material-family");
+        return new TierInference("Novice", "base-forge-recipe");
     }
 
     private static IReadOnlyList<string> ReadLoadOrder(string path)
@@ -473,7 +513,8 @@ internal static class MutagenSkyrimCatalogReader
 
 internal sealed record WorkbenchOverride(string EditorIdContains, string? WorkbenchKey, string Source);
 internal sealed record ProfessionGate(string Profession, string MasteryTier, string EditorId);
-internal sealed record RecipeClassification(string Profession, string MasteryTier);
+internal sealed record RecipeClassification(string Profession, string MasteryTier, string Evidence);
+internal sealed record TierInference(string Tier, string Evidence);
 internal sealed record ConditionReference(string Label, string Kind);
 
 internal sealed class ProfessionGateCatalog

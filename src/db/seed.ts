@@ -1,6 +1,7 @@
 import { pathToFileURL } from "node:url";
-import { and, eq, like } from "drizzle-orm";
+import { and, eq, inArray, isNull, like, lt } from "drizzle-orm";
 import { createDatabase } from "./index";
+import { CURRENT_REFERENCE_RATES } from "./current-reference-rates";
 import { agreementAcceptances, auditEvents, catalogItems, jobs, memberships, officialPriceRules, stores, users } from "./schema";
 
 export const WHITERUN_STORE_ID = "00000000-0000-4000-8000-000000000002";
@@ -100,7 +101,22 @@ export async function installOpeningReferences() {
       });
       await tx.delete(officialPriceRules).where(and(eq(officialPriceRules.storeId, WHITERUN_STORE_ID), like(officialPriceRules.sourceLabel, "Whiterun General Store written rates (2026-08-05):%")));
       if (rates.length) await tx.insert(officialPriceRules).values(rates).onConflictDoNothing();
+      const currentEffectiveFrom = new Date("2026-08-12T00:00:00Z");
+      const currentUnresolved: string[] = [];
+      const currentRates = CURRENT_REFERENCE_RATES.flatMap(([plugin, localFormId, septims, quantity]) => {
+        const itemId = byForm.get(`${plugin.toLowerCase()}:${localFormId.toUpperCase()}`);
+        if (!itemId) { currentUnresolved.push(`${plugin}:${localFormId}`); return []; }
+        return [{ storeId: WHITERUN_STORE_ID, itemId, side: "customer_pays" as const, minimumSeptims: septims, maximumSeptims: septims, quantity, maximumQuantity: quantity, effectiveFrom: currentEffectiveFrom, sourceLabel: "Whiterun General Store price review (2026-08-12)", createdBy: null }];
+      });
+      const currentItemIds = currentRates.map((rate) => rate.itemId);
+      await tx.delete(officialPriceRules).where(and(eq(officialPriceRules.storeId, WHITERUN_STORE_ID), like(officialPriceRules.sourceLabel, "Whiterun General Store price review (2026-08-12)%")));
+      if (currentItemIds.length) await tx.update(officialPriceRules).set({ effectiveTo: currentEffectiveFrom }).where(and(
+        eq(officialPriceRules.storeId, WHITERUN_STORE_ID), eq(officialPriceRules.side, "customer_pays"), inArray(officialPriceRules.itemId, currentItemIds), lt(officialPriceRules.effectiveFrom, currentEffectiveFrom), isNull(officialPriceRules.effectiveTo),
+      ));
+      await tx.delete(officialPriceRules).where(and(eq(officialPriceRules.storeId, WHITERUN_STORE_ID), eq(officialPriceRules.sourceLabel, "Temporary price quiz")));
+      if (currentRates.length) await tx.insert(officialPriceRules).values(currentRates).onConflictDoNothing();
       if (unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { unresolved: [...new Set(unresolved)] } });
+      if (currentUnresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { source: "2026-08-12 price review", unresolved: [...new Set(currentUnresolved)] } });
       await tx.insert(jobs).values({ kind: "market.public_snapshot", payload: { reason: "opening_references_imported" } });
     });
   } finally { await client.end(); }

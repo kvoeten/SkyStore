@@ -1,7 +1,7 @@
 import { signIn } from "@/auth";
 
 function safeReturnTo(value?: string) {
-  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/dashboard";
+  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/guide";
 }
 
 export function DiscordSignIn({ returnTo }: { returnTo?: string }) {

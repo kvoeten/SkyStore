@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/runtime";
 import { catalogAliases, catalogItems } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
+import { collapseItemFamilies } from "@/lib/catalog/item-families";
+import { effectiveMarketCategory, marketCategoryBySlug } from "@/lib/catalog/market-categories";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +12,16 @@ export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("q")?.trim() ?? "";
   if (!query) return NextResponse.json({ items: [] });
   const pattern = `%${query}%`;
-  const items = await db.select({ id: catalogItems.id, name: catalogItems.displayName, category: catalogItems.category, editorId: catalogItems.editorId })
+  const items = await db.select({
+    id: catalogItems.id, name: catalogItems.displayName, category: catalogItems.category, marketCategory: catalogItems.marketCategory,
+    editorId: catalogItems.editorId, recordType: catalogItems.recordType,
+    craftSignature: sql<string | null>`(
+      select string_agg(ri.item_id::text || ':' || ri.quantity::text, '|' order by ri.item_id::text)
+      from recipes r join recipe_ingredients ri on ri.recipe_id = r.id
+      where r.output_item_id = ${catalogItems.id} and r.approval = 'approved' and r.is_catalog_default = true
+      limit 1
+    )`
+  })
     .from(catalogItems)
     .where(and(eq(catalogItems.status, "active"), or(
       ilike(catalogItems.displayName, pattern),
@@ -18,6 +29,10 @@ export async function GET(request: NextRequest) {
       sql`exists (select 1 from ${catalogAliases} where ${catalogAliases.itemId} = ${catalogItems.id} and ${catalogAliases.alias} ilike ${pattern})`
     )))
     .orderBy(asc(catalogItems.displayName))
-    .limit(100);
-  return NextResponse.json({ items: items.map((item) => ({ id: item.id, name: item.name, category: item.category, imageUrl: categoryIconPath(item) })) });
+    .limit(300);
+  const collapsed = collapseItemFamilies(items).slice(0, 100);
+  return NextResponse.json({ items: collapsed.map((item) => {
+    const marketCategory = effectiveMarketCategory(item);
+    return { id: item.id, name: item.familyName, category: marketCategory ? marketCategoryBySlug(marketCategory)?.label : item.category, imageUrl: categoryIconPath(item), familyItemIds: item.familyItemIds };
+  }) });
 }

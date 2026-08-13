@@ -7,10 +7,10 @@ import { isMarketGuideBrowseCandidate, prioritizeMarketGuideRows } from "@/lib/m
 import { formatGold, formatHighestUnitGold } from "@/lib/money";
 
 type Trend = { direction: "up" | "down" | "flat" | "new"; percent: number | null; points?: { at: string; customerPays: number | null }[] };
-type Row = { id: string; name: string; category?: string; imageUrl?: string | null; customerPays?: string; catalogMatch?: boolean; trend?: Trend; hasPrice: boolean; lastSoldAt?: string | null };
+type Row = { id: string; name: string; category?: string; imageUrl?: string | null; customerPays?: string; unitPrice?: number; catalogMatch?: boolean; trend?: Trend; hasPrice: boolean; lastSoldAt?: string | null };
 type Official = { itemId: string; name: string; side: "customer_pays"; septims: [number, number]; quantity: [number, number] };
 type Estimate = { itemId: string; name: string; side: "customer_pays"; lowerQuartile: number | null; upperQuartile: number | null; newestEvidenceAt?: string | null };
-type CatalogItem = { id: string; name: string; category: string; imageUrl?: string | null };
+type CatalogItem = { id: string; name: string; category: string; imageUrl?: string | null; familyItemIds?: string[] };
 type MarketPayload = { sourceCutoffAt: string; official?: Official[]; estimates?: Estimate[]; images?: Record<string, string>; trends?: Record<string, Trend> };
 
 function bundle(rule: Official) {
@@ -19,23 +19,28 @@ function bundle(rule: Official) {
 
 function normalize(payload: MarketPayload, catalogMatches: CatalogItem[] = []): Row[] {
   const rows = new Map<string, Row>();
+  const canonical = new Map<string, string>();
+  for (const item of catalogMatches) for (const memberId of item.familyItemIds ?? [item.id]) canonical.set(memberId, item.id);
   for (const item of catalogMatches) rows.set(item.id, { id: item.id, name: item.name, category: item.category, imageUrl: item.imageUrl, catalogMatch: true, hasPrice: false });
   for (const rule of payload.official ?? []) {
-    const row = rows.get(rule.itemId) ?? { id: rule.itemId, name: rule.name, hasPrice: false };
-    row.customerPays = bundle(rule);
+    const itemId = canonical.get(rule.itemId) ?? rule.itemId;
+    const row = rows.get(itemId) ?? { id: itemId, name: rule.name, hasPrice: false };
+    const unitPrice = rule.quantity[0] > 0 ? rule.septims[1] / rule.quantity[0] : 0;
+    if (row.unitPrice == null || unitPrice > row.unitPrice) { row.customerPays = bundle(rule); row.unitPrice = unitPrice; }
     row.imageUrl ??= payload.images?.[rule.itemId];
     row.hasPrice = true;
-    rows.set(rule.itemId, row);
+    rows.set(itemId, row);
   }
   for (const estimate of payload.estimates ?? []) {
-    const row = rows.get(estimate.itemId) ?? { id: estimate.itemId, name: estimate.name, hasPrice: false };
+    const itemId = canonical.get(estimate.itemId) ?? estimate.itemId;
+    const row = rows.get(itemId) ?? { id: itemId, name: estimate.name, hasPrice: false };
     row.imageUrl ??= payload.images?.[estimate.itemId];
-    if (estimate.upperQuartile != null) row.customerPays = formatGold(estimate.upperQuartile);
-    rows.set(estimate.itemId, row);
+    if (estimate.upperQuartile != null && (row.unitPrice == null || estimate.upperQuartile > row.unitPrice)) { row.customerPays = formatGold(estimate.upperQuartile); row.unitPrice = estimate.upperQuartile; }
+    rows.set(itemId, row);
     row.hasPrice = Boolean(row.customerPays);
     row.lastSoldAt = estimate.newestEvidenceAt;
   }
-  for (const row of rows.values()) row.trend = payload.trends?.[row.id];
+  for (const row of rows.values()) row.trend = payload.trends?.[row.id] ?? catalogMatches.find((item) => item.id === row.id)?.familyItemIds?.map((id) => payload.trends?.[id]).find(Boolean);
   const normalized = [...rows.values()];
   return prioritizeMarketGuideRows(catalogMatches.length ? normalized : normalized.filter(isMarketGuideBrowseCandidate));
 }

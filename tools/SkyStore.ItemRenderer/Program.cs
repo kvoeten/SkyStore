@@ -251,6 +251,16 @@ internal static class TargetSelector
 
 internal sealed class AssetResolver
 {
+    private static readonly IReadOnlyDictionary<string, string> KnownMissingModelFallbacks =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            // These paths are referenced by winning Keizaal records but are absent from
+            // the deployed loose files and BSAs. Use the corresponding installed ground
+            // models so selected commerce items still receive deterministic artwork.
+            ["meshes/Armor_Replacer/2_Legion/DragonArmor_Gnd.nif"] = "meshes/Armor_Replacer/2_Legion/DragonEbony/DragonArmor_Gnd.nif",
+            ["meshes/evgnnSMP/pouches/basicpouch_GO.nif"] = "meshes/evgnnSMP/pouches/sturdypouch_GO.nif",
+        };
+
     private readonly string _dataDirectory;
     private readonly Dictionary<string, IArchiveFile> _archiveFiles = new(StringComparer.OrdinalIgnoreCase);
 
@@ -263,8 +273,16 @@ internal sealed class AssetResolver
     public ExtractedModel ExtractModelAndTextures(string modelPath, string workspace)
     {
         var relativeModel = NormalizeAssetPath(modelPath, "meshes");
-        var modelBytes = ReadAsset(relativeModel) ?? throw new FileNotFoundException($"Model asset {relativeModel} was not found in loose files or loaded BSAs.");
-        var modelFile = WriteAsset(workspace, relativeModel, modelBytes);
+        var resolvedModel = relativeModel;
+        var modelBytes = ReadAsset(resolvedModel);
+        if (modelBytes is null && KnownMissingModelFallbacks.TryGetValue(relativeModel, out var fallback))
+        {
+            resolvedModel = fallback;
+            modelBytes = ReadAsset(resolvedModel);
+            if (modelBytes is not null) Console.WriteLine($"Using installed model fallback {resolvedModel} for missing catalog path {relativeModel}.");
+        }
+        if (modelBytes is null) throw new FileNotFoundException($"Model asset {relativeModel} was not found in loose files or loaded BSAs.");
+        var modelFile = WriteAsset(workspace, resolvedModel, modelBytes);
         var missing = new List<string>();
         foreach (Match match in Program.TexturePathRegex().Matches(Encoding.Latin1.GetString(modelBytes)))
         {

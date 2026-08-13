@@ -103,10 +103,10 @@ export const catalogItems = pgTable("catalog_items", {
   id: uuid("id").defaultRandom().primaryKey(), catalogVersionId: uuid("catalog_version_id").references(() => catalogVersions.id),
   stableKey: varchar("stable_key", { length: 180 }).notNull().unique(), plugin: varchar("plugin", { length: 128 }), localFormId: varchar("local_form_id", { length: 16 }),
   displayName: varchar("display_name", { length: 255 }).notNull(), editorId: varchar("editor_id", { length: 255 }), recordType: varchar("record_type", { length: 32 }).notNull(),
-  category: varchar("category", { length: 80 }).notNull(), status: itemStatus("status").notNull().default("active"), mergedIntoId: uuid("merged_into_id"),
+  category: varchar("category", { length: 80 }).notNull(), marketCategory: varchar("market_category", { length: 80 }), status: itemStatus("status").notNull().default("active"), mergedIntoId: uuid("merged_into_id"),
   value: integer("value"), weight: numeric("weight", { precision: 10, scale: 3 }), metadata: jsonb("metadata").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(), retiredAt: timestamp("retired_at", { withTimezone: true })
-}, (t) => [index("catalog_items_name_idx").on(t.displayName), index("catalog_items_category_idx").on(t.category), uniqueIndex("catalog_items_plugin_form_idx").on(t.plugin, t.localFormId)]);
+}, (t) => [index("catalog_items_name_idx").on(t.displayName), index("catalog_items_category_idx").on(t.category), index("catalog_items_market_category_idx").on(t.marketCategory), uniqueIndex("catalog_items_plugin_form_idx").on(t.plugin, t.localFormId)]);
 
 export const catalogAliases = pgTable("catalog_aliases", {
   id: uuid("id").defaultRandom().primaryKey(), itemId: uuid("item_id").notNull().references(() => catalogItems.id), alias: varchar("alias", { length: 255 }).notNull(), normalizedAlias: varchar("normalized_alias", { length: 255 }).notNull()
