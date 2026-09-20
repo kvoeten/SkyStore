@@ -15,6 +15,10 @@ describe("market browse categories", () => {
     expect(effectiveMarketCategory({ name: "Wheat", category: "Food", marketCategory: "dungeon-loot" })).toBe("dungeon-loot");
   });
 
+  it("uses a published all-variants group when a catalog record has no profession tag", () => {
+    expect(effectiveMarketCategory({ name: "Fur Cloak (Black)", category: "Armor & clothing" })).toBe("tailoring");
+  });
+
   it("does not mistake prepared food or partial words for raw farm produce", () => {
     expect(inferMarketCategory({ name: "Apple Dumpling", category: "Food" })).toBeNull();
     expect(inferMarketCategory({ name: "Beggar Prince", category: "Book" })).toBeNull();

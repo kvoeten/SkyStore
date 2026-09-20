@@ -5,6 +5,7 @@ import { catalogAliases, catalogItems } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
 import { collapseItemFamilies } from "@/lib/catalog/item-families";
 import { effectiveMarketCategory, marketCategoryBySlug } from "@/lib/catalog/market-categories";
+import { productGroupForItem } from "@/lib/catalog/product-groups";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +31,10 @@ export async function GET(request: NextRequest) {
     )))
     .orderBy(asc(catalogItems.displayName))
     .limit(300);
-  const collapsed = collapseItemFamilies(items).slice(0, 100);
+  const collapsed = collapseItemFamilies(items.map((item) => {
+    const group = productGroupForItem(item);
+    return { ...item, productGroupKey: group?.key, productGroupLabel: group?.label };
+  })).slice(0, 100);
   return NextResponse.json({ items: collapsed.map((item) => {
     const marketCategory = effectiveMarketCategory(item);
     return { id: item.id, name: item.familyName, category: marketCategory ? marketCategoryBySlug(marketCategory)?.label : item.category, imageUrl: categoryIconPath(item), familyItemIds: item.familyItemIds };

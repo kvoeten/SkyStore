@@ -27,12 +27,12 @@ export default async function GuidePage({ searchParams }: { searchParams: Promis
       return <AppShell current="/guide" identity={staffShellIdentity(store)}><div className="page"><section className="card empty"><h1>The private price guide could not load.</h1><p>Your session can still be recovered without reloading this page.</p><div className="button-row" style={{ justifyContent: "center" }}><a className="outline" href="/guide?view=public">Open public price guide</a><a className="text-button" href="/logout">Sign out</a></div></section></div></AppShell>;
     }
     return <AppShell current="/guide" identity={staffShellIdentity(store)} searchAction="/guide" searchStoreId={store.id}><div className="page">
-      <PageHeading eyebrow={store.name.toUpperCase()} title="Price guide"><p className="lede">Current store rates and approved sale activity. Search still covers the full active catalog.</p></PageHeading>
-      <section className="panel"><div className="notice"><b>{rows.length} items</b><span>{q?.trim() ? "Showing catalog matches for this search." : "Recently sold items lead the list, followed by currently priced stock."}</span></div><PrivateMarketTable rows={rows} storeId={store.id} searched={Boolean(q?.trim())}/></section>
+      <PageHeading eyebrow={store.name.toUpperCase()} title="Price guide"><p className="lede">Published store guides and approved sale activity. Search still covers the full active catalog.</p></PageHeading>
+      <section className="panel"><div className="notice"><b>{rows.length} items</b><span>{q?.trim() ? "Showing catalog matches for this search." : "Most recently changed prices lead the list, followed by sale activity."}</span></div><PrivateMarketTable rows={rows} storeId={store.id} searched={Boolean(q?.trim())}/></section>
     </div></AppShell>;
   }
   return <AppShell current="/guide" publicView publicAccount={Boolean(access) || authFailed} searchPublicView={forcePublic}><div className="page">
-    <PageHeading eyebrow="SKYSTORE" title="Public price guide" actions={<Link className="button public-report-button" href="/guide/report-price">REPORT PRICE</Link>}><p className="lede">Search Store Prices from participating stores.</p></PageHeading>
+    <PageHeading eyebrow="SKYSTORE" title="Public price guide" actions={<Link className="button public-report-button" href="/guide/report-price">REPORT PRICE</Link>}><p className="lede">Published Store Prices, with approved reports adding trend data over time.</p></PageHeading>
     <div className="grid guide-grid"><section className="panel"><DelayedMarketTable query={q}/><p className="market-footnote">Public price information can be up to 7 days behind on real market trends. Visit your local store for up-to-date pricing information.</p></section><aside className="stack"><PublicMarketHighlights/><section className="card"><p className="eyebrow">PRICE GUIDE</p><p>Prices shown are customer-facing Store Prices.</p></section></aside></div>
   </div></AppShell>;
 }

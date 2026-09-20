@@ -1,5 +1,7 @@
 export const MARKET_CATEGORIES = [
-  { slug: "farm-produce", label: "Farm Produce", description: "Crops, orchard produce, eggs, milk, and other farm goods." },
+  { slug: "farm-produce", label: "Produce", description: "Crops, orchard produce, eggs, milk, and other farm goods." },
+  { slug: "smithing", label: "Smithing", description: "Ore, ingots, weapons, armour, and smith-made equipment." },
+  { slug: "tailoring", label: "Tailoring", description: "Clothing, robes, cloaks, accessories, bags, and tailor-made goods." },
   { slug: "hunting-loot", label: "Hunting Loot", description: "Meat, hides, pelts, antlers, claws, teeth, and other animal goods." },
   { slug: "dungeon-loot", label: "Dungeon Loot", description: "Gems, soul gems, ancient equipment, and valuables recovered from ruins." },
   { slug: "foraging-loot", label: "Foraging Loot", description: "Flowers, mushrooms, roots, berries, and wild alchemical ingredients." },
@@ -13,6 +15,8 @@ export function marketCategoryBySlug(slug: string) {
 
 export function effectiveMarketCategory(item: { marketCategory?: string | null; name: string; category: string; recordType?: string | null; editorId?: string | null }): MarketCategorySlug | null {
   if (item.marketCategory && MARKET_CATEGORIES.some((category) => category.slug === item.marketCategory)) return item.marketCategory as MarketCategorySlug;
+  const guideGroup = productGroupForItem(item);
+  if (guideGroup) return guideGroup.marketCategory;
   return inferMarketCategory(item);
 }
 
@@ -35,3 +39,4 @@ function matchesWords(text: string, values: string[]) {
 }
 
 function escapeRegExp(value: string) { return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+import { productGroupForItem } from "./product-groups";

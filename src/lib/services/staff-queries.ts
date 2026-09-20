@@ -3,6 +3,7 @@ import { db } from "@/db/runtime";
 import { approvals, catalogAliases, catalogImages, catalogItems, memberships, officialPriceRules, observations, publicMarketReports, receiptLines, receipts, recipes, stockMovements, users } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
 import { collapseItemFamilies } from "@/lib/catalog/item-families";
+import { productGroupForItem } from "@/lib/catalog/product-groups";
 import { estimateMarket, recommendedMaximumPurchase, saleFloor, type MarketSignal } from "@/lib/market";
 import { prioritizeMarketGuideRows } from "@/lib/market/guide-ranking";
 import { formatGold, formatHighestUnitGold } from "@/lib/money";
@@ -63,7 +64,10 @@ export async function getPrivateMarketGuide(storeId: string, query = "") {
     .where(and(eq(catalogItems.status, "active"), trimmedQuery ? searchFilter : or(currentPriceExists, recentSaleExists)))
     .orderBy(catalogItems.displayName)
     .limit(400);
-  const candidates = collapseItemFamilies(rawCandidates).slice(0, 200);
+  const candidates = collapseItemFamilies(rawCandidates.map((item) => {
+    const group = productGroupForItem(item);
+    return { ...item, productGroupKey: group?.key, productGroupLabel: group?.label };
+  })).slice(0, 200);
   if (!candidates.length) return [];
 
   const itemIds = [...new Set(candidates.flatMap((item) => item.familyItemIds))];
@@ -98,6 +102,8 @@ export async function getPrivateMarketGuide(storeId: string, query = "") {
     const storePays = familyRules("store_pays");
     const customerPays = familyRules("customer_pays");
     const lastSale = item.familyItemIds.map((id) => latestSales.get(id)).filter(Boolean).sort((left, right) => right!.occurrenceAt.getTime() - left!.occurrenceAt.getTime())[0] ?? null;
+    const latestRuleChangedAt = [...item.familyItemIds].flatMap((id) => [preferredRules.get(`${id}:store_pays`), preferredRules.get(`${id}:customer_pays`)]).filter(Boolean)
+      .map((rule) => rule!.effectiveFrom).sort((left, right) => right.getTime() - left.getTime())[0] ?? null;
     return {
       itemId: item.id,
       displayName: item.familyName,
@@ -109,6 +115,7 @@ export async function getPrivateMarketGuide(storeId: string, query = "") {
       customerPays,
       lastSale,
       hasPrice: Boolean(storePays || customerPays),
+      lastChangedAt: [latestRuleChangedAt, lastSale?.occurrenceAt ?? null].filter((value): value is Date => value != null).sort((left, right) => right.getTime() - left.getTime())[0] ?? null,
       lastSoldAt: lastSale?.occurrenceAt ?? null,
       recentUnitsSold: item.familyItemIds.reduce((total, id) => total + (recentUnits.get(id) ?? 0), 0)
     };

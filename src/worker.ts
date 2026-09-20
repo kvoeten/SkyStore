@@ -4,7 +4,7 @@ import { estimateMarket, publicSnapshotCutoff, type MarketSignal } from "@/lib/m
 
 type Job = { id: string; kind: string; payload: unknown; attempts: number; max_attempts: number };
 type EvidenceRow = { item_id: string; display_name: string; store_id: string | null; total_septims: number; quantity: number; occurrence_at: Date; kind: "receipt" | "direct_quote" };
-type OfficialRow = { item_id: string; display_name: string; side: "customer_pays"; minimum_septims: number; maximum_septims: number; quantity: number; maximum_quantity: number };
+type OfficialRow = { item_id: string; display_name: string; side: "customer_pays"; minimum_septims: number; maximum_septims: number; quantity: number; maximum_quantity: number; effective_from: Date };
 type HotItemRow = { item_id: string; display_name: string; units_sold: number; trade_count: number; store_count: number };
 type FavoriteRow = { item_id: string; display_name: string; units_traded: number; trade_count: number; active_months: number; store_count: number };
 
@@ -48,9 +48,12 @@ async function createPublicSnapshot(now = new Date()) {
       and p.quarantined_at is null and u.quarantined_at is null
   `;
   const official = await database.client<OfficialRow[]>`
-    select p.item_id, i.display_name, p.side, p.minimum_septims, p.maximum_septims, p.quantity, p.maximum_quantity
+    select p.item_id, i.display_name, p.side, p.minimum_septims, p.maximum_septims, p.quantity, p.maximum_quantity, p.effective_from
     from official_price_rules p join catalog_items i on i.id = p.item_id
-    where p.side = 'customer_pays' and p.effective_from <= now() and (p.effective_to is null or p.effective_to > now()) and i.status = 'active'
+    where p.side = 'customer_pays'
+      and p.effective_from <= ${cutoffIso}::timestamptz
+      and (p.effective_to is null or p.effective_to > ${cutoffIso}::timestamptz)
+      and i.status = 'active'
     order by i.display_name, p.side
   `;
   const hotItems = await database.client<HotItemRow[]>`
@@ -99,7 +102,7 @@ async function createPublicSnapshot(now = new Date()) {
   }).filter((estimate) => estimate.anonymized);
   const payload = {
     policy: { delayDays: 7, minimumStores: 3, windowDays: 90, recencyHalfLifeDays: 30 },
-    official: official.map((row) => ({ itemId: row.item_id, name: row.display_name, side: row.side, septims: [row.minimum_septims, row.maximum_septims], quantity: [row.quantity, row.maximum_quantity] })),
+    official: official.map((row) => ({ itemId: row.item_id, name: row.display_name, side: row.side, septims: [row.minimum_septims, row.maximum_septims], quantity: [row.quantity, row.maximum_quantity], effectiveFrom: new Date(row.effective_from).toISOString() })),
     estimates,
     hotItems: hotItems.map((row) => ({ itemId: row.item_id, name: row.display_name, unitsSold: Number(row.units_sold), tradeCount: Number(row.trade_count), storeCount: Number(row.store_count) })),
     allTimeFavorites: allTimeFavorites.map((row) => ({ itemId: row.item_id, name: row.display_name, unitsTraded: Number(row.units_traded), tradeCount: Number(row.trade_count), activeMonths: Number(row.active_months), storeCount: Number(row.store_count) }))

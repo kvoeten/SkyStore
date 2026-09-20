@@ -1,8 +1,9 @@
 import { pathToFileURL } from "node:url";
-import { and, eq, inArray, isNull, like, lt } from "drizzle-orm";
+import { and, eq, inArray, isNull, like, lt, or, sql } from "drizzle-orm";
 import { createDatabase } from "./index";
 import { CURRENT_REFERENCE_RATES } from "./current-reference-rates";
-import { agreementAcceptances, auditEvents, catalogItems, jobs, memberships, officialPriceRules, stores, users } from "./schema";
+import { resolvePublishedPriceGuide } from "./published-price-guides";
+import { agreementAcceptances, auditEvents, catalogItems, jobs, memberships, officialPriceRules, recipes, stores, users } from "./schema";
 
 export const WHITERUN_STORE_ID = "00000000-0000-4000-8000-000000000002";
 
@@ -90,7 +91,24 @@ export async function installOpeningReferences() {
   try {
     await db.transaction(async (tx) => {
       await tx.insert(stores).values({ id: WHITERUN_STORE_ID, slug: "whiterun-general-store", name: "Whiterun General Store", ownerId: null, active: false, targetMarkupBps: 2500 }).onConflictDoNothing();
-      const activeItems = await tx.select({ id: catalogItems.id, plugin: catalogItems.plugin, localFormId: catalogItems.localFormId }).from(catalogItems).where(eq(catalogItems.status, "active"));
+      // Imported professions are authoritative for product browsing. Existing
+      // manual assignments remain untouched so an administrator can correct a
+      // special case without a future catalog activation undoing that work.
+      await tx.execute(sql`
+        update ${catalogItems} set market_category = 'tailoring'
+        where ${catalogItems.marketCategory} is null and exists (
+          select 1 from ${recipes}
+          where ${recipes.outputItemId} = ${catalogItems.id} and lower(${recipes.profession}) = 'tailoring'
+        )
+      `);
+      await tx.execute(sql`
+        update ${catalogItems} set market_category = 'smithing'
+        where ${catalogItems.marketCategory} is null and exists (
+          select 1 from ${recipes}
+          where ${recipes.outputItemId} = ${catalogItems.id} and lower(${recipes.profession}) = 'smithing'
+        )
+      `);
+      const activeItems = await tx.select({ id: catalogItems.id, plugin: catalogItems.plugin, localFormId: catalogItems.localFormId, name: catalogItems.displayName, category: catalogItems.category }).from(catalogItems).where(eq(catalogItems.status, "active"));
       const byForm = new Map(activeItems.map((item) => [`${item.plugin?.toLowerCase()}:${item.localFormId?.toUpperCase()}`, item.id]));
       const itemIdByRuleKey = new Map(SEED_CATALOG_ITEMS.map(([ruleKey, , , , , plugin, localFormId]) => [ruleKey, byForm.get(`${plugin.toLowerCase()}:${localFormId.toUpperCase()}`)]));
       const unresolved: string[] = [];
@@ -115,8 +133,34 @@ export async function installOpeningReferences() {
       ));
       await tx.delete(officialPriceRules).where(and(eq(officialPriceRules.storeId, WHITERUN_STORE_ID), eq(officialPriceRules.sourceLabel, "Temporary price quiz")));
       if (currentRates.length) await tx.insert(officialPriceRules).values(currentRates).onConflictDoNothing();
+      const published = resolvePublishedPriceGuide(activeItems);
+      const publishedEffectiveFrom = new Date("2026-08-25T00:00:00Z");
+      const publishedItemIds = [...new Set(published.rules.map((rule) => rule.itemId))];
+      // Re-running the catalog bootstrap refreshes this exact source import,
+      // while preserving newer staff-entered rates and market evidence.
+      await tx.delete(officialPriceRules).where(and(
+        eq(officialPriceRules.storeId, WHITERUN_STORE_ID),
+        like(officialPriceRules.sourceLabel, "Whiterun % (imported 2026-08-25)%")
+      ));
+      if (publishedItemIds.length) await tx.update(officialPriceRules).set({ effectiveTo: publishedEffectiveFrom }).where(and(
+        eq(officialPriceRules.storeId, WHITERUN_STORE_ID),
+        eq(officialPriceRules.side, "customer_pays"),
+        inArray(officialPriceRules.itemId, publishedItemIds),
+        lt(officialPriceRules.effectiveFrom, publishedEffectiveFrom),
+        isNull(officialPriceRules.effectiveTo),
+        or(
+          eq(officialPriceRules.sourceLabel, "Whiterun General Store price review (2026-08-12)"),
+          like(officialPriceRules.sourceLabel, "Whiterun General Store written rates (2026-08-05):%")
+        )
+      ));
+      if (published.rules.length) await tx.insert(officialPriceRules).values(published.rules.map((rule) => ({
+        storeId: WHITERUN_STORE_ID, itemId: rule.itemId, side: rule.side,
+        minimumSeptims: rule.totalSeptims, maximumSeptims: rule.totalSeptims, quantity: rule.quantity, maximumQuantity: rule.quantity,
+        effectiveFrom: publishedEffectiveFrom, sourceLabel: rule.sourceLabel, provenanceUrl: rule.provenanceUrl, createdBy: null
+      }))).onConflictDoNothing();
       if (unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { unresolved: [...new Set(unresolved)] } });
       if (currentUnresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { source: "2026-08-12 price review", unresolved: [...new Set(currentUnresolved)] } });
+      if (published.unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { source: "2026-08-25 published guides", unresolved: published.unresolved } });
       await tx.insert(jobs).values({ kind: "market.public_snapshot", payload: { reason: "opening_references_imported" } });
     });
   } finally { await client.end(); }

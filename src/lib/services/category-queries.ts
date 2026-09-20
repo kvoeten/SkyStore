@@ -4,6 +4,7 @@ import { catalogItems, officialPriceRules } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
 import { collapseItemFamilies } from "@/lib/catalog/item-families";
 import { effectiveMarketCategory, type MarketCategorySlug } from "@/lib/catalog/market-categories";
+import { productGroupForItem } from "@/lib/catalog/product-groups";
 import { getPublicMarketOverview } from "@/lib/public-market";
 
 export async function getMarketCategoryItems(category: MarketCategorySlug, storeId?: string) {
@@ -16,7 +17,10 @@ export async function getMarketCategoryItems(category: MarketCategorySlug, store
       where category_recipe.output_item_id = ${catalogItems.id} and category_recipe.approval = 'approved' and category_recipe.is_catalog_default = true
     )`
   }).from(catalogItems).where(eq(catalogItems.status, "active")).orderBy(catalogItems.displayName);
-  const families = collapseItemFamilies(raw.filter((item) => effectiveMarketCategory(item) === category));
+  const families = collapseItemFamilies(raw.filter((item) => effectiveMarketCategory(item) === category).map((item) => {
+    const group = productGroupForItem(item);
+    return { ...item, productGroupKey: group?.key, productGroupLabel: group?.label };
+  }));
   const familyItemIds = [...new Set(families.flatMap((family) => family.familyItemIds))];
   const prices = new Map<string, { buying: number | null; selling: number | null }>();
 

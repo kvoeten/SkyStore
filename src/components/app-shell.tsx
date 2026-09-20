@@ -46,7 +46,7 @@ export function AppShell({ children, current, identity, publicView = false, publ
       <div className="realm">{publicView ? "PUBLIC PRICE GUIDE" : realm}{!publicView && <span>{identity?.verified ? "VERIFIED" : "PRIVATE"}</span>}</div>
       <nav className="sidebar-navigation">
         {section(publicView ? "Market" : "Store", publicView ? marketLinks : [...marketLinks, ...storeLinks])}
-        <p className="nav-section-label">Browse</p><div className="nav-list profession-nav">{categoryLinks.map(([href, text]) => <a key={href} href={contextualHref(href)} aria-current={current === href ? "page" : undefined}><span aria-hidden="true">◇</span>{text}</a>)}</div>
+        <p className="nav-section-label">Product categories</p><div className="nav-list profession-nav">{categoryLinks.map(([href, text]) => <a key={href} href={contextualHref(href)} aria-current={current === href ? "page" : undefined}><span aria-hidden="true">◇</span>{text}</a>)}</div>
         <p className="nav-section-label">Professions</p><div className="nav-list profession-nav">{professionLinks.map(([href, text]) => <a key={href} href={contextualHref(href)} aria-current={current === href ? "page" : undefined}><span aria-hidden="true">◇</span>{text}</a>)}</div>
         {!publicView && section("Admin", adminLinks)}
       </nav>
@@ -54,7 +54,7 @@ export function AppShell({ children, current, identity, publicView = false, publ
     </aside>
     <header className="mobile-bar"><Link href="/guide" className="brand"><img src="/brand/emblem.svg" alt="" width={30} height={30}/><span><strong>Sky</strong>Store</span></Link><button className="menu-button" type="button" aria-expanded={menuOpen} aria-controls="mobile-nav" onClick={() => setMenuOpen((open) => !open)}>Menu</button><nav id="mobile-nav" className={`mobile-nav ${menuOpen ? "open" : ""}`} aria-label="Mobile navigation">
       {!publicView && <span className="mobile-nav-label">Store</span>}{marketLinks.map(([href,text,icon]) => <Link key={href} href={href as Route} onClick={closeMenu}><span aria-hidden="true">{icon}</span>{text}</Link>)}{!publicView && storeLinks.map(([href,text,icon]) => <Link key={href} href={href} onClick={closeMenu}><span aria-hidden="true">{icon}</span>{text}</Link>)}
-      <span className="mobile-nav-label">Browse</span>{categoryLinks.map(([href,text]) => <a key={href} href={contextualHref(href)} onClick={closeMenu}><span aria-hidden="true">◇</span>{text}</a>)}
+      <span className="mobile-nav-label">Product categories</span>{categoryLinks.map(([href,text]) => <a key={href} href={contextualHref(href)} onClick={closeMenu}><span aria-hidden="true">◇</span>{text}</a>)}
       <span className="mobile-nav-label">Professions</span>{professionLinks.map(([href,text]) => <a key={href} href={contextualHref(href)} onClick={closeMenu}><span aria-hidden="true">◇</span>{text}</a>)}
       {!publicView && <><span className="mobile-nav-label">Admin</span>{adminLinks.map(([href,text,icon]) => <Link key={href} href={href} onClick={closeMenu}><span aria-hidden="true">{icon}</span>{text}</Link>)}<Link href="/guide?view=public" onClick={closeMenu}>Public price guide</Link><Link href="/logout" onClick={closeMenu}>Sign out</Link></>}
       {publicView && !publicAccount && <Link href={loginHref as Route} onClick={closeMenu}>Sign in</Link>}{publicView && publicAccount && <><Link href="/guide" onClick={closeMenu}>Store view</Link><Link href="/logout" onClick={closeMenu}>Sign out</Link></>}

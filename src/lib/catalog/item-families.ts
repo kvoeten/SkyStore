@@ -4,6 +4,8 @@ export type FamilyCandidate = {
   recordType?: string | null;
   category?: string | null;
   craftSignature?: string | null;
+  productGroupKey?: string | null;
+  productGroupLabel?: string | null;
 };
 
 const numberedSuffix = /(?:\s+(?:variant\s*)?#?\d+|\s*\(\s*\d+\s*\))$/i;
@@ -20,6 +22,7 @@ export function itemFamilyBaseName(name: string): string {
 }
 
 export function itemFamilyKey(item: FamilyCandidate): string {
+  if (item.productGroupKey) return `guide:${item.productGroupKey}`;
   const base = itemFamilyBaseName(item.name).toLocaleLowerCase("en-US");
   // Craftable variants only share a market identity when the material recipe is
   // identical. Non-craftable records are intentionally collapsed more
@@ -35,7 +38,7 @@ export function collapseItemFamilies<T extends FamilyCandidate>(items: T[]): Arr
   for (const item of items) grouped.set(itemFamilyKey(item), [...(grouped.get(itemFamilyKey(item)) ?? []), item]);
   return [...grouped.values()].map((family) => {
     const sorted = family.slice().sort((left, right) => canonicalScore(left) - canonicalScore(right) || left.name.localeCompare(right.name) || left.id.localeCompare(right.id));
-    return { ...sorted[0], familyItemIds: sorted.map((item) => item.id), familyName: itemFamilyBaseName(sorted[0].name) };
+    return { ...sorted[0], familyItemIds: sorted.map((item) => item.id), familyName: sorted[0].productGroupLabel ?? itemFamilyBaseName(sorted[0].name) };
   });
 }
 

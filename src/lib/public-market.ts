@@ -3,9 +3,10 @@ import { db } from "@/db/runtime";
 import { catalogItems, delayedSnapshots } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
 import { collapseItemFamilies } from "@/lib/catalog/item-families";
+import { productGroupForItem } from "@/lib/catalog/product-groups";
 import { publicSnapshotCutoff } from "@/lib/market";
 
-export type PublicOfficialRule = { itemId: string; name: string; side: "customer_pays"; septims: [number, number]; quantity: [number, number] };
+export type PublicOfficialRule = { itemId: string; name: string; side: "customer_pays"; septims: [number, number]; quantity: [number, number]; effectiveFrom?: string };
 export type PublicEstimate = { itemId: string; name: string; side: "customer_pays"; median: number | null; lowerQuartile: number | null; upperQuartile: number | null; storeCount: number; signalCount?: number; newestEvidenceAt?: string | null };
 export type PublicHotItem = { itemId: string; name: string; unitsSold: number; tradeCount: number; storeCount: number };
 export type PublicFavorite = { itemId: string; name: string; unitsTraded: number; tradeCount: number; activeMonths: number; storeCount: number };
@@ -65,7 +66,10 @@ export async function getPublicMarketOverview(limit = 31) {
   })
     .from(catalogItems)
     .where(inArray(catalogItems.id, [...itemIds])) : [];
-  const families = collapseItemFamilies(imageRows);
+  const families = collapseItemFamilies(imageRows.map((item) => {
+    const group = productGroupForItem(item);
+    return { ...item, productGroupKey: group?.key, productGroupLabel: group?.label };
+  }));
   const canonicalByItem = new Map(families.flatMap((family) => family.familyItemIds.map((id) => [id, family.id] as const)));
   const familyByCanonical = new Map(families.map((family) => [family.id, family]));
   const publicPayload: PublicSnapshotPayload = {

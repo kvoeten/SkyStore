@@ -25,4 +25,12 @@ describe("catalog item families", () => {
     ]);
     expect(families).toHaveLength(2);
   });
+
+  it("keeps a published all-variants group together even when its names differ", () => {
+    const families = collapseItemFamilies([
+      { id: "black", name: "Fur Cloak (Black)", productGroupKey: "fur-capes", productGroupLabel: "Fur Capes" },
+      { id: "white", name: "Fur Cloak (White)", productGroupKey: "fur-capes", productGroupLabel: "Fur Capes" },
+    ]);
+    expect(families).toEqual([expect.objectContaining({ familyName: "Fur Capes", familyItemIds: ["black", "white"] })]);
+  });
 });

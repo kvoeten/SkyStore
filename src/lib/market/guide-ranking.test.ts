@@ -13,6 +13,14 @@ describe("market guide browsing priority", () => {
     expect(rows.map((row) => row.id)).toEqual(["newer", "older", "priced", "missing"]);
   });
 
+  it("puts a newer published price change ahead of an older sale", () => {
+    const rows = prioritizeMarketGuideRows([
+      { id: "sale", name: "Leather", hasPrice: true, lastSoldAt: "2026-08-20T00:00:00Z" },
+      { id: "guide", name: "Fur Capes", hasPrice: true, lastChangedAt: "2026-08-24T00:00:00Z" },
+    ]);
+    expect(rows.map((row) => row.id)).toEqual(["guide", "sale"]);
+  });
+
   it("keeps price or sale activity in default browsing while search may include anything", () => {
     expect(isMarketGuideBrowseCandidate({ name: "Iron Ore", hasPrice: true })).toBe(true);
     expect(isMarketGuideBrowseCandidate({ name: "Leather", hasPrice: false, lastSoldAt: new Date("2026-08-01T00:00:00Z") })).toBe(true);
