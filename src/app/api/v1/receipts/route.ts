@@ -21,7 +21,8 @@ export async function POST(request: NextRequest) {
     for (const itemId of [...new Set(command.lines.map((line) => line.itemId))].sort()) {
       await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`${command.storeId}:${itemId}`}))`);
     }
-    const [receipt] = await tx.insert(receipts).values({ storeId: command.storeId, direction: command.direction, status, occurrenceAt: new Date(), notes: command.notes, totalSeptims: command.lines.reduce((total, line) => total + line.totalSeptims, 0), submittedBy: context.userId, approvedBy: approved ? context.userId : undefined, approvedAt: approved ? new Date() : undefined }).returning({ id: receipts.id, status: receipts.status });
+    const occurredAt = command.occurrenceAt ?? new Date();
+    const [receipt] = await tx.insert(receipts).values({ storeId: command.storeId, direction: command.direction, status, occurrenceAt: occurredAt, notes: command.notes, totalSeptims: command.lines.reduce((total, line) => total + line.totalSeptims, 0), submittedBy: context.userId, approvedBy: approved ? context.userId : undefined, approvedAt: approved ? new Date() : undefined }).returning({ id: receipts.id, status: receipts.status });
     await tx.insert(receiptLines).values(command.lines.map((line, sequence) => ({ receiptId: receipt.id, itemId: line.itemId, quantity: line.quantity, totalSeptims: line.totalSeptims, sequence })));
     await tx.insert(stockMovements).values(command.lines.map((line) => ({ storeId: command.storeId, itemId: line.itemId, receiptId: receipt.id, kind: "receipt" as const, state, quantityDelta: receiptQuantityDelta(command.direction, line.quantity), createdBy: context.userId })));
     if (!approved) await tx.insert(approvals).values({ storeId: command.storeId, targetType: "receipt", targetId: receipt.id, requestedBy: context.userId });

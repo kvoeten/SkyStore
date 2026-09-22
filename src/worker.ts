@@ -39,12 +39,12 @@ async function createPublicSnapshot(now = new Date()) {
     where r.status = 'approved' and r.direction = 'store_sale'
       and r.occurrence_at <= ${cutoffIso}::timestamptz and u.quarantined_at is null
     union all
-    select p.item_id, i.display_name, null::uuid as store_id, p.total_septims, p.quantity, p.created_at as occurrence_at, 'direct_quote'::text as kind
+    select p.item_id, i.display_name, null::uuid as store_id, p.total_septims, p.quantity, p.occurrence_at, 'direct_quote'::text as kind
     from public_market_reports p
     left join users u on u.id = p.submitted_by
     join catalog_items i on i.id = p.item_id
     where p.status = 'approved' and p.location_type = 'store_sale'
-      and p.created_at <= ${cutoffIso}::timestamptz
+      and p.occurrence_at <= ${cutoffIso}::timestamptz
       and p.quarantined_at is null and u.quarantined_at is null
   `;
   const official = await database.client<OfficialRow[]>`
@@ -101,7 +101,7 @@ async function createPublicSnapshot(now = new Date()) {
     return { itemId, name: itemNames.get(itemId) ?? "Catalog item", side: "customer_pays" as const, ...estimateMarket(signals, itemId, "customer_pays", now, cutoff) };
   }).filter((estimate) => estimate.anonymized);
   const payload = {
-    policy: { delayDays: 7, minimumStores: 3, windowDays: 90, recencyHalfLifeDays: 30 },
+    policy: { delayDays: Number(process.env.SKYSTORE_PUBLIC_DELAY_DAYS ?? 0), minimumStores: 3, windowDays: 90, recencyHalfLifeDays: 30 },
     official: official.map((row) => ({ itemId: row.item_id, name: row.display_name, side: row.side, septims: [row.minimum_septims, row.maximum_septims], quantity: [row.quantity, row.maximum_quantity], effectiveFrom: new Date(row.effective_from).toISOString() })),
     estimates,
     hotItems: hotItems.map((row) => ({ itemId: row.item_id, name: row.display_name, unitsSold: Number(row.units_sold), tradeCount: Number(row.trade_count), storeCount: Number(row.store_count) })),

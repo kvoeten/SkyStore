@@ -7,9 +7,8 @@ import { getAccessContext } from "@/lib/authorization";
 import { getTailoringPriceFamily } from "@/lib/services/recipe-queries";
 
 /**
- * A public contribution is never a receipt or an observation. Every one starts
- * pending, including reports from platform administrators, and only the
- * platform review endpoint can publish it as market evidence.
+ * A public contribution is never a receipt or an observation. Signed-in
+ * contributors publish immediately; anonymous visitors submit for review.
  */
 export async function POST(request: NextRequest) {
   const context = await getAccessContext();
@@ -27,23 +26,28 @@ export async function POST(request: NextRequest) {
       .where(eq(users.id, context.userId)).limit(1) : [];
     const contributorDisplayName = contributor?.displayName ?? contributor?.name ?? "Anonymous visitor";
 
+    const status = context ? "approved" as const : "pending" as const;
+    const occurredAt = command.occurrenceAt ?? new Date();
     const [report] = await tx.insert(publicMarketReports).values({
       itemId: priceFamily.canonicalItemId,
       quantity: command.quantity,
       totalSeptims: command.totalSeptims,
-      locationType: "street_sale",
+      locationType: command.locationType,
+      sourceLocation: command.sourceLocation || null,
+      occurrenceAt: occurredAt,
       note: command.note,
       submittedBy: context?.userId ?? null,
       contributorDisplayName,
-      status: "pending"
+      status,
+      ...(status === "approved" ? { reviewedBy: context?.userId, reviewedAt: occurredAt, reviewNote: "Published by signed-in contributor" } : {})
     }).returning({ id: publicMarketReports.id, status: publicMarketReports.status, createdAt: publicMarketReports.createdAt });
-    await tx.insert(approvals).values({ targetType: "public_market_report", targetId: report.id, requestedBy: context?.userId ?? null });
+    if (status === "pending") await tx.insert(approvals).values({ targetType: "public_market_report", targetId: report.id, requestedBy: null });
     await tx.insert(auditEvents).values({
       actorId: context?.userId ?? null,
       action: "public_market_report.submitted",
       entityType: "public_market_report",
       entityId: report.id,
-      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: "street_sale", contributorDisplayName, authenticated: Boolean(context) }
+      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: command.locationType, sourceLocation: command.sourceLocation ?? null, occurrenceAt: occurredAt.toISOString(), contributorDisplayName, authenticated: Boolean(context), status }
     });
     return report;
   }).catch((error: unknown) => ({ error: error instanceof Error ? error.message : "market_report_failed" }));

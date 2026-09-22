@@ -17,6 +17,8 @@ export async function GET(request: NextRequest) {
     quantity: publicMarketReports.quantity,
     totalSeptims: publicMarketReports.totalSeptims,
     locationType: publicMarketReports.locationType,
+    sourceLocation: publicMarketReports.sourceLocation,
+    occurrenceAt: publicMarketReports.occurrenceAt,
     note: publicMarketReports.note,
     status: publicMarketReports.status,
     contributorDisplayName: publicMarketReports.contributorDisplayName,

@@ -42,6 +42,11 @@ export const SEED_CATALOG_ITEMS = [
   ["skooma", "Skooma", "ALCH", "potion", 25, "Skyrim.esm", "00057A7A"]
 ] as const;
 
+const MANUAL_MARKET_ITEMS = [
+  { stableKey: "manual:blackberry-reserve", displayName: "Blackberry Reserve", recordType: "ALCH", category: "Food & drink" },
+  { stableKey: "manual:blackberry-mead", displayName: "Blackberry Mead", recordType: "ALCH", category: "Food & drink" },
+] as const;
+
 /**
  * Transcription of the opening written sheet. Each price applies to the whole stated bundle:
  * `10 for 1` is 10 units costing 1 septim, not a unit price of 10. Bare rates and `sell`
@@ -91,6 +96,11 @@ export async function installOpeningReferences() {
   try {
     await db.transaction(async (tx) => {
       await tx.insert(stores).values({ id: WHITERUN_STORE_ID, slug: "whiterun-general-store", name: "Whiterun General Store", ownerId: null, active: false, targetMarkupBps: 2500 }).onConflictDoNothing();
+      // These two currently traded drinks are not present in the extracted
+      // load-order catalog. Keep them as explicit manual catalog records so
+      // their published rates are searchable and auditable until extraction
+      // gains the server-injected records.
+      await tx.insert(catalogItems).values(MANUAL_MARKET_ITEMS.map((item) => ({ ...item, metadata: { manual: true, reason: "Current Keizaal trade item missing from extracted catalog" } }))).onConflictDoNothing();
       // Imported professions are authoritative for product browsing. Existing
       // manual assignments remain untouched so an administrator can correct a
       // special case without a future catalog activation undoing that work.
@@ -134,23 +144,27 @@ export async function installOpeningReferences() {
       await tx.delete(officialPriceRules).where(and(eq(officialPriceRules.storeId, WHITERUN_STORE_ID), eq(officialPriceRules.sourceLabel, "Temporary price quiz")));
       if (currentRates.length) await tx.insert(officialPriceRules).values(currentRates).onConflictDoNothing();
       const published = resolvePublishedPriceGuide(activeItems);
-      const publishedEffectiveFrom = new Date("2026-08-25T00:00:00Z");
+      const publishedEffectiveFrom = new Date("2026-09-20T00:00:00Z");
       const publishedItemIds = [...new Set(published.rules.map((rule) => rule.itemId))];
       // Re-running the catalog bootstrap refreshes this exact source import,
       // while preserving newer staff-entered rates and market evidence.
       await tx.delete(officialPriceRules).where(and(
         eq(officialPriceRules.storeId, WHITERUN_STORE_ID),
-        like(officialPriceRules.sourceLabel, "Whiterun % (imported 2026-08-25)%")
+        like(officialPriceRules.sourceLabel, "Whiterun % (imported 2026-%)")
+      ));
+      await tx.delete(officialPriceRules).where(and(
+        eq(officialPriceRules.storeId, WHITERUN_STORE_ID),
+        like(officialPriceRules.sourceLabel, "Whiterun General Store operational update (2026-09-20):%")
       ));
       if (publishedItemIds.length) await tx.update(officialPriceRules).set({ effectiveTo: publishedEffectiveFrom }).where(and(
         eq(officialPriceRules.storeId, WHITERUN_STORE_ID),
-        eq(officialPriceRules.side, "customer_pays"),
         inArray(officialPriceRules.itemId, publishedItemIds),
         lt(officialPriceRules.effectiveFrom, publishedEffectiveFrom),
         isNull(officialPriceRules.effectiveTo),
         or(
           eq(officialPriceRules.sourceLabel, "Whiterun General Store price review (2026-08-12)"),
-          like(officialPriceRules.sourceLabel, "Whiterun General Store written rates (2026-08-05):%")
+          like(officialPriceRules.sourceLabel, "Whiterun General Store written rates (2026-08-05):%"),
+          like(officialPriceRules.sourceLabel, "Whiterun % (imported 2026-08-25)%")
         )
       ));
       if (published.rules.length) await tx.insert(officialPriceRules).values(published.rules.map((rule) => ({
@@ -160,7 +174,7 @@ export async function installOpeningReferences() {
       }))).onConflictDoNothing();
       if (unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { unresolved: [...new Set(unresolved)] } });
       if (currentUnresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { source: "2026-08-12 price review", unresolved: [...new Set(currentUnresolved)] } });
-      if (published.unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { source: "2026-08-25 published guides", unresolved: published.unresolved } });
+      if (published.unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { source: "2026-09-20 published guides", unresolved: published.unresolved } });
       await tx.insert(jobs).values({ kind: "market.public_snapshot", payload: { reason: "opening_references_imported" } });
     });
   } finally { await client.end(); }

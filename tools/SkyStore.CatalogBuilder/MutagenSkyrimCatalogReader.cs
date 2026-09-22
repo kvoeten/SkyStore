@@ -28,6 +28,7 @@ internal static class MutagenSkyrimCatalogReader
         }
         var checksum = StableIdentity.LoadOrderContentChecksum(options.DataFolder, plugins);
         var winningRecords = new Dictionary<string, RecordCandidate>(StringComparer.OrdinalIgnoreCase);
+        var allWinningRecords = new Dictionary<string, RecordCandidate>(StringComparer.OrdinalIgnoreCase);
         var winningRecipes = new Dictionary<string, RecordCandidate>(StringComparer.OrdinalIgnoreCase);
         var professionGates = new ProfessionGateCatalog();
 
@@ -44,6 +45,7 @@ internal static class MutagenSkyrimCatalogReader
                 if (string.IsNullOrWhiteSpace(formKey) || string.IsNullOrWhiteSpace(formId)) continue;
                 // FormKey includes the record's origin plugin. Local IDs alone can collide between plugins.
                 var candidate = new RecordCandidate(OriginPlugin(formKey) ?? plugin, plugin, formId, type, record);
+                allWinningRecords[formKey] = candidate;
                 professionGates.Add(formKey, ReadString(record, "EditorID"), ReadTranslatedString(record, "Name"), type);
                 if (InventoryTypes.Contains(type)) winningRecords[formKey] = candidate;
                 if (type == "ConstructibleObject") winningRecipes[formKey] = candidate;
@@ -63,7 +65,7 @@ internal static class MutagenSkyrimCatalogReader
             pair => StableItemKey(pair.Value.IdentityPlugin, pair.Value.FormId),
             StringComparer.OrdinalIgnoreCase);
         var recipes = winningRecipes.Values
-            .Select(candidate => ToRecipe(candidate, winningRecords, itemStableKeys, workbenchOverrides, professionGates))
+            .Select(candidate => ToRecipe(candidate, winningRecords, allWinningRecords, itemStableKeys, workbenchOverrides, professionGates))
             .OrderBy(recipe => recipe.StableKey, StringComparer.Ordinal)
             .ToList();
 
@@ -121,6 +123,7 @@ internal static class MutagenSkyrimCatalogReader
     private static CatalogRecipe ToRecipe(
         RecordCandidate candidate,
         IReadOnlyDictionary<string, RecordCandidate> itemRecords,
+        IReadOnlyDictionary<string, RecordCandidate> allRecords,
         IReadOnlyDictionary<string, string> itemStableKeys,
         IReadOnlyList<WorkbenchOverride> workbenchOverrides,
         ProfessionGateCatalog professionGates)
@@ -129,7 +132,16 @@ internal static class MutagenSkyrimCatalogReader
         var outputStableKey = outputFormKey is not null && itemStableKeys.TryGetValue(outputFormKey, out var resolvedOutput) ? resolvedOutput : null;
         var outputRecord = outputFormKey is not null ? itemRecords.GetValueOrDefault(outputFormKey) : null;
         var unresolved = new List<RecipeMappingIssue>();
-        if (outputStableKey is null) unresolved.Add(new RecipeMappingIssue("output", outputFormKey, "The recipe output is not an inventory-capable catalog item in this load order."));
+        if (outputStableKey is null)
+        {
+            var recordType = outputFormKey is not null && allRecords.TryGetValue(outputFormKey, out var outputCandidate)
+                ? outputCandidate.RecordType
+                : null;
+            var detail = recordType is null
+                ? "The recipe output could not be resolved in this load order."
+                : $"The recipe output is a {recordType} record, which is not an inventory-capable catalog item.";
+            unresolved.Add(new RecipeMappingIssue("output", outputFormKey, detail));
+        }
         var ingredients = new List<CatalogRecipeIngredient>();
         if (ReadProperty(candidate.Record, "Items") is IEnumerable entries)
         {
@@ -304,12 +316,33 @@ internal static class MutagenSkyrimCatalogReader
     {
         if (gate is not null) return new RecipeClassification(gate.Profession, gate.MasteryTier, $"explicit-profession-gate:{gate.EditorId}");
         var id = editorId ?? string.Empty;
+        // Keizaal retains the More Craftable Equipment loom gate on several cloak and cape
+        // recipes. These are genuine tailoring outputs even though their source plugins and
+        // editor IDs predate Keizaal's own KzlTailor* gate naming.
+        if (conditions.Any(condition => condition.Contains("MCE Crafting Loom Enabled", StringComparison.OrdinalIgnoreCase)))
+            return new RecipeClassification("Tailoring", "Novice", "mce-crafting-loom-requirement");
+        // Moon Monk apparel is another installed, source-defined clothing family. Its COBJ
+        // records use the tanning/loom workbench plus the Teach Moon Monk perk instead of a
+        // KzlTailor* mastery gate; keep that perk in the visible requirements and use the
+        // baseline Tailoring tier only because the source does not specify a Keizaal tier.
+        if (candidate.IdentityPlugin.Equals("Kad_MoonMonkRobes.esp", StringComparison.OrdinalIgnoreCase) &&
+            id.Contains("_Clothes", StringComparison.OrdinalIgnoreCase) &&
+            workbench?.Equals("07866A:Skyrim.esm", StringComparison.OrdinalIgnoreCase) == true)
+            return new RecipeClassification("Tailoring", "Novice", "moon-monk-clothing-recipe-pattern");
         if (id.StartsWith("KzlRecipePot_", StringComparison.OrdinalIgnoreCase) || workbench?.Equals("042E6B:Keizaal.esp", StringComparison.OrdinalIgnoreCase) == true)
             return new RecipeClassification("Alchemy", "Novice", "keizaal-alchemy-recipe-pattern");
         if (id.StartsWith("KzlRecipeFood_", StringComparison.OrdinalIgnoreCase) || workbench?.Equals("0A5CB3:Skyrim.esm", StringComparison.OrdinalIgnoreCase) == true)
             return new RecipeClassification("Cooking", "Novice", id.StartsWith("KzlRecipeFood_", StringComparison.OrdinalIgnoreCase) ? "keizaal-cooking-recipe-pattern" : "cooking-pot-workbench");
         if (id.StartsWith("KzlRecipeCharcoalTier1", StringComparison.OrdinalIgnoreCase))
             return new RecipeClassification("Woodworking", "Novice", "keizaal-charcoal-recipe-pattern");
+        // The Skyforge is a distinct vanilla workbench. Keizaal's own companion weapon
+        // recipes use it with recipe-book requirements, rather than the generic forge key.
+        if (id.StartsWith("KzlRecipeWeapon_", StringComparison.OrdinalIgnoreCase) &&
+            outputRecord?.RecordType is "Weapon" or "Ammunition")
+        {
+            var mastery = InferSmithingMastery(conditions, matchingOverrides);
+            return new RecipeClassification("Smithing", mastery.Tier, $"keizaal-weapon-recipe-pattern;{mastery.Evidence}");
+        }
         if (Regex.IsMatch(id, "(MCERecipeClothes|Recipe.*(Clothes|Robe|Tunic|Apron|Dress|Boots|Gloves|Hat|Cowl|Cape|Cloak|Scarf|Mantle|Gaiter))", RegexOptions.IgnoreCase) &&
             (candidate.IdentityPlugin.Contains("Craftable", StringComparison.OrdinalIgnoreCase) || candidate.IdentityPlugin.Contains("CommonClothes", StringComparison.OrdinalIgnoreCase) || candidate.WinningPlugin.Contains("KzlOnlineMods", StringComparison.OrdinalIgnoreCase)))
             return new RecipeClassification("Tailoring", "Novice", "keizaal-tailoring-record-pattern");

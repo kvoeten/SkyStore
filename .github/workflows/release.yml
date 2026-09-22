@@ -55,7 +55,7 @@ jobs:
           npm run typecheck
           npm test
 
-      - name: Read the immutable catalog asset lock
+      - name: Read the immutable render asset lock
         id: catalog
         shell: bash
         run: |
@@ -71,7 +71,7 @@ jobs:
             echo "files=$(jq -er '.files | select(type == "number" and . > 0)' "$lock")"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Download and verify the catalog render bundle
+      - name: Download and verify the immutable render bundle
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -95,7 +95,6 @@ jobs:
           node --input-type=module <<'NODE'
           import { access, readFile } from "node:fs/promises";
           const pairs = [
-            ["catalog/generated/skystore-catalog-current.json", "_catalog-bundle/skystore-catalog-current.json"],
             ["catalog/generated/item-renders/render-targets.json", "_catalog-bundle/item-renders/render-targets.json"],
             ["catalog/generated/item-renders/render-report.json", "_catalog-bundle/item-renders/render-report.json"],
             ["catalog/generated/item-renders/artwork-manifest.json", "_catalog-bundle/item-renders/artwork-manifest.json"]
@@ -112,6 +111,28 @@ jobs:
             const match = /^\/item-renders\/([0-9a-f-]{36}-v[0-9]+-[0-9a-f]{12}\.png)$/.exec(path);
             if (!match) throw new Error(`Unsafe rendered image path ${path}.`);
             await access(`_catalog-bundle/item-renders/images/${match[1]}`);
+          }
+          NODE
+
+      - name: Overlay the tagged catalog data
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Recipe classification can change without changing an item's stable identity or
+          # NIF model. Keep the verified immutable render bundle, but ensure the image always
+          # imports the exact normalized catalog that was tagged for this application release.
+          cp catalog/generated/skystore-catalog-current.json _catalog-bundle/skystore-catalog-current.json
+          cp catalog/generated/skystore-catalog-report.json _catalog-bundle/skystore-catalog-report.json
+          node --input-type=module <<'NODE'
+          import { readFile } from "node:fs/promises";
+          const catalog = JSON.parse(await readFile("catalog/generated/skystore-catalog-current.json", "utf8"));
+          const targets = JSON.parse(await readFile("_catalog-bundle/item-renders/render-targets.json", "utf8"));
+          const items = new Map(catalog.items.map((item) => [item.stableKey, item]));
+          for (const target of targets.targets) {
+            const item = items.get(target.stableKey);
+            if (!item || item.id !== target.id || item.artwork?.modelPath !== target.modelPath) {
+              throw new Error(`Immutable render target no longer matches ${target.stableKey}.`);
+            }
           }
           NODE
 

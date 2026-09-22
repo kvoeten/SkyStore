@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1",
-  "version": "v5-69a647be2499",
-  "generatedAt": "2026-08-13T03:00:51.1528187+00:00",
+  "version": "v6-69a647be2499",
+  "generatedAt": "2026-09-22T03:33:53.3727513+00:00",
   "source": {
     "game": "Skyrim",
-    "release": "SE",
+    "release": "AE",
     "dataFolder": "Data",
     "loadOrderSha256": "69a647be24993cc611033c39bc334ca401653d3574ca07b6838ba109b52b0146"
   },
@@ -338174,12 +338174,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338198,12 +338201,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338222,12 +338228,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338246,12 +338255,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338270,12 +338282,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338294,12 +338309,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338318,12 +338336,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338347,12 +338368,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338376,12 +338400,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338405,12 +338432,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338434,12 +338464,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338463,12 +338496,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338487,13 +338523,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:Dawnstar",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338512,13 +338551,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:Falkreath",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338537,13 +338579,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:Hjaalmarch",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338562,13 +338607,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Markarth"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338587,13 +338635,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Riften"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338612,13 +338663,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Solitude"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338637,13 +338691,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Whiterun"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338662,13 +338719,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Windhelm"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338687,13 +338747,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Winterhold"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338712,13 +338775,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:Dayspring Canyon",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338737,13 +338803,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Winterhold College"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338762,13 +338831,16 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:Dark Brotherhood Sanctuary",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -338787,12 +338859,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -345045,7 +345120,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -372014,12 +372089,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372043,12 +372121,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372072,12 +372153,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372101,12 +372185,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372130,12 +372217,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372164,12 +372254,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372198,12 +372291,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372232,12 +372328,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372266,12 +372365,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372300,12 +372402,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372334,12 +372439,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372368,12 +372476,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372402,12 +372513,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372436,12 +372550,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372470,12 +372587,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372504,12 +372624,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372538,12 +372661,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372572,12 +372698,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372606,12 +372735,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372640,12 +372772,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372674,12 +372809,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372708,12 +372846,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372742,12 +372883,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372776,12 +372920,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372810,12 +372957,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372844,12 +372994,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372878,12 +373031,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372912,12 +373068,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372946,12 +373105,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -372980,12 +373142,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -373014,12 +373179,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -373048,12 +373216,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -373082,12 +373253,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -373116,12 +373290,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -373150,12 +373327,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -373184,12 +373364,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -373218,12 +373401,15 @@
         }
       ],
       "workbenchKey": "07866A:Skyrim.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:perk:Teach Moon Monk Perk"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Kad_MoonMonkRobes.esp"
+        "plugin:Kad_MoonMonkRobes.esp",
+        "classification:moon-monk-clothing-recipe-pattern"
       ]
     },
     {
@@ -374270,7 +374456,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374299,7 +374485,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374354,7 +374540,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374462,7 +374648,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374491,7 +374677,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374546,7 +374732,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374576,7 +374762,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374605,7 +374791,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374634,7 +374820,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -374866,12 +375052,15 @@
         }
       ],
       "workbenchKey": "0F46CE:Skyrim.esm",
+      "profession": "Smithing",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:book:Skyforge Steel Recipe"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Keizaal.esp"
+        "plugin:Keizaal.esp",
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -374900,12 +375089,15 @@
         }
       ],
       "workbenchKey": "0F46CE:Skyrim.esm",
+      "profession": "Smithing",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:book:Skyforge Steel Recipe"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Keizaal.esp"
+        "plugin:Keizaal.esp",
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -374934,12 +375126,15 @@
         }
       ],
       "workbenchKey": "0F46CE:Skyrim.esm",
+      "profession": "Smithing",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:book:Skyforge Steel Recipe"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Keizaal.esp"
+        "plugin:Keizaal.esp",
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -374968,12 +375163,15 @@
         }
       ],
       "workbenchKey": "0F46CE:Skyrim.esm",
+      "profession": "Smithing",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:book:Skyforge Steel Recipe"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Keizaal.esp"
+        "plugin:Keizaal.esp",
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -375002,12 +375200,15 @@
         }
       ],
       "workbenchKey": "0F46CE:Skyrim.esm",
+      "profession": "Smithing",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:book:Skyforge Steel Recipe"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:Keizaal.esp"
+        "plugin:Keizaal.esp",
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -376525,7 +376726,7 @@
       "unresolvedMappings": [],
       "sources": [
         "plugin:Keizaal.esp",
-        "classification:forge-workbench;base-forge-recipe"
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -376565,7 +376766,7 @@
       "unresolvedMappings": [],
       "sources": [
         "plugin:Keizaal.esp",
-        "classification:forge-workbench;base-forge-recipe"
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -376612,7 +376813,7 @@
       "unresolvedMappings": [],
       "sources": [
         "plugin:Keizaal.esp",
-        "classification:forge-workbench;base-forge-recipe"
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -376755,7 +376956,7 @@
       "unresolvedMappings": [],
       "sources": [
         "plugin:Keizaal.esp",
-        "classification:forge-workbench;base-forge-recipe"
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -376890,7 +377091,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -377206,7 +377407,7 @@
       "unresolvedMappings": [],
       "sources": [
         "plugin:Keizaal.esp",
-        "classification:forge-workbench;base-forge-recipe"
+        "classification:keizaal-weapon-recipe-pattern;base-forge-recipe"
       ]
     },
     {
@@ -378702,7 +378903,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E04:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -378742,7 +378943,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E07:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -378782,7 +378983,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E09:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -378822,7 +379023,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E02:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -378862,7 +379063,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E0B:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -378902,7 +379103,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E03:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -378942,7 +379143,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E06:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -378982,7 +379183,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E10:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -379022,7 +379223,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E11:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -379062,7 +379263,7 @@
         {
           "role": "output",
           "sourceFormKey": "000E05:Sentinel.esp",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output is a LeveledItem record, which is not an inventory-capable catalog item."
         }
       ],
       "sources": [
@@ -383519,7 +383720,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383552,7 +383753,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383585,7 +383786,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383618,7 +383819,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383651,7 +383852,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383684,7 +383885,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383717,7 +383918,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383750,7 +383951,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383783,7 +383984,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383816,7 +384017,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383849,7 +384050,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383882,7 +384083,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383915,7 +384116,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383948,7 +384149,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -383981,7 +384182,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384014,7 +384215,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384047,7 +384248,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384080,7 +384281,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384113,7 +384314,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384146,7 +384347,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384179,7 +384380,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384212,7 +384413,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384245,7 +384446,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -384278,7 +384479,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -389300,7 +389501,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -392972,12 +393173,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -392996,12 +393200,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393020,12 +393227,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393044,12 +393254,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393068,12 +393281,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393092,12 +393308,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393116,12 +393335,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393145,12 +393367,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393174,12 +393399,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393203,12 +393431,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393232,12 +393463,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393261,13 +393495,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Vale Sabre Cat Hide"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393286,13 +393523,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Thane of the Pale"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393311,13 +393551,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Thane of Falkreath"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393336,13 +393579,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Thane of Hjaalmarch"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393361,13 +393607,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Thane of the Reach"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393386,13 +393635,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:I Done Got Thaned!",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393411,13 +393663,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Thane of Haafingar"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393436,13 +393691,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:Dragon Rising",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393461,6 +393719,8 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:Joining the Stormcloaks",
         "requires:record:MCE Crafting Loom Enabled",
@@ -393468,7 +393728,8 @@
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393487,13 +393748,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Thane of Winterhold"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393512,13 +393776,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:Bloodline",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393537,13 +393804,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:First Lessons",
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393562,13 +393832,16 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled",
         "requires:record:Sanctuary"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -393587,12 +393860,15 @@
         }
       ],
       "workbenchKey": "6CE000:Update.esm",
+      "profession": "Tailoring",
+      "masteryTier": "Novice",
       "conditions": [
         "requires:record:MCE Crafting Loom Enabled"
       ],
       "unresolvedMappings": [],
       "sources": [
-        "plugin:MoreCraftableEquipment_CloaksandCapes.esp"
+        "plugin:MoreCraftableEquipment_CloaksandCapes.esp",
+        "classification:mce-crafting-loom-requirement"
       ]
     },
     {
@@ -400946,7 +401222,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -406706,7 +406982,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         },
         {
           "role": "ingredients",
@@ -418445,7 +418721,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -420107,7 +420383,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -420161,7 +420437,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -420190,7 +420466,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -420219,7 +420495,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -420973,7 +421249,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [
@@ -426293,7 +426569,7 @@
       "unresolvedMappings": [
         {
           "role": "output",
-          "detail": "The recipe output is not an inventory-capable catalog item in this load order."
+          "detail": "The recipe output could not be resolved in this load order."
         }
       ],
       "sources": [

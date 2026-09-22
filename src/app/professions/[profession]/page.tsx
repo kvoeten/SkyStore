@@ -52,7 +52,7 @@ export default async function ProfessionPage({ params, searchParams }: { params:
     </div>
     }
     </>}
-    {!store && <p className="market-footnote">Material values use public price information and can be up to 7 days behind real market trends.</p>}
+    {!store && <p className="market-footnote">Material cost uses the current published store buying price for each component.</p>}
   </div>;
   return publicView
     ? <AppShell current={`/professions/${profession.slug}`} publicView publicAccount={Boolean(context)} searchPublicView={query.view === "public"}>{content}</AppShell>

@@ -42,7 +42,11 @@ export function estimateMarket(signals: Iterable<MarketSignal>, itemId: string, 
 }
 
 /** The snapshot task is the only public data path. Caller must persist this output, never browser-filter live data. */
-export function publicSnapshotCutoff(now = new Date()): Date { return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000); }
+export function publicSnapshotCutoff(now = new Date()): Date {
+  const configuredDays = Number(process.env.SKYSTORE_PUBLIC_DELAY_DAYS ?? 0);
+  const delayDays = Number.isFinite(configuredDays) ? Math.max(0, configuredDays) : 0;
+  return new Date(now.getTime() - delayDays * 24 * 60 * 60 * 1000);
+}
 
 export function isPublicEvidence(signal: Pick<MarketSignal, "occurrenceAt">, now = new Date()): boolean {
   return signal.occurrenceAt.getTime() <= publicSnapshotCutoff(now).getTime();

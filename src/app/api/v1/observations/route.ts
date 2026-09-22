@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   if (!access) return NextResponse.json({ error: "store_forbidden" }, { status: 403 });
   const approved = mayApprove(access);
   const result = await db.transaction(async (tx) => {
-    const [observation] = await tx.insert(observations).values({ ...command, side: "customer_pays", kind: "seen_listing", occurrenceAt: new Date(), approval: approved ? "approved" : "pending", submittedBy: context.userId }).returning({ id: observations.id, approval: observations.approval });
+    const [observation] = await tx.insert(observations).values({ ...command, sourceLocation: command.sourceLocation || null, side: "customer_pays", kind: "seen_listing", occurrenceAt: command.occurrenceAt ?? new Date(), approval: approved ? "approved" : "pending", submittedBy: context.userId }).returning({ id: observations.id, approval: observations.approval });
     if (!approved) await tx.insert(approvals).values({ storeId: command.storeId, targetType: "observation", targetId: observation.id, requestedBy: context.userId });
     await tx.insert(auditEvents).values({ actorId: context.userId, storeId: command.storeId, action: approved ? "observation.approved" : "observation.submitted", entityType: "observation", entityId: observation.id, after: { side: "customer_pays", kind: "seen_listing" } });
     return observation;

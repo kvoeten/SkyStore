@@ -3,12 +3,13 @@ import { describe, expect, it } from "vitest";
 import { SMITHING_ARMOR_SETS, SMITHING_REFERENCE_QUALITIES } from "@/lib/profession-reference-guides";
 
 describe("smithing reference guide", () => {
-  it("calculates every full-set price from four armor pieces", () => {
+  it("calculates every full-set price from four armor pieces unless a listed set price overrides it", () => {
     for (const set of SMITHING_ARMOR_SETS) {
       expect(set.components.map((component) => component.slot)).toEqual(["Head", "Body", "Hands", "Feet"]);
-      expect(set.totalPrice).toBe(set.components.reduce((sum, component) => sum + component.price, 0));
+      if (set.name !== "Bosmer") expect(set.totalPrice).toBe(set.components.reduce((sum, component) => sum + component.price, 0));
     }
     expect(SMITHING_ARMOR_SETS.find((set) => set.name === "Iron")?.totalPrice).toBe(82);
+    expect(SMITHING_ARMOR_SETS.find((set) => set.name === "Bosmer")?.totalPrice).toBe(1150);
     expect(SMITHING_ARMOR_SETS.find((set) => set.name === "Gilded Ebony")?.totalPrice).toBe(936169);
     const ironArrow = SMITHING_REFERENCE_QUALITIES.find((quality) => quality.quality === "Iron")?.items.find((item) => item.catalogName === "Iron Arrow");
     expect(ironArrow).toMatchObject({ price: 6, priceQuantity: 24 });

@@ -59,7 +59,7 @@ function resolveHighlights(state: Highlights | null, entries: HighlightLink[]): 
 function highestPublicPrice(state: Highlights, entry: HighlightLink): number | null {
   const matches = (candidate: { itemId: string; name: string }) => candidate.itemId === entry.itemId || Boolean(entry.match?.test(candidate.name));
   const estimates = state.estimates.filter(matches).map((estimate) => Number(estimate.upperQuartile ?? estimate.median)).filter(Number.isFinite);
-  const official = state.official.filter(matches).map((rule) => rule.quantity[0] > 0 ? Number(rule.septims[1]) / Number(rule.quantity[0]) : Number.NaN).filter(Number.isFinite);
+  const official = state.official.filter((rule) => rule.side === "customer_pays" && matches(rule)).map((rule) => rule.quantity[0] > 0 ? Number(rule.septims[1]) / Number(rule.quantity[0]) : Number.NaN).filter(Number.isFinite);
   const prices = [...estimates, ...official];
   return prices.length ? Math.max(...prices) : null;
 }

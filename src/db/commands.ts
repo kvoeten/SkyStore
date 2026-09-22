@@ -8,6 +8,7 @@ const occurredAt = z.coerce.date();
 export const receiptLineCommand = z.object({ itemId: uuid, quantity, totalSeptims: septims });
 export const createReceiptCommand = z.object({
   storeId: uuid, direction: z.enum(["store_purchase", "store_sale"]), notes: z.string().trim().max(10_000).optional(),
+  occurrenceAt: occurredAt.optional(),
   lines: z.array(receiptLineCommand).min(1).max(100)
 }).superRefine((input, context) => {
   const items = new Set<string>();
@@ -18,16 +19,19 @@ export const createReceiptCommand = z.object({
 });
 
 export const submitObservationCommand = z.object({
-  storeId: uuid, itemId: uuid, quantity, totalSeptims: septims
+  storeId: uuid, itemId: uuid, quantity, totalSeptims: septims,
+  sourceLocation: z.string().trim().max(180).optional(), occurrenceAt: occurredAt.optional()
 });
 
-// A public report intentionally has no storeId, location choice, or occurrence
-// override. It is always a street-price report, is queued for platform review,
-// and uses its submission time.
+// Public reports never affect stock. Signed-in contributors publish immediately;
+// anonymous visitors can contribute through the same form for review.
 export const submitPublicMarketReportCommand = z.object({
   itemId: uuid,
   quantity,
   totalSeptims: septims,
+  locationType: z.enum(["store_sale", "street_sale"]).default("street_sale"),
+  sourceLocation: z.string().trim().max(180).optional(),
+  occurrenceAt: occurredAt.optional(),
   note: z.string().trim().max(10_000).optional()
 }).strict();
 

@@ -11,7 +11,7 @@ describe("public market report command", () => {
   it.each([
     { quantity: 0, totalSeptims: 2 },
     { quantity: 1, totalSeptims: -1 },
-    { quantity: 1, totalSeptims: 1, locationType: "store_sale" },
+    { quantity: 1, totalSeptims: 1, locationType: "not-a-place" },
     { quantity: 1, totalSeptims: 1, displayName: "Aela of Whiterun" }
   ])("rejects invalid report values", (input) => {
     expect(submitPublicMarketReportCommand.safeParse({ itemId, ...input }).success).toBe(false);

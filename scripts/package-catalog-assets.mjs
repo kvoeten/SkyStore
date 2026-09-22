@@ -37,7 +37,19 @@ const [catalog, artwork, targets, renderReport] = await Promise.all([
   readFile(renderReportPath, "utf8").then(JSON.parse),
 ]);
 const imageNames = (await readdir(imagesDirectory)).filter((name) => name.endsWith(".png")).sort();
-if (catalog.version !== targets.catalogVersion || catalog.version !== renderReport.catalogVersion) throw new Error("Catalog and render metadata versions differ.");
+if (targets.catalogVersion !== renderReport.catalogVersion) throw new Error("Render target and report versions differ.");
+// Recipe-only catalog revisions can retain a prior render bundle when each prior render still
+// names the same immutable item and source model. This avoids re-rendering unchanged NIFs just
+// because recipe classification changed, while rejecting model or item identity drift.
+if (catalog.version !== targets.catalogVersion) {
+  const currentItems = new Map(catalog.items.map((item) => [item.stableKey, item]));
+  for (const target of targets.targets) {
+    const current = currentItems.get(target.stableKey);
+    if (!current || current.id !== target.id || current.artwork?.modelPath !== target.modelPath) {
+      throw new Error(`Rendered target ${target.stableKey} does not match the current catalog item/model.`);
+    }
+  }
+}
 if (renderReport.renderedCount !== renderReport.targetCount || renderReport.renderedCount !== imageNames.length) throw new Error("Not every selected item has a rendered PNG.");
 if (Object.keys(artwork).length !== imageNames.length) throw new Error("Artwork manifest count differs from the rendered PNG count.");
 for (const [stableKey, webPath] of Object.entries(artwork)) {

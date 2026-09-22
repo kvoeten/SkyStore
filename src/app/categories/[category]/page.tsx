@@ -14,7 +14,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
   if (!category) notFound();
   const query = await searchParams;
   const context = await getAccessContext();
-  const requestedPublicView = query.view === "public" || !context;
+  const requestedPublicView = query.view !== "private";
   const store = requestedPublicView ? null : await resolveStaffPageStore(query.storeId);
   const publicView = requestedPublicView || !store;
   const items = await getMarketCategoryItems(category.slug, store?.id);
@@ -23,13 +23,13 @@ export default async function CategoryPage({ params, searchParams }: { params: P
     <PageHeading eyebrow="QUICK CATEGORY" title={category.label}><p>{category.description}</p></PageHeading>
     <section className="panel">
       <div className="panel-head"><h2>Items</h2><Status kind="good">{items.length} entries</Status></div>
-      <div className="table-wrap"><table><thead><tr><th>Item</th>{store && <th>Store buying price</th>}<th>Store Price</th></tr></thead><tbody>{items.map((item) => <tr key={item.itemId}>
+      <div className="table-wrap"><table><thead><tr><th>Item</th><th>Store buying price</th><th>Store selling price</th></tr></thead><tbody>{items.map((item) => <tr key={item.itemId}>
         <td><a className="item-name" href={itemHref(item.itemId)}><img src={item.imageUrl} alt="" width="38" height="38"/><span>{item.name}{item.variantCount > 1 && <small>{item.variantCount} collapsed variants</small>}</span></a></td>
-        {store && <td>{item.buyingPrice == null ? "Not priced" : formatGold(item.buyingPrice)}</td>}
+        <td>{item.buyingPrice == null ? "Not priced" : formatGold(item.buyingPrice)}</td>
         <td>{item.sellingPrice == null ? "Not priced" : formatGold(item.sellingPrice)}</td>
       </tr>)}</tbody></table></div>
     </section>
-    {!store && <p className="market-footnote">Public price information can be up to 7 days behind on real market trends. Visit your local store for up-to-date pricing information.</p>}
+    {!store && <p className="market-footnote">Store selling is what customers pay; store buying is what the store pays for stock.</p>}
   </div>;
   return publicView
     ? <AppShell current={`/categories/${category.slug}`} publicView publicAccount={Boolean(context)} searchPublicView={query.view === "public"}>{content}</AppShell>

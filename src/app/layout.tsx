@@ -5,7 +5,7 @@ import "./account.css";
 
 export const metadata: Metadata = {
   title: "SkyStore · Merchant Ledger",
-  description: "Private merchant records and delayed market intelligence.",
+  description: "Merchant price records and public market intelligence.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

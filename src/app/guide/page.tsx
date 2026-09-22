@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export default async function GuidePage({ searchParams }: { searchParams: Promise<{ q?: string; storeId?: string; view?: string }> }) {
   const { q, storeId, view } = await searchParams;
-  const forcePublic = view === "public";
+  const forcePublic = view !== "private";
   let access: Awaited<ReturnType<typeof getAccessContext>> = null;
   let authFailed = false;
   try { access = await getAccessContext(); } catch { authFailed = true; }
@@ -32,7 +32,7 @@ export default async function GuidePage({ searchParams }: { searchParams: Promis
     </div></AppShell>;
   }
   return <AppShell current="/guide" publicView publicAccount={Boolean(access) || authFailed} searchPublicView={forcePublic}><div className="page">
-    <PageHeading eyebrow="SKYSTORE" title="Public price guide" actions={<Link className="button public-report-button" href="/guide/report-price">REPORT PRICE</Link>}><p className="lede">Published Store Prices, with approved reports adding trend data over time.</p></PageHeading>
-    <div className="grid guide-grid"><section className="panel"><DelayedMarketTable query={q}/><p className="market-footnote">Public price information can be up to 7 days behind on real market trends. Visit your local store for up-to-date pricing information.</p></section><aside className="stack"><PublicMarketHighlights/><section className="card"><p className="eyebrow">PRICE GUIDE</p><p>Prices shown are customer-facing Store Prices.</p></section></aside></div>
+    <PageHeading eyebrow="SKYSTORE" title="Price guide" actions={<Link className="button public-report-button" href="/guide/report-price">REPORT PRICE</Link>}><p className="lede">Current official store prices, buying rates, and approved price reports.</p></PageHeading>
+    <div className="grid guide-grid"><section className="panel"><DelayedMarketTable query={q}/><p className="market-footnote">Store selling is what customers pay. Store buying is what the store pays for stock. Material cost is shown on craftable item pages.</p></section><aside className="stack"><PublicMarketHighlights/><section className="card"><p className="eyebrow">PRICE GUIDE</p><p>All published prices and approved reports are public.</p></section></aside></div>
   </div></AppShell>;
 }

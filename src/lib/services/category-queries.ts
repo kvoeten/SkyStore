@@ -39,10 +39,20 @@ export async function getMarketCategoryItems(category: MarketCategorySlug, store
     }
   } else {
     const overview = await getPublicMarketOverview();
-    for (const rule of overview?.official ?? []) if (rule.quantity[0] > 0) prices.set(rule.itemId, { buying: null, selling: rule.septims[1] / rule.quantity[0] });
+    for (const rule of overview?.official ?? []) if (rule.quantity[0] > 0) {
+      const current = prices.get(rule.itemId) ?? { buying: null, selling: null };
+      if (rule.side === "store_pays") current.buying = rule.septims[1] / rule.quantity[0];
+      else current.selling = rule.septims[1] / rule.quantity[0];
+      prices.set(rule.itemId, current);
+    }
     for (const estimate of overview?.estimates ?? []) {
       const selling = Number(estimate.upperQuartile ?? estimate.median);
-      if (Number.isFinite(selling)) prices.set(estimate.itemId, { buying: null, selling });
+      if (Number.isFinite(selling)) {
+        const current = prices.get(estimate.itemId) ?? { buying: null, selling: null };
+        if (estimate.side === "store_pays") current.buying = selling;
+        else current.selling = selling;
+        prices.set(estimate.itemId, current);
+      }
     }
   }
 

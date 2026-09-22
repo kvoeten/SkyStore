@@ -113,7 +113,7 @@ export const SMITHING_ARMOR_SETS: SmithingArmorSet[] = [
   armorSet("Orcish Studded", "Expert", "Orcish Hide Helmet", "Orcish Studded Armor", "Orcish Hide Gauntlets", "Orcish Hide Boots"),
   armorSet("Elven", "Expert", "Elven Helmet", "Elven Armor", "Elven Gauntlets", "Elven Boots"),
   armorSet("Gilded Elven", "Expert", "Elven Helmet", "Elven Gilded Armor", "Elven Gauntlets", "Elven Boots"),
-  armorSet("Bosmer", "Expert", "Bosmer Hood", "Bosmer Armor", "Bosmer Gloves", "Bosmer Boots"),
+  armorSet("Bosmer", "Expert", "Bosmer Hood", "Bosmer Armor", "Bosmer Gloves", "Bosmer Boots", 1150),
   armorSet("Bosmer Plate", "Expert", "Bosmer Plate Helmet", "Bosmer Plate Armor", "Bosmer Plate Gauntlets", "Bosmer Plate Boots"),
   armorSet("Dwarven", "Expert", "Dwarven Helmet", "Dwarven Armor", "Dwarven Gauntlets", "Dwarven Boots"),
   armorSet("Glass", "Master", "Glass Helmet", "Glass Armor", "Glass Gauntlets", "Glass Boots"),
@@ -140,11 +140,11 @@ function smithingItem(qualityName: string, sourceName: string, price: number): S
   return { name: catalogName, catalogName, price, priceQuantity: sourceName === "Arrow bundle" ? 24 : 1 };
 }
 
-function armorSet(name: string, tier: SmithingTier, head: string, body: string, hands: string, feet: string): SmithingArmorSet {
+function armorSet(name: string, tier: SmithingTier, head: string, body: string, hands: string, feet: string, listedSetPrice?: number): SmithingArmorSet {
   const components = ([
     ["Head", head], ["Body", body], ["Hands", hands], ["Feet", feet],
   ] as const).map(([slot, catalogName]) => ({ slot, catalogName, price: requiredReferencePrice(catalogName) }));
-  return { name, tier, components, totalPrice: components.reduce((sum, component) => sum + component.price, 0) };
+  return { name, tier, components, totalPrice: listedSetPrice ?? components.reduce((sum, component) => sum + component.price, 0) };
 }
 
 function miningTier(tier: SmithingTier, source: string): MiningReferenceTier {

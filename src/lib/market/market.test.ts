@@ -25,7 +25,7 @@ describe("market estimation", () => {
     ];
     const estimate = estimateMarket(signals, "ore", "store_pays", now);
     expect(estimate.median).toBe(5); expect(estimate.storeCount).toBe(2); expect(estimate.anonymized).toBe(false);
-    expect(publicSnapshotCutoff(now).toISOString()).toBe("2026-07-29T00:00:00.000Z");
+    expect(publicSnapshotCutoff(now).toISOString()).toBe("2026-08-05T00:00:00.000Z");
   });
 });
 

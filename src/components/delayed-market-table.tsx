@@ -7,9 +7,9 @@ import { isMarketGuideBrowseCandidate, prioritizeMarketGuideRows } from "@/lib/m
 import { formatGold, formatHighestUnitGold } from "@/lib/money";
 
 type Trend = { direction: "up" | "down" | "flat" | "new"; percent: number | null; points?: { at: string; customerPays: number | null }[] };
-type Row = { id: string; name: string; category?: string; imageUrl?: string | null; customerPays?: string; unitPrice?: number; catalogMatch?: boolean; trend?: Trend; hasPrice: boolean; lastChangedAt?: string | null; lastSoldAt?: string | null };
-type Official = { itemId: string; name: string; side: "customer_pays"; septims: [number, number]; quantity: [number, number]; effectiveFrom?: string };
-type Estimate = { itemId: string; name: string; side: "customer_pays"; lowerQuartile: number | null; upperQuartile: number | null; newestEvidenceAt?: string | null };
+type Row = { id: string; name: string; category?: string; imageUrl?: string | null; customerPays?: string; storePays?: string; unitPrice?: number; catalogMatch?: boolean; trend?: Trend; hasPrice: boolean; lastChangedAt?: string | null; lastSoldAt?: string | null };
+type Official = { itemId: string; name: string; side: "customer_pays" | "store_pays"; septims: [number, number]; quantity: [number, number]; effectiveFrom?: string };
+type Estimate = { itemId: string; name: string; side: "customer_pays" | "store_pays"; lowerQuartile: number | null; upperQuartile: number | null; newestEvidenceAt?: string | null };
 type CatalogItem = { id: string; name: string; category: string; imageUrl?: string | null; familyItemIds?: string[] };
 type MarketPayload = { sourceCutoffAt: string; official?: Official[]; estimates?: Estimate[]; images?: Record<string, string>; trends?: Record<string, Trend> };
 
@@ -26,7 +26,8 @@ function normalize(payload: MarketPayload, catalogMatches: CatalogItem[] = []): 
     const itemId = canonical.get(rule.itemId) ?? rule.itemId;
     const row = rows.get(itemId) ?? { id: itemId, name: rule.name, hasPrice: false };
     const unitPrice = rule.quantity[0] > 0 ? rule.septims[1] / rule.quantity[0] : 0;
-    if (row.unitPrice == null || unitPrice > row.unitPrice) { row.customerPays = bundle(rule); row.unitPrice = unitPrice; }
+    if (rule.side === "store_pays") row.storePays = bundle(rule);
+    else if (row.unitPrice == null || unitPrice > row.unitPrice) { row.customerPays = bundle(rule); row.unitPrice = unitPrice; }
     if (!row.lastChangedAt || (rule.effectiveFrom && Date.parse(rule.effectiveFrom) > Date.parse(row.lastChangedAt))) row.lastChangedAt = rule.effectiveFrom;
     row.imageUrl ??= payload.images?.[rule.itemId];
     row.hasPrice = true;
@@ -36,9 +37,10 @@ function normalize(payload: MarketPayload, catalogMatches: CatalogItem[] = []): 
     const itemId = canonical.get(estimate.itemId) ?? estimate.itemId;
     const row = rows.get(itemId) ?? { id: itemId, name: estimate.name, hasPrice: false };
     row.imageUrl ??= payload.images?.[estimate.itemId];
-    if (estimate.upperQuartile != null && (row.unitPrice == null || estimate.upperQuartile > row.unitPrice)) { row.customerPays = formatGold(estimate.upperQuartile); row.unitPrice = estimate.upperQuartile; }
+    if (estimate.side === "store_pays") row.storePays = estimate.upperQuartile == null ? row.storePays : formatGold(estimate.upperQuartile);
+    else if (estimate.upperQuartile != null && (row.unitPrice == null || estimate.upperQuartile > row.unitPrice)) { row.customerPays = formatGold(estimate.upperQuartile); row.unitPrice = estimate.upperQuartile; }
     rows.set(itemId, row);
-    row.hasPrice = Boolean(row.customerPays);
+    row.hasPrice = Boolean(row.customerPays || row.storePays);
     row.lastSoldAt = estimate.newestEvidenceAt;
     if (!row.lastChangedAt || (estimate.newestEvidenceAt && Date.parse(estimate.newestEvidenceAt) > Date.parse(row.lastChangedAt))) row.lastChangedAt = estimate.newestEvidenceAt;
   }
@@ -92,7 +94,7 @@ export function DelayedMarketTable({ query = "" }: { query?: string }) {
 
   if (state.status === "loading") return <div className="notice" role="status"><b>Opening the market ledger…</b><span>Loading published prices.</span></div>;
   if (state.status === "error") return <div className="notice error" role="alert"><b>Guide unavailable</b><span>{state.message}</span></div>;
-  if (state.status === "empty") return <div className="notice" role="status"><b>No delayed Store Prices yet</b><span>The next daily snapshot will include the published price guides.</span></div>;
+  if (state.status === "empty") return <div className="notice" role="status"><b>No prices published yet</b><span>Current official prices will appear here as soon as they are added.</span></div>;
   const visibleRows = query.trim() ? state.rows.filter((row) => row.catalogMatch || `${row.name} ${row.category ?? ""}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())) : state.rows;
-  return visibleRows.length ? <div className="table-wrap"><table className="market-guide-table"><thead><tr><th>Item</th><th>Store Price</th><th>Trend</th></tr></thead><tbody>{visibleRows.map((row) => <tr key={row.id}><td><a href={`/guide/items/${row.id}`} className="item-name">{row.imageUrl ? <img src={row.imageUrl} alt="" width="38" height="38" style={{ flex: "0 0 auto", objectFit: "contain", padding: 4, border: "1px solid #9f7b42", borderRadius: 2, background: "#252b33" }}/> : <span className="item-dot">◇</span>}<span>{row.name}<br/><small>{row.category ?? "Market item"}</small></span></a></td><td>{row.customerPays ?? "Not yet priced"}</td><td>{row.customerPays ? trendVisual(row.trend) : "—"}</td></tr>)}</tbody></table></div> : <div className="empty"><b>No matching items.</b><p>Try another item name or category.</p></div>;
+  return visibleRows.length ? <div className="table-wrap"><table className="market-guide-table"><thead><tr><th>Item</th><th>Store selling</th><th>Store buying</th><th>Trend</th></tr></thead><tbody>{visibleRows.map((row) => <tr key={row.id}><td><a href={`/guide/items/${row.id}`} className="item-name">{row.imageUrl ? <img src={row.imageUrl} alt="" width="38" height="38" style={{ flex: "0 0 auto", objectFit: "contain", padding: 4, border: "1px solid #9f7b42", borderRadius: 2, background: "#252b33" }}/> : <span className="item-dot">◇</span>}<span>{row.name}<br/><small>{row.category ?? "Market item"}</small></span></a></td><td>{row.customerPays ?? "Not yet priced"}</td><td>{row.storePays ?? "Not yet priced"}</td><td>{row.customerPays ? trendVisual(row.trend) : "—"}</td></tr>)}</tbody></table></div> : <div className="empty"><b>No matching items.</b><p>Try another item name or category.</p></div>;
 }

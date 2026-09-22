@@ -161,6 +161,8 @@ export const publicMarketReports = pgTable("public_market_reports", {
   quantity: integer("quantity").notNull(),
   totalSeptims: integer("total_septims").notNull(),
   locationType: publicMarketReportLocation("location_type").notNull(),
+  sourceLocation: varchar("source_location", { length: 180 }),
+  occurrenceAt: timestamp("occurrence_at", { withTimezone: true }).notNull().defaultNow(),
   note: text("note"),
   // Authenticated contributors retain their user identity. Anonymous public
   // submissions deliberately leave this null and are still fully reviewable.
@@ -176,7 +178,7 @@ export const publicMarketReports = pgTable("public_market_reports", {
   check("public_market_report_positive_quantity", sql`${t.quantity} > 0`),
   check("public_market_report_nonnegative_total", sql`${t.totalSeptims} >= 0`),
   index("public_market_reports_queue_idx").on(t.status, t.createdAt),
-  index("public_market_reports_item_time_idx").on(t.itemId, t.locationType, t.createdAt),
+  index("public_market_reports_item_time_idx").on(t.itemId, t.locationType, t.occurrenceAt),
   index("public_market_reports_submitter_idx").on(t.submittedBy, t.createdAt)
 ]);
 

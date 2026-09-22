@@ -44,6 +44,11 @@ function completedReturn(returnTo: string, pending: boolean) {
   return `${returnTo}${returnTo.includes("?") ? "&" : "?"}recorded=${pending ? "pending" : "saved"}`;
 }
 
+function localTimestamp(now = new Date()) {
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+}
+
 export function ReceiptForm({ direction, storeId, initialItemId = "", returnTo }: { direction: "purchase" | "sale"; storeId: string; initialItemId?: string; returnTo?: string }) {
   const router = useRouter();
   const isPurchase = direction === "purchase";
@@ -64,7 +69,7 @@ export function ReceiptForm({ direction, storeId, initialItemId = "", returnTo }
     const response = await fetch("/api/v1/receipts", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ storeId, direction: isPurchase ? "store_purchase" : "store_sale", notes: String(form.get("notes") || "") || undefined, lines: lines.map(({ itemId, quantity, totalSeptims }) => ({ itemId, quantity, totalSeptims })) })
+      body: JSON.stringify({ storeId, direction: isPurchase ? "store_purchase" : "store_sale", occurrenceAt: String(form.get("occurrenceAt") || "") || undefined, notes: String(form.get("notes") || "") || undefined, lines: lines.map(({ itemId, quantity, totalSeptims }) => ({ itemId, quantity, totalSeptims })) })
     });
     const payload = await response.json().catch(() => ({})) as { status?: string; error?: string };
     setSubmitting(false);
@@ -82,13 +87,14 @@ export function ReceiptForm({ direction, storeId, initialItemId = "", returnTo }
   }
 
   return <form className="panel" onSubmit={submit}>
-    <div className="notice"><b>{isPurchase ? "Store purchase" : "Store sale"}</b><span>SkyStore records your account and the current time automatically.</span></div>
+    <div className="notice"><b>{isPurchase ? "Store purchase" : "Store sale"}</b><span>Your account is recorded automatically. Adjust the price time only when logging an earlier trade.</span></div>
     <div className="span-all"><p className="eyebrow">ITEMS</p>{lines.map((line) => <div className="receipt-line" key={line.key}>
       <Field label="Item"><CatalogPicker value={line.itemId} onChange={(itemId) => updateLine(line.key, { itemId })}/></Field>
       <Field label="Quantity"><input type="number" min="1" value={line.quantity} onChange={(event) => updateLine(line.key, { quantity: Number(event.target.value) })} required /></Field>
       <Field label={isPurchase ? "Store paid (g)" : "Customer paid (g)"}><input type="number" min="0" value={line.totalSeptims} onChange={(event) => updateLine(line.key, { totalSeptims: Number(event.target.value) })} required /></Field>
       <button className="outline" type="button" disabled={lines.length === 1} onClick={() => setLines((current) => current.filter((candidate) => candidate.key !== line.key))}>Remove</button>
     </div>)}<button className="text-button" type="button" onClick={() => setLines((current) => [...current, blankLine(crypto.randomUUID())])}>+ Add another item</button></div>
+    <div className="grid form-grid" style={{ marginTop: 16 }}><Field label="Price time"><input name="occurrenceAt" type="datetime-local" defaultValue={localTimestamp()} required /></Field></div>
     <details style={{ marginTop: 16 }}><summary>Add a note</summary><Field label="Note"><textarea name="notes" placeholder="Optional store-private note" /></Field></details>
     <div className="button-row" style={{ marginTop: 16 }}><button className="button" type="submit" disabled={submitting}>{submitting ? "Recording…" : isPurchase ? "Record purchase" : "Record sale"}</button></div>
     <SubmissionStatus status={status} />
@@ -111,7 +117,7 @@ export function ObservationForm({ storeId, initialItemId = "", returnTo }: { sto
     const response = await fetch("/api/v1/observations", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ storeId, itemId, quantity: Number(form.get("quantity")), totalSeptims: Number(form.get("totalSeptims")) })
+      body: JSON.stringify({ storeId, itemId, quantity: Number(form.get("quantity")), totalSeptims: Number(form.get("totalSeptims")), sourceLocation: String(form.get("sourceLocation") || "") || undefined, occurrenceAt: String(form.get("occurrenceAt") || "") || undefined })
     });
     const payload = await response.json().catch(() => ({})) as { approval?: string; error?: string };
     setSubmitting(false);
@@ -128,13 +134,14 @@ export function ObservationForm({ storeId, initialItemId = "", returnTo }: { sto
   }
 
   return <form className="panel" onSubmit={submit}>
-    <div className="notice"><b>Street price</b><span>Recorded automatically as the traded value at the current time.</span></div>
+    <div className="notice"><b>Street price</b><span>Record the value you saw. Add a location and adjust the time only when needed.</span></div>
     <div className="grid receipt-line">
       <Field label="Item"><CatalogPicker key={pickerKey} value={itemId} onChange={setItemId}/></Field>
       <Field label="Quantity"><input name="quantity" type="number" min="1" defaultValue="1" required /></Field>
       <Field label="Total price (g)"><input name="totalSeptims" type="number" min="0" required /></Field>
       <button className="button" type="submit" disabled={submitting || !itemId}>{submitting ? "Recording…" : "Record street price"}</button>
     </div>
+    <div className="grid form-grid" style={{ marginTop: 12 }}><Field label="Location"><input name="sourceLocation" maxLength={180} placeholder="Optional, e.g. Whiterun market" /></Field><Field label="Price time"><input name="occurrenceAt" type="datetime-local" defaultValue={localTimestamp()} required /></Field></div>
     <SubmissionStatus status={status} />
     <p className="fine">Street prices never change stock. Verified clerks publish immediately; other submissions go to the approval queue.</p>
   </form>;

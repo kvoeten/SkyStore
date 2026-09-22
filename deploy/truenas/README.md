@@ -5,7 +5,7 @@ Each GitHub release contains two prepared configurations:
 - `skystore-truenas-auto.yaml` uses the permanent `stable` image channel. Install it once, keep the same YAML and secrets, and use TrueNAS's normal **Update** action whenever it detects a new SkyStore image.
 - `skystore-truenas.yaml` pins one exact image digest for manual, immutable deployments.
 
-The automatic configuration is recommended for the live SkyStore server. Stable releases move the `stable` tag only after the release workflow has validated the application, hydrated the catalog assets, published the image, and successfully pulled and inspected that image.
+The automatic configuration is recommended for the live SkyStore server. Stable releases move the `stable` tag only after the release workflow has validated the application, hydrated the immutable item-render bundle, overlaid the exact tagged catalog data, published the image, and successfully pulled and inspected that image.
 
 ## Storage
 
