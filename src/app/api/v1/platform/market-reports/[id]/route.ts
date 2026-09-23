@@ -29,7 +29,7 @@ export async function PATCH(request: NextRequest, contextValue: { params: Promis
       .where(and(eq(publicMarketReports.id, report.id), eq(publicMarketReports.status, "pending")));
     await tx.update(approvals).set({ decision: parsed.data.decision, reviewedBy: context.userId, reviewedAt, note: parsed.data.note })
       .where(eq(approvals.id, approval.id));
-    if (parsed.data.decision === "approved" && report.locationType === "store_sale") {
+    if (parsed.data.decision === "approved") {
       await tx.insert(jobs).values({ kind: "market.public_snapshot", payload: { reason: "public_market_report_approved", reportId: report.id } });
     }
     await tx.insert(auditEvents).values({
@@ -37,7 +37,7 @@ export async function PATCH(request: NextRequest, contextValue: { params: Promis
       action: `public_market_report.${parsed.data.decision}`,
       entityType: "public_market_report",
       entityId: report.id,
-      after: { approvalId: approval.id, decision: parsed.data.decision, locationType: report.locationType }
+      after: { approvalId: approval.id, decision: parsed.data.decision, side: report.side, locationType: report.locationType }
     });
     return { id: report.id, status: parsed.data.decision };
   }).catch((error: unknown) => ({ error: error instanceof Error ? error.message : "market_report_review_failed" }));

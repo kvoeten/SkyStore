@@ -91,7 +91,7 @@ export function ReceiptForm({ direction, storeId, initialItemId = "", returnTo }
     <div className="span-all"><p className="eyebrow">ITEMS</p>{lines.map((line) => <div className="receipt-line" key={line.key}>
       <Field label="Item"><CatalogPicker value={line.itemId} onChange={(itemId) => updateLine(line.key, { itemId })}/></Field>
       <Field label="Quantity"><input type="number" min="1" value={line.quantity} onChange={(event) => updateLine(line.key, { quantity: Number(event.target.value) })} required /></Field>
-      <Field label={isPurchase ? "Store paid (g)" : "Customer paid (g)"}><input type="number" min="0" value={line.totalSeptims} onChange={(event) => updateLine(line.key, { totalSeptims: Number(event.target.value) })} required /></Field>
+      <Field label={isPurchase ? "Buying price (g)" : "Selling price (g)"}><input type="number" min="0" value={line.totalSeptims} onChange={(event) => updateLine(line.key, { totalSeptims: Number(event.target.value) })} required /></Field>
       <button className="outline" type="button" disabled={lines.length === 1} onClick={() => setLines((current) => current.filter((candidate) => candidate.key !== line.key))}>Remove</button>
     </div>)}<button className="text-button" type="button" onClick={() => setLines((current) => [...current, blankLine(crypto.randomUUID())])}>+ Add another item</button></div>
     <div className="grid form-grid" style={{ marginTop: 16 }}><Field label="Price time"><input name="occurrenceAt" type="datetime-local" defaultValue={localTimestamp()} required /></Field></div>

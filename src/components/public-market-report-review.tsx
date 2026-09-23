@@ -8,6 +8,7 @@ type Report = {
   itemName: string;
   quantity: number;
   totalSeptims: number;
+  side: "store_pays" | "customer_pays";
   locationType: "store_sale" | "street_sale";
   sourceLocation?: string | null;
   occurrenceAt: string;
@@ -38,7 +39,7 @@ export function PublicMarketReportReview() {
     <div className="panel-head"><div><p className="eyebrow">PUBLIC CONTRIBUTIONS</p><h2>Market report review</h2></div><span className="status pending">{reports ? `${reports.length} pending` : "Loading…"}</span></div>
     <p className="fine">These reports never affect stock. Once approved, they become public price evidence at their reported time and location.</p>
     {reports?.length ? <ul className="list">{reports.map((report) => <li key={report.id}>
-      <span><b>{report.itemName}</b><br/><small>{formatGold(report.totalSeptims / report.quantity)} · {report.quantity} units · {formatGold(report.totalSeptims)} total · {report.locationType === "store_sale" ? "Store sale" : "Street sale"}{report.sourceLocation ? ` · ${report.sourceLocation}` : ""}</small><br/><small>{report.contributorDisplayName}{report.contributorDiscordName ? ` · Discord: ${report.contributorDiscordName}${report.contributorDiscordId ? ` (${report.contributorDiscordId})` : ""}` : " · Anonymous submission"} · {new Date(report.occurrenceAt).toLocaleString()}</small>{report.note ? <><br/><small>{report.note}</small></> : null}</span>
+      <span><b>{report.itemName}</b><br/><small>{formatGold(report.totalSeptims / report.quantity)} · {report.quantity} units · {formatGold(report.totalSeptims)} total · {report.locationType === "street_sale" ? "Street value" : report.side === "customer_pays" ? "Store selling price" : "Store buying price"}{report.sourceLocation ? ` · ${report.sourceLocation}` : ""}</small><br/><small>{report.contributorDisplayName}{report.contributorDiscordName ? ` · Discord: ${report.contributorDiscordName}${report.contributorDiscordId ? ` (${report.contributorDiscordId})` : ""}` : " · Anonymous submission"} · {new Date(report.occurrenceAt).toLocaleString()}</small>{report.note ? <><br/><small>{report.note}</small></> : null}</span>
       <span className="button-row"><button className="outline" type="button" disabled={busy === report.id} onClick={() => review(report.id, "rejected")}>Reject</button><button className="button" type="button" disabled={busy === report.id} onClick={() => review(report.id, "approved")}>Approve</button></span>
     </li>)}</ul> : reports ? <div className="empty"><h3>No public reports pending.</h3><p>New public reports will appear here for platform review.</p></div> : <p>Loading reports…</p>}
     {message ? <p className="notice">{message}</p> : null}

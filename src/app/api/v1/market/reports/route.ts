@@ -7,6 +7,12 @@ import { getAccessContext } from "@/lib/authorization";
 import { getTailoringPriceFamily } from "@/lib/services/recipe-queries";
 import { marketRegion } from "@/lib/market/holds";
 
+const reportMarket = {
+  street_value: { side: "customer_pays" as const, locationType: "street_sale" as const },
+  store_buying_price: { side: "store_pays" as const, locationType: "store_sale" as const },
+  store_selling_price: { side: "customer_pays" as const, locationType: "store_sale" as const }
+};
+
 /**
  * A public contribution is never a receipt or an observation. Signed-in
  * contributors publish immediately; anonymous visitors submit for review.
@@ -17,6 +23,7 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ error: "invalid_market_report", issues: parsed.error.issues }, { status: 400 });
 
   const command = parsed.data;
+  const market = reportMarket[command.priceType];
   const priceFamily = await getTailoringPriceFamily(command.itemId);
   const result = await db.transaction(async (tx) => {
     const [item] = await tx.select({ id: catalogItems.id }).from(catalogItems)
@@ -33,7 +40,8 @@ export async function POST(request: NextRequest) {
       itemId: priceFamily.canonicalItemId,
       quantity: command.quantity,
       totalSeptims: command.totalSeptims,
-      locationType: command.locationType,
+      side: market.side,
+      locationType: market.locationType,
       sourceLocation: marketRegion(command.sourceLocation),
       occurrenceAt: occurredAt,
       note: command.note,
@@ -48,7 +56,7 @@ export async function POST(request: NextRequest) {
       action: "public_market_report.submitted",
       entityType: "public_market_report",
       entityId: report.id,
-      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: command.locationType, sourceLocation: marketRegion(command.sourceLocation), occurrenceAt: occurredAt.toISOString(), contributorDisplayName, authenticated: Boolean(context), status }
+      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, priceType: command.priceType, side: market.side, locationType: market.locationType, sourceLocation: marketRegion(command.sourceLocation), occurrenceAt: occurredAt.toISOString(), contributorDisplayName, authenticated: Boolean(context), status }
     });
     return report;
   }).catch((error: unknown) => ({ error: error instanceof Error ? error.message : "market_report_failed" }));

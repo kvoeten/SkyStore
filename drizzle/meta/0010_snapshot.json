@@ -1,6 +1,6 @@
 {
-  "id": "dd729f45-0ffd-4a93-8ecf-377f94bf9f81",
-  "prevId": "b2af63a8-b04b-4166-afbf-768a6d386259",
+  "id": "aee84256-60cd-4496-9bdb-53e371d1670b",
+  "prevId": "dd729f45-0ffd-4a93-8ecf-377f94bf9f81",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -2021,6 +2021,14 @@
           "primaryKey": false,
           "notNull": true
         },
+        "side": {
+          "name": "side",
+          "type": "market_side",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'customer_pays'"
+        },
         "location_type": {
           "name": "location_type",
           "type": "public_market_report_location",
@@ -2131,7 +2139,7 @@
               "nulls": "last"
             },
             {
-              "expression": "location_type",
+              "expression": "side",
               "isExpression": false,
               "asc": true,
               "nulls": "last"

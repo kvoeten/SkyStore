@@ -71,6 +71,13 @@
       "when": 1790058168934,
       "tag": "0009_tiny_queen_noir",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790151200000,
+      "tag": "0010_split_public_report_sides",
+      "breakpoints": true
     }
   ]
 }

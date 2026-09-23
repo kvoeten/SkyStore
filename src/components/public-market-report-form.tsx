@@ -27,7 +27,7 @@ export function PublicMarketReportForm({ itemId, itemName, appliesToCount = 1, o
         itemId,
         quantity,
         totalSeptims,
-        locationType: advanced ? String(values.get("locationType") || "street_sale") : "street_sale",
+        priceType: String(values.get("priceType") || "street_value"),
         sourceLocation: String(values.get("sourceLocation") || DEFAULT_MARKET_REGION),
         occurrenceAt: advanced ? String(values.get("occurrenceAt") || "") || undefined : undefined
       })
@@ -45,11 +45,12 @@ export function PublicMarketReportForm({ itemId, itemName, appliesToCount = 1, o
 
   return <section id="market-report" className="panel">
     <div className="panel-head"><div><p className="eyebrow">MARKET REPORT</p><h2>Report a price</h2></div>{onChangeItem && <button className="text-button" type="button" onClick={onChangeItem}>Choose another item</button>}</div>
-    <p>Enter the per-item price for <b>{itemName}</b>. Signed-in reports publish immediately; anonymous reports are reviewed first.</p>
+    <p>Enter the per-item price for <b>{itemName}</b>. Street value is the direct trade value; store prices are kept separate so their margins do not change it. Signed-in reports publish immediately; anonymous reports are reviewed first.</p>
     {appliesToCount > 1 && <p className="fine">One report applies to all {appliesToCount} equivalent Tailoring variants in this group.</p>}
     <form className="stack" onSubmit={(event) => { event.preventDefault(); void submit(event.currentTarget); }}>
       <div className="grid form-grid report-basics">
         <label className="field"><span>Price (g)</span><input name="unitPrice" type="number" min="0" step="1" required={!advanced} autoFocus /></label>
+        <label className="field"><span>Price type</span><select name="priceType" defaultValue="street_value"><option value="street_value">Street value</option><option value="store_buying_price">Store buying price</option><option value="store_selling_price">Store selling price</option></select></label>
         <label className="field"><span>Region</span><select name="sourceLocation" defaultValue={DEFAULT_MARKET_REGION}>{SKYRIM_HOLDS.map((hold) => <option key={hold} value={hold}>{hold}</option>)}</select></label>
       </div>
       <details className="report-advanced" onToggle={(event) => setAdvanced(event.currentTarget.open)}>
@@ -58,7 +59,6 @@ export function PublicMarketReportForm({ itemId, itemName, appliesToCount = 1, o
           <label className="field"><span>Quantity</span><input name="quantity" type="number" min="1" step="1" defaultValue="1" onChange={(event) => setBulkQuantity(Number(event.target.value))} required /></label>
           <label className="field"><span>Total paid (g)</span><input name="totalSeptims" type="number" min="0" step="1" onChange={(event) => setBulkTotal(Number(event.target.value))} required /></label>
           <div className="bulk-unit-value"><span>Calculated unit price</span><b>{bulkQuantity > 0 && Number.isFinite(bulkTotal) ? formatGold(bulkTotal / bulkQuantity) : "—"}</b></div>
-          <label className="field"><span>Price source</span><select name="locationType" defaultValue="street_sale"><option value="street_sale">Street trade</option><option value="store_sale">Store sale</option></select></label>
           <label className="field"><span>Price time</span><input name="occurrenceAt" type="datetime-local" defaultValue={localTimestamp()} required /></label>
         </div>
       </details>

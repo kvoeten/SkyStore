@@ -61,6 +61,7 @@ describe("public market report route", () => {
       itemId,
       quantity: 4,
       totalSeptims: 1,
+      side: "customer_pays",
       locationType: "street_sale",
       submittedBy: null,
       contributorDisplayName: "Anonymous visitor",
@@ -78,5 +79,18 @@ describe("public market report route", () => {
       entityId: reportId,
       after: expect.objectContaining({ authenticated: false })
     });
+  });
+
+  it("maps a store buying price to merchant-paid market evidence", async () => {
+    const request = new Request("http://localhost/api/v1/market/reports", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ itemId, quantity: 1, totalSeptims: 10, priceType: "store_buying_price" })
+    });
+
+    const response = await POST(request as never);
+
+    expect(response.status).toBe(201);
+    expect(testState.inserts[0]).toMatchObject({ itemId, side: "store_pays", totalSeptims: 10 });
   });
 });

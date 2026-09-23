@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import { prioritizeMarketGuideRows } from "@/lib/market/guide-ranking";
 import { formatGold } from "@/lib/money";
 import { isMarketItemDisplayable } from "@/lib/catalog/market-item-filter";
+import { marketReferenceValue } from "@/lib/market/reference-value";
 
-type Trend = { direction: "up" | "down" | "flat"; percent: number; points?: { at: string; customerPays: number | null }[] };
-type Row = { id: string; name: string; category?: string; imageUrl?: string | null; value?: string; region?: string; unitPrice?: number; catalogMatch?: boolean; trend?: Trend; hasPrice: boolean; lastChangedAt?: string | null; lastSoldAt?: string | null };
+type Trend = { direction: "up" | "down" | "flat"; percent: number; points?: { at: string; value: number | null; customerPays: number | null; storePays: number | null }[] };
+type Row = { id: string; name: string; category?: string; imageUrl?: string | null; value?: string; region?: string; unitPrice?: number; officialCustomerPays?: number | null; reportedStreetValue?: number | null; catalogMatch?: boolean; trend?: Trend; hasPrice: boolean; lastChangedAt?: string | null; lastSoldAt?: string | null };
 type Official = { itemId: string; name: string; side: "customer_pays" | "store_pays"; septims: [number, number]; quantity: [number, number]; effectiveFrom?: string; region?: string };
-type Estimate = { itemId: string; name: string; side: "customer_pays" | "store_pays"; lowerQuartile: number | null; upperQuartile: number | null; newestEvidenceAt?: string | null };
+type Estimate = { itemId: string; name: string; market: "street" | "store"; side: "customer_pays" | "store_pays"; median: number | null; lowerQuartile: number | null; upperQuartile: number | null; newestEvidenceAt?: string | null };
 type CatalogItem = { id: string; name: string; category: string; imageUrl?: string | null; familyItemIds?: string[] };
 type MarketPayload = { sourceCutoffAt: string; official?: Official[]; estimates?: Estimate[]; images?: Record<string, string>; trends?: Record<string, Trend> };
 
@@ -24,7 +25,7 @@ function normalize(payload: MarketPayload, catalogMatches: CatalogItem[] = []): 
     const itemId = canonical.get(rule.itemId) ?? rule.itemId;
     const row = rows.get(itemId) ?? { id: itemId, name: rule.name, hasPrice: false };
     const unitPrice = rule.quantity[0] > 0 ? rule.septims[1] / rule.quantity[0] : 0;
-    if (rule.side === "customer_pays" && (row.unitPrice == null || unitPrice > row.unitPrice)) { row.value = formatGold(unitPrice); row.unitPrice = unitPrice; row.region = rule.region ?? "Whiterun"; }
+    if (rule.side === "customer_pays" && (row.officialCustomerPays == null || unitPrice > row.officialCustomerPays)) { row.officialCustomerPays = unitPrice; row.region = rule.region ?? "Whiterun"; }
     if (!row.lastChangedAt || (rule.effectiveFrom && Date.parse(rule.effectiveFrom) > Date.parse(row.lastChangedAt))) row.lastChangedAt = rule.effectiveFrom;
     row.imageUrl ??= payload.images?.[rule.itemId];
     row.hasPrice = Boolean(row.value);
@@ -35,19 +36,24 @@ function normalize(payload: MarketPayload, catalogMatches: CatalogItem[] = []): 
     const itemId = canonical.get(estimate.itemId) ?? estimate.itemId;
     const row = rows.get(itemId) ?? { id: itemId, name: estimate.name, hasPrice: false };
     row.imageUrl ??= payload.images?.[estimate.itemId];
-    if (estimate.side === "customer_pays" && estimate.upperQuartile != null && (row.unitPrice == null || estimate.upperQuartile > row.unitPrice)) { row.value = formatGold(estimate.upperQuartile); row.unitPrice = estimate.upperQuartile; row.region ??= "Whiterun"; }
+    const median = estimate.median;
+    if (median != null && estimate.market === "street") { row.reportedStreetValue = median; row.region ??= "Whiterun"; }
     rows.set(itemId, row);
-    row.hasPrice = Boolean(row.value);
     row.lastSoldAt = estimate.newestEvidenceAt;
     if (!row.lastChangedAt || (estimate.newestEvidenceAt && Date.parse(estimate.newestEvidenceAt) > Date.parse(row.lastChangedAt))) row.lastChangedAt = estimate.newestEvidenceAt;
   }
-  for (const row of rows.values()) row.trend = payload.trends?.[row.id] ?? catalogMatches.find((item) => item.id === row.id)?.familyItemIds?.map((id) => payload.trends?.[id]).find(Boolean);
+  for (const row of rows.values()) {
+    const reference = marketReferenceValue({ streetValue: row.reportedStreetValue, officialCustomerPays: row.officialCustomerPays });
+    if (reference != null) { row.unitPrice = reference; row.value = formatGold(reference); }
+    row.hasPrice = reference != null;
+    row.trend = payload.trends?.[row.id] ?? catalogMatches.find((item) => item.id === row.id)?.familyItemIds?.map((id) => payload.trends?.[id]).find(Boolean);
+  }
   const normalized = [...rows.values()];
   return prioritizeMarketGuideRows(catalogMatches.length ? normalized : normalized.filter((row) => row.hasPrice));
 }
 
 function trendVisual(trend?: Trend) {
-  const values = trend?.points?.map((point) => point.customerPays).filter((price): price is number => price != null) ?? [];
+  const values = trend?.points?.map((point) => point.value).filter((price): price is number => price != null) ?? [];
   if (!values.length) return <span className="trend-visual flat" title="No price movement recorded"><svg viewBox="0 0 72 24" role="img" aria-label="No price movement recorded"><polyline points="3,12 69,12"/></svg><small>+0.0%</small></span>;
   const minimum = Math.min(...values);
   const maximum = Math.max(...values);

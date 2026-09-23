@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
     itemName: catalogItems.displayName,
     quantity: publicMarketReports.quantity,
     totalSeptims: publicMarketReports.totalSeptims,
+    side: publicMarketReports.side,
     locationType: publicMarketReports.locationType,
     sourceLocation: publicMarketReports.sourceLocation,
     occurrenceAt: publicMarketReports.occurrenceAt,

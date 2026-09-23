@@ -3,8 +3,8 @@ import { database } from "@/db/runtime";
 import { estimateMarket, publicSnapshotCutoff, type MarketSignal } from "@/lib/market";
 
 type Job = { id: string; kind: string; payload: unknown; attempts: number; max_attempts: number };
-type EvidenceRow = { item_id: string; display_name: string; store_id: string | null; total_septims: number; quantity: number; occurrence_at: Date; kind: "receipt" | "direct_quote" };
-type OfficialRow = { item_id: string; display_name: string; side: "customer_pays"; minimum_septims: number; maximum_septims: number; quantity: number; maximum_quantity: number; effective_from: Date };
+type EvidenceRow = { item_id: string; display_name: string; market: "street" | "store"; side: "store_pays" | "customer_pays"; store_id: string | null; total_septims: number; quantity: number; occurrence_at: Date; kind: "receipt" | "direct_quote" };
+type OfficialRow = { item_id: string; display_name: string; side: "store_pays" | "customer_pays"; minimum_septims: number; maximum_septims: number; quantity: number; maximum_quantity: number; effective_from: Date };
 type HotItemRow = { item_id: string; display_name: string; units_sold: number; trade_count: number; store_count: number };
 type FavoriteRow = { item_id: string; display_name: string; units_traded: number; trade_count: number; active_months: number; store_count: number };
 
@@ -31,7 +31,7 @@ async function createPublicSnapshot(now = new Date()) {
   const cutoff = publicSnapshotCutoff(now);
   const cutoffIso = cutoff.toISOString();
   const evidence = await database.client<EvidenceRow[]>`
-    select rl.item_id, i.display_name, r.store_id, rl.total_septims, rl.quantity, r.occurrence_at, 'receipt'::text as kind
+    select rl.item_id, i.display_name, 'store'::text as market, 'customer_pays'::market_side as side, r.store_id, rl.total_septims, rl.quantity, r.occurrence_at, 'receipt'::text as kind
     from receipt_lines rl
     join receipts r on r.id = rl.receipt_id
     join users u on u.id = r.submitted_by
@@ -39,19 +39,18 @@ async function createPublicSnapshot(now = new Date()) {
     where r.status = 'approved' and r.direction = 'store_sale'
       and r.occurrence_at <= ${cutoffIso}::timestamptz and u.quarantined_at is null
     union all
-    select p.item_id, i.display_name, null::uuid as store_id, p.total_septims, p.quantity, p.occurrence_at, 'direct_quote'::text as kind
+    select p.item_id, i.display_name, case when p.location_type = 'street_sale' then 'street' else 'store' end as market, p.side, null::uuid as store_id, p.total_septims, p.quantity, p.occurrence_at, 'direct_quote'::text as kind
     from public_market_reports p
     left join users u on u.id = p.submitted_by
     join catalog_items i on i.id = p.item_id
-    where p.status = 'approved' and p.location_type = 'store_sale'
+    where p.status = 'approved'
       and p.occurrence_at <= ${cutoffIso}::timestamptz
       and p.quarantined_at is null and u.quarantined_at is null
   `;
   const official = await database.client<OfficialRow[]>`
     select p.item_id, i.display_name, p.side, p.minimum_septims, p.maximum_septims, p.quantity, p.maximum_quantity, p.effective_from
     from official_price_rules p join catalog_items i on i.id = p.item_id
-    where p.side = 'customer_pays'
-      and p.effective_from <= ${cutoffIso}::timestamptz
+    where p.effective_from <= ${cutoffIso}::timestamptz
       and (p.effective_to is null or p.effective_to > ${cutoffIso}::timestamptz)
       and i.status = 'active'
     order by i.display_name, p.side
@@ -91,14 +90,14 @@ async function createPublicSnapshot(now = new Date()) {
   const itemNames = new Map([...official, ...evidence].map((row) => [row.item_id, row.display_name]));
   const grouped = new Map<string, MarketSignal[]>();
   for (const row of evidence) {
-    const key = row.item_id;
+    const key = `${row.item_id}:${row.market}:${row.side}`;
     const signals = grouped.get(key) ?? [];
-    signals.push({ itemId: row.item_id, side: "customer_pays", storeId: row.store_id ?? undefined, totalSeptims: Number(row.total_septims), quantity: Number(row.quantity), occurrenceAt: new Date(row.occurrence_at), kind: row.kind, approved: true });
+    signals.push({ itemId: row.item_id, side: row.side, storeId: row.store_id ?? undefined, totalSeptims: Number(row.total_septims), quantity: Number(row.quantity), occurrenceAt: new Date(row.occurrence_at), kind: row.kind, approved: true });
     grouped.set(key, signals);
   }
   const estimates = [...grouped.entries()].map(([key, signals]) => {
-    const itemId = key;
-    return { itemId, name: itemNames.get(itemId) ?? "Catalog item", side: "customer_pays" as const, ...estimateMarket(signals, itemId, "customer_pays", now, cutoff) };
+    const [itemId, market, side] = key.split(":") as [string, "street" | "store", "store_pays" | "customer_pays"];
+    return { itemId, name: itemNames.get(itemId) ?? "Catalog item", market, side, ...estimateMarket(signals, itemId, side, now, cutoff) };
   }).filter((estimate) => estimate.anonymized);
   const payload = {
     policy: { delayDays: Number(process.env.SKYSTORE_PUBLIC_DELAY_DAYS ?? 0), minimumStores: 3, windowDays: 90, recencyHalfLifeDays: 30 },
