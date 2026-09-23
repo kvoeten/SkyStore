@@ -126,14 +126,25 @@ export async function getPublicMarketOverview(limit = 31) {
   const trends: Record<string, PublicTrend> = {};
   for (const family of families) {
     const history = marketOfficialRows.filter((row) => family.familyItemIds.includes(row.itemId)).sort((left, right) => left.effectiveFrom.getTime() - right.effectiveFrom.getTime());
-    const officialPoints = history.map((row) => ({ at: row.effectiveFrom.toISOString(), value: row.maximum / row.quantity }));
+    // Store purchase and sale references must remain distinct in the chart.
+    // Only a store sale can establish a street-value reference; a store-buy
+    // rule is plotted on its own line instead of lowering that value.
+    const officialPoints = history.map((row) => row.side === "customer_pays"
+      ? { at: row.effectiveFrom.toISOString(), value: row.maximum / row.quantity }
+      : { at: row.effectiveFrom.toISOString(), [row.side]: row.maximum / row.quantity });
+    // Base costs are the current street-value fallback. A source-backed base
+    // cost must therefore also anchor the visible timeline; otherwise items
+    // such as Quicksilver display a value card but an empty trend.
+    const baseCostPoints = marketBaseCostRows
+      .filter((row) => family.familyItemIds.includes(row.itemId))
+      .map((row) => ({ at: row.effectiveFrom.toISOString(), value: row.septims / row.quantity }));
     const reportPoints = marketReportRows.filter((row) => family.familyItemIds.includes(row.itemId)).map((row) => row.locationType === "street_sale" ? { at: row.occurrenceAt.toISOString(), value: row.totalSeptims / row.quantity } : { at: row.occurrenceAt.toISOString(), [row.side]: row.totalSeptims / row.quantity });
     const snapshotPoints = chronological.map((snapshot) => {
       const content = payload(snapshot.payload);
       const values = family.familyItemIds.map((itemId) => priceFor(content, itemId)).filter((value): value is number => value != null);
       return { at: snapshot.snapshotDate.toISOString(), value: values.length ? Math.max(...values) : null };
     }).filter((point) => point.value != null);
-    const points = [...officialPoints, ...reportPoints].sort((left, right) => Date.parse(left.at) - Date.parse(right.at));
+    const points = [...officialPoints, ...baseCostPoints, ...reportPoints].sort((left, right) => Date.parse(left.at) - Date.parse(right.at));
     const usablePoints = weeklyTrend(points.length ? points : snapshotPoints, now);
     const current = usablePoints.at(-1)?.value ?? null;
     const monthlyBaseline = usablePoints.at(-5)?.value ?? usablePoints.at(-2)?.value ?? current;
