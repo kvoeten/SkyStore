@@ -4,6 +4,7 @@ import { db } from "@/db/runtime";
 import { catalogAliases, catalogItems } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
 import { collapseItemFamilies } from "@/lib/catalog/item-families";
+import { isMarketItemDisplayable } from "@/lib/catalog/market-item-filter";
 import { effectiveMarketCategory, marketCategoryBySlug } from "@/lib/catalog/market-categories";
 import { productGroupForItem } from "@/lib/catalog/product-groups";
 
@@ -31,7 +32,7 @@ export async function GET(request: NextRequest) {
     )))
     .orderBy(asc(catalogItems.displayName))
     .limit(300);
-  const collapsed = collapseItemFamilies(items.map((item) => {
+  const collapsed = collapseItemFamilies(items.filter(isMarketItemDisplayable).map((item) => {
     const group = productGroupForItem(item);
     return { ...item, productGroupKey: group?.key, productGroupLabel: group?.label };
   })).slice(0, 100);

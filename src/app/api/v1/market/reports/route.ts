@@ -5,6 +5,7 @@ import { db } from "@/db/runtime";
 import { approvals, auditEvents, catalogItems, publicMarketReports, users } from "@/db/schema";
 import { getAccessContext } from "@/lib/authorization";
 import { getTailoringPriceFamily } from "@/lib/services/recipe-queries";
+import { marketRegion } from "@/lib/market/holds";
 
 /**
  * A public contribution is never a receipt or an observation. Signed-in
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
       quantity: command.quantity,
       totalSeptims: command.totalSeptims,
       locationType: command.locationType,
-      sourceLocation: command.sourceLocation || null,
+      sourceLocation: marketRegion(command.sourceLocation),
       occurrenceAt: occurredAt,
       note: command.note,
       submittedBy: context?.userId ?? null,
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
       action: "public_market_report.submitted",
       entityType: "public_market_report",
       entityId: report.id,
-      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: command.locationType, sourceLocation: command.sourceLocation ?? null, occurrenceAt: occurredAt.toISOString(), contributorDisplayName, authenticated: Boolean(context), status }
+      after: { itemId: priceFamily.canonicalItemId, submittedItemId: command.itemId, priceFamily: priceFamily.displayName, quantity: command.quantity, totalSeptims: command.totalSeptims, locationType: command.locationType, sourceLocation: marketRegion(command.sourceLocation), occurrenceAt: occurredAt.toISOString(), contributorDisplayName, authenticated: Boolean(context), status }
     });
     return report;
   }).catch((error: unknown) => ({ error: error instanceof Error ? error.message : "market_report_failed" }));

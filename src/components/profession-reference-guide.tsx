@@ -1,6 +1,6 @@
 import { Status } from "@/components/app-shell";
 import { RecipeRequirements } from "@/components/recipe-requirements";
-import { formatGold } from "@/lib/money";
+import { formatGold, formatPurchaseGold } from "@/lib/money";
 import { WARMAIDEN_SOURCE_URL } from "@/lib/profession-reference-guides";
 import { MASTERY_TIERS } from "@/lib/professions";
 import type { RecipeView } from "@/lib/services/recipe-queries";
@@ -34,7 +34,7 @@ export function SmithingReferenceGuide({ guide, recipes, itemHref, privateView }
                 <td>{item.catalogItem ? <a className="profession-output" href={itemHref(item.catalogItem.id)}>{item.catalogItem.displayName}</a> : <b>{item.name}</b>}</td>
                 <td>{recipe ? <RecipeCell recipe={recipe} itemHref={itemHref}/> : <p className="profession-note">Recipe ingredients are not present in the extracted Keizaal data.</p>}<small className="profession-note">{item.referenceNote}</small></td>
                 <td><b>{recipe ? recipe.materialCost == null ? "Incomplete" : formatGold(recipe.materialCost) : "Not available"}</b><small>{recipe ? `${recipe.missingPriceCount} ingredient price${recipe.missingPriceCount === 1 ? "" : "s"} missing` : "No extracted recipe"}</small></td>
-                {privateView && <td><b>{item.buyingPrice == null ? "Not priced" : formatGold(item.buyingPrice)}</b><small>Store buying price</small></td>}
+                {privateView && <td><b>{item.buyingPrice == null ? "Not priced" : formatPurchaseGold(item.buyingPrice)}</b><small>Store buying price</small></td>}
                 <td><b>{formatGold(item.productPrice)}</b><small>Store Price</small></td>
               </tr>;
             })}
@@ -57,7 +57,7 @@ export function SmithingReferenceGuide({ guide, recipes, itemHref, privateView }
           <td><b className="profession-output">{set.name}</b><small className="profession-tier-note">{set.tier}</small></td>
           <td><div className="recipe-inputs">{set.components.map((component) => component.catalogItem ? <a key={component.slot} href={itemHref(component.catalogItem.id)}>{component.catalogItem.displayName} ({formatGold(component.price)})</a> : <span key={component.slot}>{component.slot} unavailable</span>)}</div><p className="profession-note">One head, body, hands, and feet piece.</p></td>
           <td><b>Not calculated</b><small>Finished-item bundle</small></td>
-          {privateView && <td><b>{set.buyingPrice == null ? "Incomplete" : formatGold(set.buyingPrice)}</b><small>Combined store buying price</small></td>}
+          {privateView && <td><b>{set.buyingPrice == null ? "Incomplete" : formatPurchaseGold(set.buyingPrice)}</b><small>Combined store buying price</small></td>}
           <td><b>{formatGold(set.totalPrice)}</b><small>Full-set Store Price</small></td>
         </tr>)}</tbody>
       </table></div>

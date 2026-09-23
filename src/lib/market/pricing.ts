@@ -1,6 +1,6 @@
 export function markupOnCost(sale: number, cost: number): number | null { return cost > 0 ? (sale - cost) / cost : null; }
 export function grossMargin(sale: number, cost: number): number | null { return sale > 0 ? (sale - cost) / sale : null; }
-export function saleFloor(effectiveCost: number, targetMarkup: number): number { return effectiveCost * (1 + targetMarkup); }
+export function saleFloor(effectiveCost: number, targetMarkup: number): number { return Math.ceil(effectiveCost * (1 + targetMarkup)); }
 
 export type RecipeIngredientCost = { quantity: number; acquisitionRate: number | null | undefined };
 export function craftReplacementCost(ingredients: Iterable<RecipeIngredientCost>, outputYield: number, laborFee = 0): number | null {
@@ -17,5 +17,5 @@ export function craftReplacementCost(ingredients: Iterable<RecipeIngredientCost>
 export function recommendedMaximumPurchase(expectedSale: number | null | undefined, targetMarkup: number, replacementCost: number | null): number | null {
   if (expectedSale == null || expectedSale < 0 || targetMarkup < 0) return null;
   const saleCeiling = expectedSale / (1 + targetMarkup);
-  return replacementCost == null ? saleCeiling : Math.min(saleCeiling, replacementCost);
+  return Math.floor(replacementCost == null ? saleCeiling : Math.min(saleCeiling, replacementCost));
 }

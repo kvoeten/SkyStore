@@ -17,6 +17,7 @@ data/backups/
 playwright-report/
 test-results/
 .playwright-cli/
+.scratch/
 *.dump
 *.dump.age
 *.sql.gz

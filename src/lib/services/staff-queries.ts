@@ -3,6 +3,7 @@ import { db } from "@/db/runtime";
 import { approvals, catalogAliases, catalogImages, catalogItems, memberships, officialPriceRules, observations, publicMarketReports, receiptLines, receipts, recipes, stockMovements, users } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
 import { collapseItemFamilies } from "@/lib/catalog/item-families";
+import { isMarketItemDisplayable } from "@/lib/catalog/market-item-filter";
 import { productGroupForItem } from "@/lib/catalog/product-groups";
 import { estimateMarket, recommendedMaximumPurchase, saleFloor, type MarketSignal } from "@/lib/market";
 import { prioritizeMarketGuideRows } from "@/lib/market/guide-ranking";
@@ -64,7 +65,7 @@ export async function getPrivateMarketGuide(storeId: string, query = "") {
     .where(and(eq(catalogItems.status, "active"), trimmedQuery ? searchFilter : or(currentPriceExists, recentSaleExists)))
     .orderBy(catalogItems.displayName)
     .limit(400);
-  const candidates = collapseItemFamilies(rawCandidates.map((item) => {
+  const candidates = collapseItemFamilies(rawCandidates.filter(isMarketItemDisplayable).map((item) => {
     const group = productGroupForItem(item);
     return { ...item, productGroupKey: group?.key, productGroupLabel: group?.label };
   })).slice(0, 200);

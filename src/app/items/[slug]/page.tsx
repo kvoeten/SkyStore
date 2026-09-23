@@ -3,14 +3,18 @@ import { notFound } from "next/navigation";
 import { AppShell, Status } from "@/components/app-shell";
 import { resolveStaffPageStore, staffShellIdentity } from "@/components/staff-page-context";
 import { RecipeRequirements } from "@/components/recipe-requirements";
-import { formatGold, formatHighestUnitGold } from "@/lib/money";
+import { formatGold, formatHighestUnitGold, formatPurchaseGold } from "@/lib/money";
 import { getItemDetail } from "@/lib/services/staff-queries";
 
 export const dynamic = "force-dynamic";
 
-const rate = (maximum: number, quantity: number) => formatHighestUnitGold(maximum, quantity);
-const estimateRate = (estimate: { median: number | null; lowerQuartile: number | null; upperQuartile: number | null }) => {
-  return formatGold(estimate.upperQuartile ?? estimate.median);
+const rate = (maximum: number, quantity: number, side: "store_pays" | "customer_pays" = "customer_pays") => {
+  const value = maximum / quantity;
+  return side === "store_pays" ? formatPurchaseGold(value) : formatHighestUnitGold(maximum, quantity);
+};
+const estimateRate = (estimate: { median: number | null; lowerQuartile: number | null; upperQuartile: number | null }, side: "store_pays" | "customer_pays" = "customer_pays") => {
+  const value = estimate.upperQuartile ?? estimate.median;
+  return side === "store_pays" ? formatPurchaseGold(value) : formatGold(value);
 };
 const evidenceNote = (estimate: { signalCount: number; newestEvidenceAt: Date | null }, empty: string) =>
   estimate.signalCount ? `${estimate.signalCount} approved entries${estimate.newestEvidenceAt ? ` · newest ${new Date(estimate.newestEvidenceAt).toLocaleDateString()}` : ""}` : empty;
@@ -64,10 +68,10 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
               {detail.priceFamily.itemIds.length > 1 && <p className="fine">Shared pricing evidence for all {detail.priceFamily.itemIds.length} variants in {detail.priceFamily.displayName}.</p>}
               <div className="grid rates">
                 <article className="rate">
-                  <p>Store buying price</p><b>{estimateRate(storePays)}</b>
+                  <p>Store buying price</p><b>{estimateRate(storePays, "store_pays")}</b>
                   <small>What stores have paid to acquire this item</small>
                   <small>{evidenceNote(storePays, "No approved store purchases")}</small>
-                  {officialStorePays && <small>Official store buying price: {rate(officialStorePays.maximumSeptims, officialStorePays.quantity)}</small>}
+                  {officialStorePays && <small>Official store buying price: {rate(officialStorePays.maximumSeptims, officialStorePays.quantity, "store_pays")}</small>}
                 </article>
                 <article className="rate">
                   <p>Store selling price</p><b>{estimateRate(customerPays)}</b>
@@ -86,9 +90,9 @@ export default async function ItemPage({ params, searchParams }: { params: Promi
             <section className="panel">
               <div className="panel-head"><div><p className="eyebrow">YOUR STORE</p><h2>Recommended store prices</h2></div></div>
               <div className="grid rates">
-                <article className="rate"><p>Recommended store buying price</p><b>{formatGold(detail.recommendations.maximumPurchase)}</b><small>Offer up to this amount when buying from a customer</small></article>
+                <article className="rate"><p>Recommended store buying price</p><b>{formatPurchaseGold(detail.recommendations.maximumPurchase)}</b><small>Offer up to this amount when buying from a customer</small></article>
                 <article className="rate"><p>Recommended selling price</p><b>{formatGold(detail.recommendations.saleFloor)}</b><small>Charge at least this amount to keep the store&apos;s {(detail.recommendations.targetMarkup * 100).toFixed(0)}% target markup</small></article>
-                <article className="rate"><p>Latest store buying price</p><b>{formatGold(detail.recommendations.effectiveCost)}</b><small>What this store paid in its latest approved purchase</small></article>
+                <article className="rate"><p>Latest store buying price</p><b>{formatPurchaseGold(detail.recommendations.effectiveCost)}</b><small>What this store paid in its latest approved purchase</small></article>
                 <article className="rate"><p>Last store selling price</p><b>{detail.lastSale ? formatGold(detail.lastSale.totalSeptims / detail.lastSale.quantity) : "—"}</b><small>What the latest customer paid at this store</small></article>
               </div>
             </section>

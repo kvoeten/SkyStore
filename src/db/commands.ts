@@ -30,7 +30,7 @@ export const submitPublicMarketReportCommand = z.object({
   quantity,
   totalSeptims: septims,
   locationType: z.enum(["store_sale", "street_sale"]).default("street_sale"),
-  sourceLocation: z.string().trim().max(180).optional(),
+  sourceLocation: z.enum(["Whiterun", "Falkreath", "Haafingar", "Hjaalmarch", "The Pale", "The Reach", "The Rift", "Eastmarch", "Winterhold"]).default("Whiterun"),
   occurrenceAt: occurredAt.optional(),
   note: z.string().trim().max(10_000).optional()
 }).strict();

@@ -4,7 +4,7 @@ import { AppShell, PageHeading, Status } from "@/components/app-shell";
 import { resolveStaffPageStore, staffShellIdentity } from "@/components/staff-page-context";
 import { getAccessContext } from "@/lib/authorization";
 import { marketCategoryBySlug } from "@/lib/catalog/market-categories";
-import { formatGold } from "@/lib/money";
+import { formatGold, formatPurchaseGold } from "@/lib/money";
 import { getMarketCategoryItems } from "@/lib/services/category-queries";
 
 export const dynamic = "force-dynamic";
@@ -25,7 +25,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
       <div className="panel-head"><h2>Items</h2><Status kind="good">{items.length} entries</Status></div>
       <div className="table-wrap"><table><thead><tr><th>Item</th><th>Store buying price</th><th>Store selling price</th></tr></thead><tbody>{items.map((item) => <tr key={item.itemId}>
         <td><a className="item-name" href={itemHref(item.itemId)}><img src={item.imageUrl} alt="" width="38" height="38"/><span>{item.name}{item.variantCount > 1 && <small>{item.variantCount} collapsed variants</small>}</span></a></td>
-        <td>{item.buyingPrice == null ? "Not priced" : formatGold(item.buyingPrice)}</td>
+        <td>{item.buyingPrice == null ? "Not priced" : formatPurchaseGold(item.buyingPrice)}</td>
         <td>{item.sellingPrice == null ? "Not priced" : formatGold(item.sellingPrice)}</td>
       </tr>)}</tbody></table></div>
     </section>

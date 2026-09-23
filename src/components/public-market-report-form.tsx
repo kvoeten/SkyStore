@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { DEFAULT_MARKET_REGION, SKYRIM_HOLDS } from "@/lib/market/holds";
+import { formatGold } from "@/lib/money";
 
 function localTimestamp(now = new Date()) {
   const pad = (value: number) => String(value).padStart(2, "0");
@@ -10,31 +12,56 @@ function localTimestamp(now = new Date()) {
 export function PublicMarketReportForm({ itemId, itemName, appliesToCount = 1, onChangeItem }: { itemId: string; itemName: string; appliesToCount?: number; onChangeItem?: () => void }) {
   const [state, setState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [advanced, setAdvanced] = useState(false);
+  const [bulkQuantity, setBulkQuantity] = useState(1);
+  const [bulkTotal, setBulkTotal] = useState(0);
 
   async function submit(form: HTMLFormElement) {
     const values = new FormData(form);
+    const quantity = advanced ? Number(values.get("quantity")) : 1;
+    const totalSeptims = advanced ? Number(values.get("totalSeptims")) : Number(values.get("unitPrice"));
     setState("submitting"); setMessage("");
     const response = await fetch("/api/v1/market/reports", {
       method: "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({
         itemId,
-        quantity: Number(values.get("quantity")),
-        totalSeptims: Number(values.get("totalSeptims")),
-        locationType: String(values.get("locationType") || "street_sale"),
-        sourceLocation: String(values.get("sourceLocation") || "") || undefined,
-        occurrenceAt: String(values.get("occurrenceAt") || "") || undefined
+        quantity,
+        totalSeptims,
+        locationType: advanced ? String(values.get("locationType") || "street_sale") : "street_sale",
+        sourceLocation: String(values.get("sourceLocation") || DEFAULT_MARKET_REGION),
+        occurrenceAt: advanced ? String(values.get("occurrenceAt") || "") || undefined : undefined
       })
     });
-    if (!response.ok) { const body = await response.json().catch(() => null) as { error?: string } | null; setState("error"); setMessage(body?.error === "invalid_market_report" ? "Check the quantity and total paid." : "Your report could not be submitted. Please try again."); return; }
+    if (!response.ok) {
+      const body = await response.json().catch(() => null) as { error?: string } | null;
+      setState("error");
+      setMessage(body?.error === "invalid_market_report" ? "Enter a whole-gold price and, for a bulk trade, a valid quantity and total." : "Your report could not be submitted. Please try again.");
+      return;
+    }
     const payload = await response.json().catch(() => null) as { status?: "approved" | "pending" } | null;
-    form.reset(); setState("success"); setMessage(payload?.status === "approved" ? "Price published. It will now appear in the public market timeline." : "Thank you. Your report is queued for administrator review and will not change store stock.");
+    form.reset(); setAdvanced(false); setBulkQuantity(1); setBulkTotal(0); setState("success");
+    setMessage(payload?.status === "approved" ? "Price published. It will now appear in the public market timeline." : "Thank you. Your report is queued for administrator review and will not change store stock.");
   }
 
-  return <section id="market-report" className="panel"><div className="panel-head"><div><p className="eyebrow">MARKET REPORT</p><h2>Report a price</h2></div>{onChangeItem && <button className="text-button" type="button" onClick={onChangeItem}>Choose another item</button>}</div>
-    <p>Tell us what <b>{itemName}</b> recently traded for. Signed-in reports publish immediately; anonymous reports are reviewed first.</p>
+  return <section id="market-report" className="panel">
+    <div className="panel-head"><div><p className="eyebrow">MARKET REPORT</p><h2>Report a price</h2></div>{onChangeItem && <button className="text-button" type="button" onClick={onChangeItem}>Choose another item</button>}</div>
+    <p>Enter the per-item price for <b>{itemName}</b>. Signed-in reports publish immediately; anonymous reports are reviewed first.</p>
     {appliesToCount > 1 && <p className="fine">One report applies to all {appliesToCount} equivalent Tailoring variants in this group.</p>}
     <form className="stack" onSubmit={(event) => { event.preventDefault(); void submit(event.currentTarget); }}>
-      <div className="grid form-grid"><label className="field"><span>Quantity</span><input name="quantity" type="number" min="1" step="1" defaultValue="1" required /></label><label className="field"><span>Price paid (g)</span><input name="totalSeptims" type="number" min="0" step="1" required /></label><label className="field"><span>Price source</span><select name="locationType" defaultValue="street_sale"><option value="street_sale">Street trade</option><option value="store_sale">Store sale</option></select></label><label className="field"><span>Location</span><input name="sourceLocation" maxLength={180} placeholder="Optional, e.g. Whiterun market" /></label><label className="field"><span>Price time</span><input name="occurrenceAt" type="datetime-local" defaultValue={localTimestamp()} required /></label></div>
+      <div className="grid form-grid report-basics">
+        <label className="field"><span>Price (g)</span><input name="unitPrice" type="number" min="0" step="1" required={!advanced} autoFocus /></label>
+        <label className="field"><span>Region</span><select name="sourceLocation" defaultValue={DEFAULT_MARKET_REGION}>{SKYRIM_HOLDS.map((hold) => <option key={hold} value={hold}>{hold}</option>)}</select></label>
+      </div>
+      <details className="report-advanced" onToggle={(event) => setAdvanced(event.currentTarget.open)}>
+        <summary>Advanced: bulk trade, source, or time</summary>
+        <div className="grid form-grid">
+          <label className="field"><span>Quantity</span><input name="quantity" type="number" min="1" step="1" defaultValue="1" onChange={(event) => setBulkQuantity(Number(event.target.value))} required /></label>
+          <label className="field"><span>Total paid (g)</span><input name="totalSeptims" type="number" min="0" step="1" onChange={(event) => setBulkTotal(Number(event.target.value))} required /></label>
+          <div className="bulk-unit-value"><span>Calculated unit price</span><b>{bulkQuantity > 0 && Number.isFinite(bulkTotal) ? formatGold(bulkTotal / bulkQuantity) : "—"}</b></div>
+          <label className="field"><span>Price source</span><select name="locationType" defaultValue="street_sale"><option value="street_sale">Street trade</option><option value="store_sale">Store sale</option></select></label>
+          <label className="field"><span>Price time</span><input name="occurrenceAt" type="datetime-local" defaultValue={localTimestamp()} required /></label>
+        </div>
+      </details>
       <button className="button" type="submit" disabled={state === "submitting"}>{state === "submitting" ? "Submitting…" : "Report price"}</button>
       {message && <p className={state === "error" ? "notice error" : "fine"} role={state === "error" ? "alert" : "status"}>{message}</p>}
     </form>

@@ -182,6 +182,26 @@ export const publicMarketReports = pgTable("public_market_reports", {
   index("public_market_reports_submitter_idx").on(t.submittedBy, t.createdAt)
 ]);
 
+// Raw source documents are deliberately kept outside the market signal tables.
+// They form an administrator to-do inbox; no uploaded ledger can affect prices
+// until an administrator incorporates it through the normal price workflow.
+export const customLedgerSubmissions = pgTable("custom_ledger_submissions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  submittedBy: uuid("submitted_by").references(() => users.id),
+  contributorDisplayName: varchar("contributor_display_name", { length: 120 }).notNull(),
+  sourceUrl: text("source_url"),
+  plaintext: text("plaintext"),
+  fileName: varchar("file_name", { length: 255 }),
+  filePath: text("file_path"),
+  mimeType: varchar("mime_type", { length: 160 }),
+  fileSize: integer("file_size"),
+  status: approvalDecision("status").notNull().default("pending"),
+  reviewedBy: uuid("reviewed_by").references(() => users.id),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+  adminNote: text("admin_note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+}, (t) => [index("custom_ledger_submissions_queue_idx").on(t.status, t.createdAt)]);
+
 export const approvals = pgTable("approvals", {
   id: uuid("id").defaultRandom().primaryKey(), storeId: uuid("store_id").references(() => stores.id), targetType: approvalTarget("target_type").notNull(), targetId: uuid("target_id").notNull(), decision: approvalDecision("decision").notNull().default("pending"),
   // Store workflow approvals always have a requester. Anonymous public market

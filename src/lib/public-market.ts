@@ -1,17 +1,19 @@
-import { and, desc, eq, gt, inArray, isNull, lte, or, sql } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, isNull, lte, sql } from "drizzle-orm";
 import { db } from "@/db/runtime";
 import { catalogItems, delayedSnapshots, officialPriceRules, publicMarketReports } from "@/db/schema";
 import { categoryIconPath } from "@/lib/catalog/category-icons";
 import { collapseItemFamilies } from "@/lib/catalog/item-families";
+import { isMarketItemDisplayable } from "@/lib/catalog/market-item-filter";
 import { productGroupForItem } from "@/lib/catalog/product-groups";
+import { DEFAULT_MARKET_REGION, marketRegion } from "@/lib/market/holds";
 
-export type PublicOfficialRule = { itemId: string; name: string; side: "store_pays" | "customer_pays"; septims: [number, number]; quantity: [number, number]; effectiveFrom?: string };
+export type PublicOfficialRule = { itemId: string; name: string; side: "store_pays" | "customer_pays"; septims: [number, number]; quantity: [number, number]; effectiveFrom?: string; region?: string };
 export type PublicEstimate = { itemId: string; name: string; side: "store_pays" | "customer_pays"; median: number | null; lowerQuartile: number | null; upperQuartile: number | null; storeCount: number; signalCount?: number; newestEvidenceAt?: string | null };
 export type PublicHotItem = { itemId: string; name: string; unitsSold: number; tradeCount: number; storeCount: number };
 export type PublicFavorite = { itemId: string; name: string; unitsTraded: number; tradeCount: number; activeMonths: number; storeCount: number };
 export type PublicSnapshotPayload = { policy?: Record<string, number>; official: PublicOfficialRule[]; estimates: PublicEstimate[]; hotItems: PublicHotItem[]; allTimeFavorites: PublicFavorite[] };
 export type PublicTrendPoint = { at: string; customerPays: number | null };
-export type PublicTrend = { direction: "up" | "down" | "flat" | "new"; percent: number | null; points: PublicTrendPoint[] };
+export type PublicTrend = { direction: "up" | "down" | "flat"; percent: number; points: PublicTrendPoint[] };
 
 function payload(value: unknown): PublicSnapshotPayload {
   const source = value && typeof value === "object" ? value as Partial<PublicSnapshotPayload> : {};
@@ -49,22 +51,26 @@ export async function getPublicMarketOverview(limit = 31) {
   const [officialRows, reportRows, snapshots] = await Promise.all([
     db.select({ itemId: officialPriceRules.itemId, name: catalogItems.displayName, side: officialPriceRules.side, minimum: officialPriceRules.minimumSeptims, maximum: officialPriceRules.maximumSeptims, quantity: officialPriceRules.quantity, maximumQuantity: officialPriceRules.maximumQuantity, effectiveFrom: officialPriceRules.effectiveFrom, createdAt: officialPriceRules.createdAt })
       .from(officialPriceRules).innerJoin(catalogItems, eq(officialPriceRules.itemId, catalogItems.id))
-      .where(and(eq(catalogItems.status, "active"), lte(officialPriceRules.effectiveFrom, now), or(isNull(officialPriceRules.effectiveTo), gt(officialPriceRules.effectiveTo, now))))
+      .where(and(eq(catalogItems.status, "active"), lte(officialPriceRules.effectiveFrom, now)))
       .orderBy(desc(officialPriceRules.effectiveFrom), desc(officialPriceRules.createdAt)),
-    db.select({ itemId: publicMarketReports.itemId, name: catalogItems.displayName, quantity: publicMarketReports.quantity, totalSeptims: publicMarketReports.totalSeptims, occurrenceAt: publicMarketReports.occurrenceAt })
+    db.select({ itemId: publicMarketReports.itemId, name: catalogItems.displayName, quantity: publicMarketReports.quantity, totalSeptims: publicMarketReports.totalSeptims, sourceLocation: publicMarketReports.sourceLocation, occurrenceAt: publicMarketReports.occurrenceAt })
       .from(publicMarketReports).innerJoin(catalogItems, eq(publicMarketReports.itemId, catalogItems.id))
       .where(and(eq(catalogItems.status, "active"), eq(publicMarketReports.status, "approved"), isNull(publicMarketReports.quarantinedAt), gt(publicMarketReports.occurrenceAt, new Date(now.getTime() - 90 * 86400000))))
       .orderBy(desc(publicMarketReports.occurrenceAt)),
     db.select().from(delayedSnapshots).orderBy(desc(delayedSnapshots.snapshotDate)).limit(limit)
   ]);
+  const marketOfficialRows = officialRows.filter(isMarketItemDisplayable);
+  const marketReportRows = reportRows.filter(isMarketItemDisplayable);
   const newestOfficial = new Map<string, typeof officialRows[number]>();
-  for (const row of officialRows) {
+  for (const row of marketOfficialRows) {
     const key = `${row.itemId}:${row.side}`;
     if (!newestOfficial.has(key)) newestOfficial.set(key, row);
   }
   const estimatesByItem = new Map<string, typeof reportRows>();
-  for (const report of reportRows) estimatesByItem.set(report.itemId, [...(estimatesByItem.get(report.itemId) ?? []), report]);
-  const liveOfficial = [...newestOfficial.values()].map((row) => ({ itemId: row.itemId, name: row.name, side: row.side, septims: [row.minimum, row.maximum] as [number, number], quantity: [row.quantity, row.maximumQuantity] as [number, number], effectiveFrom: row.effectiveFrom.toISOString() }));
+  for (const report of marketReportRows) estimatesByItem.set(report.itemId, [...(estimatesByItem.get(report.itemId) ?? []), report]);
+  const newestReportRegion = new Map<string, string>();
+  for (const row of marketReportRows) if (!newestReportRegion.has(row.itemId)) newestReportRegion.set(row.itemId, marketRegion(row.sourceLocation));
+  const liveOfficial = [...newestOfficial.values()].map((row) => ({ itemId: row.itemId, name: row.name, side: row.side, septims: [row.minimum, row.maximum] as [number, number], quantity: [row.quantity, row.maximumQuantity] as [number, number], effectiveFrom: row.effectiveFrom.toISOString(), region: newestReportRegion.get(row.itemId) ?? DEFAULT_MARKET_REGION }));
   const liveEstimates: PublicEstimate[] = [...estimatesByItem.entries()].map(([itemId, reports]) => {
     const prices = reports.map((report) => report.totalSeptims / report.quantity).sort((left, right) => left - right);
     const middle = prices[Math.floor(prices.length / 2)] ?? null;
@@ -101,22 +107,52 @@ export async function getPublicMarketOverview(limit = 31) {
   const chronological = [...snapshots].reverse();
   const trends: Record<string, PublicTrend> = {};
   for (const family of families) {
-    const history = officialRows.filter((row) => row.side === "customer_pays" && family.familyItemIds.includes(row.itemId)).sort((left, right) => left.effectiveFrom.getTime() - right.effectiveFrom.getTime());
+    const history = marketOfficialRows.filter((row) => row.side === "customer_pays" && family.familyItemIds.includes(row.itemId)).sort((left, right) => left.effectiveFrom.getTime() - right.effectiveFrom.getTime());
     const officialPoints = history.map((row) => ({ at: row.effectiveFrom.toISOString(), customerPays: row.maximum / row.quantity }));
-    const reportPoints = reportRows.filter((row) => family.familyItemIds.includes(row.itemId)).map((row) => ({ at: row.occurrenceAt.toISOString(), customerPays: row.totalSeptims / row.quantity }));
+    const reportPoints = marketReportRows.filter((row) => family.familyItemIds.includes(row.itemId)).map((row) => ({ at: row.occurrenceAt.toISOString(), customerPays: row.totalSeptims / row.quantity }));
     const snapshotPoints = chronological.map((snapshot) => {
       const content = payload(snapshot.payload);
       const values = family.familyItemIds.map((itemId) => priceFor(content, itemId)).filter((value): value is number => value != null);
       return { at: snapshot.snapshotDate.toISOString(), customerPays: values.length ? Math.max(...values) : null };
     }).filter((point) => point.customerPays != null);
     const points = [...officialPoints, ...reportPoints].sort((left, right) => Date.parse(left.at) - Date.parse(right.at));
-    const usablePoints = points.length ? points : snapshotPoints;
-    const values = usablePoints.map((point) => point.customerPays).filter((value): value is number => value != null);
-    const previous = values.at(-2); const current = values.at(-1);
-    const percent = previous != null && current != null && previous !== 0 ? ((current - previous) / previous) * 100 : null;
-    trends[family.id] = { direction: percent == null ? "new" : Math.abs(percent) < 0.005 ? "flat" : percent > 0 ? "up" : "down", percent, points: usablePoints };
+    const usablePoints = weeklyTrend(points.length ? points : snapshotPoints, now);
+    const current = usablePoints.at(-1)?.customerPays ?? null;
+    const monthlyBaseline = usablePoints.at(-5)?.customerPays ?? usablePoints.at(-2)?.customerPays ?? current;
+    const percent = current != null && monthlyBaseline != null && monthlyBaseline !== 0 ? ((current - monthlyBaseline) / monthlyBaseline) * 100 : 0;
+    trends[family.id] = { direction: Math.abs(percent) < 0.005 ? "flat" : percent > 0 ? "up" : "down", percent, points: usablePoints };
   }
   return { sourceCutoffAt: now, generatedAt: now, checksum: "live", ...publicPayload, images, trends };
+}
+
+/** One point per ISO week. Multiple price reports in a week are averaged; the
+ * latest known value is carried forward so a quiet market remains visibly flat. */
+function weeklyTrend(points: PublicTrendPoint[], now: Date): PublicTrendPoint[] {
+  if (!points.length) return [];
+  const weekStart = (value: Date) => {
+    const at = new Date(Date.UTC(value.getUTCFullYear(), value.getUTCMonth(), value.getUTCDate()));
+    const weekday = (at.getUTCDay() + 6) % 7;
+    at.setUTCDate(at.getUTCDate() - weekday);
+    return at;
+  };
+  const byWeek = new Map<string, number[]>();
+  for (const point of points) if (point.customerPays != null) {
+    const week = weekStart(new Date(point.at)).toISOString();
+    byWeek.set(week, [...(byWeek.get(week) ?? []), point.customerPays]);
+  }
+  const first = weekStart(new Date(points[0].at));
+  const currentWeek = weekStart(now);
+  const start = new Date(Math.max(first.getTime(), currentWeek.getTime() - 12 * 7 * 86400000));
+  const result: PublicTrendPoint[] = [];
+  let carried: number | null = null;
+  for (let week = new Date(start); week <= currentWeek; week.setUTCDate(week.getUTCDate() + 7)) {
+    const at = week.toISOString();
+    const values = byWeek.get(at);
+    if (values?.length) carried = values.reduce((sum, value) => sum + value, 0) / values.length;
+    if (carried != null) result.push({ at, customerPays: carried });
+  }
+  if (result.length === 1) result.unshift({ at: new Date(new Date(result[0].at).getTime() - 7 * 86400000).toISOString(), customerPays: result[0].customerPays });
+  return result;
 }
 
 function collapseOfficial(entries: PublicOfficialRule[], canonical: Map<string, string>, families: Map<string, { familyName: string }>) {
@@ -146,6 +182,7 @@ function collapseEstimates(entries: PublicEstimate[], canonical: Map<string, str
 function collapseHotItems(entries: PublicHotItem[], canonical: Map<string, string>, families: Map<string, { familyName: string }>) {
   const grouped = new Map<string, PublicHotItem>();
   for (const entry of entries) {
+    if (!isMarketItemDisplayable(entry)) continue;
     const itemId = canonical.get(entry.itemId) ?? entry.itemId;
     const current = grouped.get(itemId) ?? { ...entry, itemId, name: families.get(itemId)?.familyName ?? entry.name, unitsSold: 0, tradeCount: 0 };
     current.unitsSold += entry.unitsSold; current.tradeCount += entry.tradeCount; current.storeCount = Math.max(current.storeCount, entry.storeCount); grouped.set(itemId, current);
@@ -156,6 +193,7 @@ function collapseHotItems(entries: PublicHotItem[], canonical: Map<string, strin
 function collapseFavorites(entries: PublicFavorite[], canonical: Map<string, string>, families: Map<string, { familyName: string }>) {
   const grouped = new Map<string, PublicFavorite>();
   for (const entry of entries) {
+    if (!isMarketItemDisplayable(entry)) continue;
     const itemId = canonical.get(entry.itemId) ?? entry.itemId;
     const current = grouped.get(itemId) ?? { ...entry, itemId, name: families.get(itemId)?.familyName ?? entry.name, unitsTraded: 0, tradeCount: 0 };
     current.unitsTraded += entry.unitsTraded; current.tradeCount += entry.tradeCount; current.activeMonths = Math.max(current.activeMonths, entry.activeMonths); current.storeCount = Math.max(current.storeCount, entry.storeCount); grouped.set(itemId, current);

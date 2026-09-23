@@ -4,7 +4,10 @@
 FROM node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9e1ad43 AS dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# Container builds occasionally run across unstable connections. Keep the
+# lockfile exact, but allow npm to retry individual package downloads instead
+# of failing an otherwise healthy image build on the first network timeout.
+RUN npm ci --fetch-retries=5 --fetch-retry-factor=2 --fetch-retry-mintimeout=10000 --fetch-retry-maxtimeout=120000 --fetch-timeout=300000
 
 FROM node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9e1ad43 AS build
 WORKDIR /app
