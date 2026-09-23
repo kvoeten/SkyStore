@@ -10,6 +10,14 @@ export type PublishedPriceRule = {
   provenanceUrl?: string;
 };
 
+export type BaseCostRule = {
+  itemId: string;
+  totalSeptims: number;
+  quantity: number;
+  sourceLabel: string;
+  provenanceUrl?: string;
+};
+
 const GENERAL_STORE_URL = "https://docs.google.com/spreadsheets/d/1CROFlsMBDYsLMW1ddmPmlZSDTctBfnpEmhBecRBXOIM/htmlview#gid=950121146";
 const BLACKSMITH_URL = "https://docs.google.com/spreadsheets/d/1imDMLrwY9YO5ppk-dK8J99dH8SNskpRLzhganWroMzM/edit?gid=1710746180#gid=1710746180";
 const TAILORING_URL = "https://docs.google.com/spreadsheets/d/1zO9TlRuXm593sOqXB9Iwpl8lIhymQkZiBpepA3H44Jw/edit?gid=0#gid=0";
@@ -17,7 +25,9 @@ const COOKING_URL = "https://docs.google.com/document/d/1OB40xM0uIRMDpaH16ZQj_W0
 
 const generalMenu = "Whiterun General Store menu (imported 2026-08-25)";
 const generalProduce = "Whiterun General Store produce intake (imported 2026-08-25)";
-const blacksmithRaw = "Whiterun Blacksmith material guide (imported 2026-08-25)";
+const blacksmithBaseCosts = "Whiterun Blacksmith base material costs (imported 2026-09-23)";
+const tailoringBaseCosts = "Whiterun Tailoring material costs (imported 2026-09-23)";
+const confirmedProfessionMaterialCosts = "Keizaal profession material costs (confirmed 2026-09-23)";
 const tailoringGuide = "Whiterun Tailoring price guide (imported 2026-08-25)";
 const currentUpdate = "Whiterun General Store operational update (2026-09-20)";
 
@@ -48,16 +58,42 @@ const GENERAL_PRODUCE_RATES: readonly ExactRate[] = [
   ["Juniper Berries", 0.25], ["Snowberries", 0.25],
 ];
 
-const BLACKSMITH_MATERIAL_RATES: readonly ExactRate[] = [
+// The Price tab is a material input sheet, not a list of offers from a shop.
+// Keep it as a separate cost source so it never overwrites a store purchase
+// rate or becomes a public sale value.
+const BLACKSMITH_BASE_COST_RATES: readonly ExactRate[] = [
   ["Iron Ore", 0.25], ["Corundum Ore", 0.25], ["Silver Ore", 1], ["Gold Ore", 1], ["Orichalcum Ore", 15, 1, ["Orcish Ore"]],
   ["Moonstone Ore", 20], ["Quicksilver Ore", 20], ["Malachite Ore", 1250], ["Ebony Ore", 30000], ["Firewood", 0.25],
   ["Leather", 3], ["Leather Strips", 0.75, 1, ["Leather Strip"]], ["Poor Charcoal", 0.5], ["Charcoal", 1],
-  ["Charcoal Briquette", 2.5, 1, ["Charcoal Bricket"]], ["Coke", 5], ["Iron Ingot", 4], ["Corundum Ingot", 6],
-  ["Steel Ingot", 8], ["Silver Ingot", 12], ["Gold Ingot", 12], ["Orichalcum Ingot", 105, 1, ["Orcish Ingot"]],
+  ["Charcoal Briquette", 2.5, 1, ["Charcoal Bricket"]], ["Coke", 5],
+  // Confirmed Keizaal conversion value: four 0.25g iron ore become one 1g ingot.
+  ["Iron Ingot", 1], ["Corundum Ingot", 6], ["Steel Ingot", 8], ["Silver Ingot", 12], ["Gold Ingot", 12], ["Orichalcum Ingot", 105, 1, ["Orcish Ingot"]],
   ["Refined Moonstone", 135, 1, ["Moonstone Ingot"]], ["Quicksilver Ingot", 150], ["Dwarven Metal Ingot", 500, 1, ["Dwemer Ingot", "Dwarven Ingot"]],
-  ["Malachite Ingot", 7530, 1, ["Refined Malachite"]], ["Ebony Ingot", 60010], ["Pickaxe", 6], ["Woodcutter's Axe", 6], ["House Key", 20],
-  ["Oiled Mail", 60, 1, ["Oiled Mail Hauberk"]], ["Bosmer Mask", 10], ["Bosmer Cape", 10], ["Shoulder Cape", 10, 1, ["Bosmer Shoulder Cape"]], ["Fur Collar", 10],
+  ["Malachite Ingot", 7530, 1, ["Refined Malachite"]], ["Ebony Ingot", 60010],
+  ["Pickaxe", 6], ["Woodcutter's Axe", 6], ["House Key", 20], ["Oiled Mail", 60, 1, ["Oiled Mail Hauberk"]],
+  ["Bosmer Mask", 10], ["Bosmer Cape", 10], ["Shoulder Cape", 10, 1, ["Bosmer Shoulder Cape"]], ["Fur Collar", 10],
 ];
+
+// Confirmed manually from the material-price worksheet. These are only recipe
+// inputs: finished armour, clothing, weapons, and craftable intermediates are
+// intentionally absent because their costs are derived from these leaves.
+const CONFIRMED_PROFESSION_MATERIAL_COST_RATES: readonly ExactRate[] = [
+  ["Ash Yam", 2], ["Bread", 3], ["Clam Meat", 1], ["Horker Meat", 1], ["Horse Meat", 1],
+  ["Mammoth Snout", 3], ["Mudcrab Legs", 2], ["Pheasant Breast", 1], ["Salmon Meat", 1],
+  ["Bear Pelt", 3], ["Deer Hide", 2], ["Netch Leather", 3], ["Pelt of Karhu", 3],
+  ["Sabre Cat Pelt", 3], ["Sabre Cat Snow Pelt", 3], ["Snow Bear Pelt", 3], ["Vale Sabre Cat Hide", 5],
+  ["Bone Hawk Claw", 1], ["Bone Hawk Feathers", 1], ["Bone Hawk Skull", 1], ["Chaurus Chitin", 2],
+  ["Chitin Plate", 2], ["Diamond", 100], ["Dragon Bone", 100], ["Dragon Scales", 100], ["Emerald", 5],
+  ["Flawless Amethyst", 25], ["Flawless Diamond", 150], ["Flawless Emerald", 100], ["Flawless Garnet", 25],
+  ["Flawless Ruby", 25], ["Flawless Sapphire", 25], ["Garnet", 1], ["Linen Wrap", 8], ["Roll of Paper", 1],
+  ["Ruby", 1], ["Sapphire", 1], ["Shellbug Chitin", 5], ["Stalhrim", 50],
+];
+
+// The tailoring material sheet calls these "Mountain Flowers" at 0.2g each.
+// Treat every named mountain-flower variant as the same raw material family.
+const BASE_COST_PREDICATES = [
+  { label: "Mountain flowers", septims: 0.2, matches: (item: PublishedCatalogItem) => /mountain flower/.test(normalized(item.name)) }
+] as const;
 
 const TAILORING_EXACT_RATES: readonly ExactRate[] = [
   ["Blacksmith's Apron", 15], ["Chef's Tunic", 10], ["Clothes (Basic)", 10], ["Clothes (Mid)", 20],
@@ -100,6 +136,18 @@ function resolveExact(items: readonly PublishedCatalogItem[], rates: readonly Ex
     if (!unique.length) { unresolved.push(`${sourceLabel}: ${name}`); continue; }
     const bundle = exactBundle(septims, quantity);
     for (const item of unique) resolved.push({ itemId: item.id, side, ...bundle, sourceLabel, provenanceUrl });
+  }
+}
+
+function resolveBaseCosts(items: readonly PublishedCatalogItem[], rates: readonly ExactRate[], sourceLabel: string, provenanceUrl: string | undefined, resolved: BaseCostRule[], unresolved: string[]) {
+  const byName = new Map<string, PublishedCatalogItem[]>();
+  for (const item of items) byName.set(normalized(item.name), [...(byName.get(normalized(item.name)) ?? []), item]);
+  for (const [name, septims, quantity = 1, aliases = []] of rates) {
+    const matches = [name, ...aliases].flatMap((candidate) => byName.get(normalized(candidate)) ?? []);
+    const unique = [...new Map(matches.map((item) => [item.id, item])).values()];
+    if (!unique.length) { unresolved.push(`${sourceLabel}: ${name}`); continue; }
+    const bundle = exactBundle(septims, quantity);
+    for (const item of unique) resolved.push({ itemId: item.id, ...bundle, sourceLabel, provenanceUrl });
   }
 }
 
@@ -172,7 +220,6 @@ export function resolvePublishedPriceGuide(items: readonly PublishedCatalogItem[
   const unresolved: string[] = [];
   resolveExact(items, GENERAL_MENU_RATES, "customer_pays", generalMenu, COOKING_URL, resolved, unresolved);
   resolveExact(items, GENERAL_PRODUCE_RATES, "store_pays", generalProduce, GENERAL_STORE_URL, resolved, unresolved);
-  resolveExact(items, BLACKSMITH_MATERIAL_RATES, "store_pays", blacksmithRaw, BLACKSMITH_URL, resolved, unresolved);
   resolveExact(items, TAILORING_EXACT_RATES, "customer_pays", tailoringGuide, TAILORING_URL, resolved, unresolved);
   for (const [groupKey, septims] of TAILORING_GROUP_RATES) {
     const matches = items.filter((item) => productGroupForItem(item)?.key === groupKey);
@@ -183,5 +230,22 @@ export function resolvePublishedPriceGuide(items: readonly PublishedCatalogItem[
   resolvePredicateRates(items, resolved);
   const unique = new Map<string, PublishedPriceRule>();
   for (const rule of resolved) unique.set(`${rule.itemId}:${rule.side}:${rule.sourceLabel}`, rule);
+  return { rules: [...unique.values()], unresolved: [...new Set(unresolved)] };
+}
+
+/** Resolve raw material values without turning them into store trade prices. */
+export function resolvePublishedBaseCosts(items: readonly PublishedCatalogItem[]) {
+  const resolved: BaseCostRule[] = [];
+  const unresolved: string[] = [];
+  resolveBaseCosts(items, BLACKSMITH_BASE_COST_RATES, blacksmithBaseCosts, BLACKSMITH_URL, resolved, unresolved);
+  resolveBaseCosts(items, CONFIRMED_PROFESSION_MATERIAL_COST_RATES, confirmedProfessionMaterialCosts, undefined, resolved, unresolved);
+  for (const rate of BASE_COST_PREDICATES) {
+    const matches = items.filter(rate.matches);
+    if (!matches.length) { unresolved.push(`${tailoringBaseCosts}: ${rate.label}`); continue; }
+    const bundle = exactBundle(rate.septims, 1);
+    for (const item of matches) resolved.push({ itemId: item.id, ...bundle, sourceLabel: `${tailoringBaseCosts}: ${rate.label}`, provenanceUrl: TAILORING_URL });
+  }
+  const unique = new Map<string, BaseCostRule>();
+  for (const rule of resolved) unique.set(`${rule.itemId}:${rule.sourceLabel}`, rule);
   return { rules: [...unique.values()], unresolved: [...new Set(unresolved)] };
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolvePublishedPriceGuide } from "./published-price-guides";
+import { resolvePublishedBaseCosts, resolvePublishedPriceGuide } from "./published-price-guides";
 
 describe("published price guides", () => {
   it("lets a current all-cloaks update supersede an older tailoring group price", () => {
@@ -22,5 +22,39 @@ describe("published price guides", () => {
   it("stores fractional published values as exact integer bundles", () => {
     const { rules } = resolvePublishedPriceGuide([{ id: "apple", name: "Red Apple", category: "Food" }]);
     expect(rules).toContainEqual(expect.objectContaining({ itemId: "apple", side: "store_pays", totalSeptims: 1, quantity: 2 }));
+  });
+
+  it("keeps blacksmith raw values as base costs rather than store purchase offers", () => {
+    const items = [
+      { id: "quicksilver", name: "Quicksilver Ore", category: "Ores & ingots" },
+      { id: "iron", name: "Iron Ore", category: "Ores & ingots" },
+      { id: "iron-ingot", name: "Iron Ingot", category: "Ores & ingots" },
+      { id: "flower", name: "Blue Mountain Flower", category: "Alchemy ingredients" },
+    ];
+    const { rules } = resolvePublishedPriceGuide(items);
+    const { rules: baseCosts } = resolvePublishedBaseCosts(items);
+
+    expect(baseCosts).toEqual(expect.arrayContaining([
+      expect.objectContaining({ itemId: "quicksilver", totalSeptims: 20, quantity: 1 }),
+      expect.objectContaining({ itemId: "iron", totalSeptims: 1, quantity: 4 }),
+      expect.objectContaining({ itemId: "iron-ingot", totalSeptims: 1, quantity: 1 }),
+      expect.objectContaining({ itemId: "flower", totalSeptims: 1, quantity: 5 }),
+    ]));
+    expect(rules.some((rule) => rule.itemId === "quicksilver" && rule.sourceLabel.includes("Blacksmith material"))).toBe(false);
+  });
+
+  it("imports confirmed profession leaves as material costs only", () => {
+    const items = [
+      { id: "stalhrim", name: "Stalhrim", category: "Ores & ingots" },
+      { id: "diamond", name: "Diamond", category: "Miscellaneous" },
+      { id: "bear", name: "Bear Pelt", category: "Hides & leather" },
+    ];
+    const { rules } = resolvePublishedBaseCosts(items);
+
+    expect(rules).toEqual(expect.arrayContaining([
+      expect.objectContaining({ itemId: "stalhrim", totalSeptims: 50, quantity: 1, sourceLabel: expect.stringContaining("confirmed") }),
+      expect.objectContaining({ itemId: "diamond", totalSeptims: 100, quantity: 1, sourceLabel: expect.stringContaining("confirmed") }),
+      expect.objectContaining({ itemId: "bear", totalSeptims: 3, quantity: 1, sourceLabel: expect.stringContaining("confirmed") }),
+    ]));
   });
 });

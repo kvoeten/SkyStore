@@ -2,8 +2,8 @@ import { pathToFileURL } from "node:url";
 import { and, eq, inArray, isNull, like, lt, or, sql } from "drizzle-orm";
 import { createDatabase } from "./index";
 import { CURRENT_REFERENCE_RATES } from "./current-reference-rates";
-import { resolvePublishedPriceGuide } from "./published-price-guides";
-import { agreementAcceptances, auditEvents, catalogItems, jobs, memberships, officialPriceRules, recipes, stores, users } from "./schema";
+import { resolvePublishedBaseCosts, resolvePublishedPriceGuide } from "./published-price-guides";
+import { agreementAcceptances, auditEvents, baseCostRules, catalogItems, jobs, memberships, officialPriceRules, recipes, stores, users } from "./schema";
 
 export const WHITERUN_STORE_ID = "00000000-0000-4000-8000-000000000002";
 
@@ -144,7 +144,10 @@ export async function installOpeningReferences() {
       await tx.delete(officialPriceRules).where(and(eq(officialPriceRules.storeId, WHITERUN_STORE_ID), eq(officialPriceRules.sourceLabel, "Temporary price quiz")));
       if (currentRates.length) await tx.insert(officialPriceRules).values(currentRates).onConflictDoNothing();
       const published = resolvePublishedPriceGuide(activeItems);
+      const baseCosts = resolvePublishedBaseCosts(activeItems);
       const publishedEffectiveFrom = new Date("2026-09-20T00:00:00Z");
+      const baseCostEffectiveFrom = new Date("2026-09-23T00:00:00Z");
+      const confirmedProfessionMaterialEffectiveFrom = new Date("2026-09-23T12:00:00Z");
       const publishedItemIds = [...new Set(published.rules.map((rule) => rule.itemId))];
       // Re-running the catalog bootstrap refreshes this exact source import,
       // while preserving newer staff-entered rates and market evidence.
@@ -172,9 +175,19 @@ export async function installOpeningReferences() {
         minimumSeptims: rule.totalSeptims, maximumSeptims: rule.totalSeptims, quantity: rule.quantity, maximumQuantity: rule.quantity,
         effectiveFrom: publishedEffectiveFrom, sourceLabel: rule.sourceLabel, provenanceUrl: rule.provenanceUrl, createdBy: null
       }))).onConflictDoNothing();
+      // The blacksmith's Price tab contains ingredient/base costs. They power
+      // recipe costing, but must never masquerade as a store buying offer.
+      await tx.delete(baseCostRules).where(like(baseCostRules.sourceLabel, "Whiterun % material costs (imported 2026-09-23)%"));
+      await tx.delete(baseCostRules).where(like(baseCostRules.sourceLabel, "Keizaal profession material costs (confirmed 2026-09-23)%"));
+      if (baseCosts.rules.length) await tx.insert(baseCostRules).values(baseCosts.rules.map((rule) => ({
+        itemId: rule.itemId, totalSeptims: rule.totalSeptims, quantity: rule.quantity,
+        effectiveFrom: rule.sourceLabel.startsWith("Keizaal profession material costs") ? confirmedProfessionMaterialEffectiveFrom : baseCostEffectiveFrom,
+        sourceLabel: rule.sourceLabel, provenanceUrl: rule.provenanceUrl
+      }))).onConflictDoNothing();
       if (unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { unresolved: [...new Set(unresolved)] } });
       if (currentUnresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { source: "2026-08-12 price review", unresolved: [...new Set(currentUnresolved)] } });
       if (published.unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "official_prices.mapping_required", entityType: "official_price_import", after: { source: "2026-09-20 published guides", unresolved: published.unresolved } });
+      if (baseCosts.unresolved.length) await tx.insert(auditEvents).values({ actorId: null, storeId: WHITERUN_STORE_ID, action: "base_costs.mapping_required", entityType: "base_cost_import", after: { source: "2026-09-23 blacksmith base costs", unresolved: baseCosts.unresolved } });
       await tx.insert(jobs).values({ kind: "market.public_snapshot", payload: { reason: "opening_references_imported" } });
     });
   } finally { await client.end(); }

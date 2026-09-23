@@ -222,6 +222,20 @@ export const officialPriceRules = pgTable("official_price_rules", {
   uniqueIndex("official_price_rule_identity_unique").on(t.storeId, t.itemId, t.side, t.effectiveFrom, t.sourceLabel)
 ]);
 
+// Base costs are not trade offers. They are source-backed material values used
+// to cost recipes, while store buying and selling rules remain separate.
+export const baseCostRules = pgTable("base_cost_rules", {
+  id: uuid("id").defaultRandom().primaryKey(), itemId: uuid("item_id").notNull().references(() => catalogItems.id),
+  totalSeptims: integer("total_septims").notNull(), quantity: integer("quantity").notNull().default(1),
+  effectiveFrom: timestamp("effective_from", { withTimezone: true }).notNull(), effectiveTo: timestamp("effective_to", { withTimezone: true }),
+  sourceLabel: varchar("source_label", { length: 180 }).notNull(), provenanceUrl: text("provenance_url"), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+}, (t) => [
+  check("base_cost_nonnegative", sql`${t.totalSeptims} >= 0`),
+  check("base_cost_quantity_positive", sql`${t.quantity} > 0`),
+  index("base_cost_lookup_idx").on(t.itemId, t.effectiveFrom),
+  uniqueIndex("base_cost_rule_identity_unique").on(t.itemId, t.effectiveFrom, t.sourceLabel)
+]);
+
 export const derivedSignals = pgTable("derived_signals", {
   id: uuid("id").defaultRandom().primaryKey(), itemId: uuid("item_id").notNull().references(() => catalogItems.id), side: marketSide("side").notNull(), audience: varchar("audience", { length: 16 }).notNull(),
   computedAt: timestamp("computed_at", { withTimezone: true }).notNull(), median: numeric("median", { precision: 14, scale: 4 }), lowerQuartile: numeric("lower_quartile", { precision: 14, scale: 4 }), upperQuartile: numeric("upper_quartile", { precision: 14, scale: 4 }),

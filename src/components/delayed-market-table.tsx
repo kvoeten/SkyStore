@@ -9,11 +9,12 @@ import { isMarketItemDisplayable } from "@/lib/catalog/market-item-filter";
 import { marketReferenceValue } from "@/lib/market/reference-value";
 
 type Trend = { direction: "up" | "down" | "flat"; percent: number; points?: { at: string; value: number | null; customerPays: number | null; storePays: number | null }[] };
-type Row = { id: string; name: string; category?: string; imageUrl?: string | null; value?: string; region?: string; unitPrice?: number; officialCustomerPays?: number | null; reportedStreetValue?: number | null; catalogMatch?: boolean; trend?: Trend; hasPrice: boolean; lastChangedAt?: string | null; lastSoldAt?: string | null };
+type Row = { id: string; name: string; category?: string; imageUrl?: string | null; value?: string; region?: string; unitPrice?: number; officialCustomerPays?: number | null; officialCustomerChangedAt?: string | null; reportedStreetValue?: number | null; baseCost?: number | null; baseCostChangedAt?: string | null; catalogMatch?: boolean; trend?: Trend; hasPrice: boolean; lastChangedAt?: string | null; lastSoldAt?: string | null };
 type Official = { itemId: string; name: string; side: "customer_pays" | "store_pays"; septims: [number, number]; quantity: [number, number]; effectiveFrom?: string; region?: string };
+type BaseCost = { itemId: string; name: string; septims: number; quantity: number; effectiveFrom?: string };
 type Estimate = { itemId: string; name: string; market: "street" | "store"; side: "customer_pays" | "store_pays"; median: number | null; lowerQuartile: number | null; upperQuartile: number | null; newestEvidenceAt?: string | null };
 type CatalogItem = { id: string; name: string; category: string; imageUrl?: string | null; familyItemIds?: string[] };
-type MarketPayload = { sourceCutoffAt: string; official?: Official[]; estimates?: Estimate[]; images?: Record<string, string>; trends?: Record<string, Trend> };
+type MarketPayload = { sourceCutoffAt: string; official?: Official[]; baseCosts?: BaseCost[]; estimates?: Estimate[]; images?: Record<string, string>; trends?: Record<string, Trend> };
 
 function normalize(payload: MarketPayload, catalogMatches: CatalogItem[] = []): Row[] {
   const rows = new Map<string, Row>();
@@ -25,10 +26,20 @@ function normalize(payload: MarketPayload, catalogMatches: CatalogItem[] = []): 
     const itemId = canonical.get(rule.itemId) ?? rule.itemId;
     const row = rows.get(itemId) ?? { id: itemId, name: rule.name, hasPrice: false };
     const unitPrice = rule.quantity[0] > 0 ? rule.septims[1] / rule.quantity[0] : 0;
-    if (rule.side === "customer_pays" && (row.officialCustomerPays == null || unitPrice > row.officialCustomerPays)) { row.officialCustomerPays = unitPrice; row.region = rule.region ?? "Whiterun"; }
+    if (rule.side === "customer_pays" && (row.officialCustomerPays == null || unitPrice > row.officialCustomerPays)) { row.officialCustomerPays = unitPrice; row.officialCustomerChangedAt = rule.effectiveFrom ?? null; row.region = rule.region ?? "Whiterun"; }
     if (!row.lastChangedAt || (rule.effectiveFrom && Date.parse(rule.effectiveFrom) > Date.parse(row.lastChangedAt))) row.lastChangedAt = rule.effectiveFrom;
     row.imageUrl ??= payload.images?.[rule.itemId];
     row.hasPrice = Boolean(row.value);
+    rows.set(itemId, row);
+  }
+  for (const cost of payload.baseCosts ?? []) {
+    if (!isMarketItemDisplayable(cost)) continue;
+    const itemId = canonical.get(cost.itemId) ?? cost.itemId;
+    const row = rows.get(itemId) ?? { id: itemId, name: cost.name, hasPrice: false };
+    const unitPrice = cost.quantity > 0 ? cost.septims / cost.quantity : null;
+    if (unitPrice != null && (row.baseCost == null || unitPrice > row.baseCost)) { row.baseCost = unitPrice; row.baseCostChangedAt = cost.effectiveFrom ?? null; }
+    if (!row.lastChangedAt || (cost.effectiveFrom && Date.parse(cost.effectiveFrom) > Date.parse(row.lastChangedAt))) row.lastChangedAt = cost.effectiveFrom;
+    row.imageUrl ??= payload.images?.[cost.itemId];
     rows.set(itemId, row);
   }
   for (const estimate of payload.estimates ?? []) {
@@ -43,7 +54,8 @@ function normalize(payload: MarketPayload, catalogMatches: CatalogItem[] = []): 
     if (!row.lastChangedAt || (estimate.newestEvidenceAt && Date.parse(estimate.newestEvidenceAt) > Date.parse(row.lastChangedAt))) row.lastChangedAt = estimate.newestEvidenceAt;
   }
   for (const row of rows.values()) {
-    const reference = marketReferenceValue({ streetValue: row.reportedStreetValue, officialCustomerPays: row.officialCustomerPays });
+    const baseCostIsNewer = row.baseCost != null && (!row.officialCustomerChangedAt || !row.baseCostChangedAt || Date.parse(row.baseCostChangedAt) >= Date.parse(row.officialCustomerChangedAt));
+    const reference = row.reportedStreetValue ?? (baseCostIsNewer ? row.baseCost : marketReferenceValue({ officialCustomerPays: row.officialCustomerPays }) ?? row.baseCost ?? null);
     if (reference != null) { row.unitPrice = reference; row.value = formatGold(reference); }
     row.hasPrice = reference != null;
     row.trend = payload.trends?.[row.id] ?? catalogMatches.find((item) => item.id === row.id)?.familyItemIds?.map((id) => payload.trends?.[id]).find(Boolean);

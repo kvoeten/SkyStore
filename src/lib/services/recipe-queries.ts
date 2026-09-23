@@ -1,6 +1,6 @@
-import { and, eq, ilike, inArray, isNotNull, isNull, lte, gte, or } from "drizzle-orm";
+import { and, desc, eq, ilike, inArray, isNotNull, isNull, lte, gte, or } from "drizzle-orm";
 import { db } from "@/db/runtime";
-import { catalogItems, officialPriceRules, recipeIngredients, recipes } from "@/db/schema";
+import { baseCostRules, catalogItems, officialPriceRules, recipeIngredients, recipes } from "@/db/schema";
 import { MASTERY_TIERS } from "@/lib/professions";
 import { getPublicMarketOverview } from "@/lib/public-market";
 import { parseRecipeRequirements, type RecipeRequirement } from "@/lib/recipe-requirements";
@@ -41,10 +41,10 @@ async function pricesFor(itemIds: string[], storeId: string | undefined, side: "
   if (!storeId) {
     const overview = await getPublicMarketOverview();
     for (const rule of overview?.official ?? []) {
-      if (itemIds.includes(rule.itemId) && rule.quantity[0] > 0) prices.set(rule.itemId, rule.septims[1] / rule.quantity[0]);
+      if (rule.side === side && itemIds.includes(rule.itemId) && rule.quantity[0] > 0) prices.set(rule.itemId, rule.septims[1] / rule.quantity[0]);
     }
     for (const estimate of overview?.estimates ?? []) {
-      if (itemIds.includes(estimate.itemId) && (estimate.upperQuartile ?? estimate.median) != null) prices.set(estimate.itemId, Number(estimate.upperQuartile ?? estimate.median));
+      if (estimate.side === side && itemIds.includes(estimate.itemId) && (estimate.upperQuartile ?? estimate.median) != null) prices.set(estimate.itemId, Number(estimate.upperQuartile ?? estimate.median));
     }
     return prices;
   }
@@ -58,6 +58,28 @@ async function pricesFor(itemIds: string[], storeId: string | undefined, side: "
     if (rule.quantity > 0) prices.set(rule.itemId, rule.maximumSeptims / rule.quantity);
   }
   return prices;
+}
+
+/**
+ * Return the latest source-backed material cost for each item, falling back
+ * only when an item has no base-cost entry. Trade offers are deliberately not
+ * allowed to overwrite a known material cost.
+ */
+export async function getBaseCostsFor(itemIds: string[], storeId?: string) {
+  const costs = new Map<string, number>();
+  if (!itemIds.length) return costs;
+  const now = new Date();
+  const rows = await db.select().from(baseCostRules).where(and(
+    inArray(baseCostRules.itemId, itemIds),
+    lte(baseCostRules.effectiveFrom, now),
+    or(isNull(baseCostRules.effectiveTo), gte(baseCostRules.effectiveTo, now))
+  )).orderBy(desc(baseCostRules.effectiveFrom));
+  for (const rule of rows) if (!costs.has(rule.itemId) && rule.quantity > 0) costs.set(rule.itemId, rule.totalSeptims / rule.quantity);
+
+  const unpriced = itemIds.filter((itemId) => !costs.has(itemId));
+  const fallback = await pricesFor(unpriced, storeId, "store_pays");
+  for (const [itemId, price] of fallback) costs.set(itemId, price);
+  return costs;
 }
 
 function normalizeConditions(value: unknown): string[] {
@@ -116,7 +138,7 @@ export type TailoringPriceFamily = CatalogPriceFamily;
 export async function getProfessionRecipes(profession: string, storeId?: string) {
   const result = await recipeRowsFor(eq(recipes.profession, profession));
   const [materialPrices, productPrices] = await Promise.all([
-    pricesFor([...new Set(result.ingredients.map((ingredient) => ingredient.itemId))], storeId, "store_pays"),
+    getBaseCostsFor([...new Set(result.ingredients.map((ingredient) => ingredient.itemId))], storeId),
     pricesFor([...new Set(result.rows.map((recipe) => recipe.outputItemId))], storeId, "customer_pays")
   ]);
   return deduplicate(assemble(result.rows, result.ingredients, materialPrices, productPrices)).sort((a, b) => {
@@ -129,7 +151,7 @@ export async function getCatalogRecipesForItem(itemId: string, storeId?: string,
   const result = await recipeRowsFor(eq(recipes.outputItemId, itemId));
   const family = knownPriceFamily ?? await getCatalogPriceFamily(itemId);
   const [materialPrices, familyProductPrices] = await Promise.all([
-    pricesFor([...new Set(result.ingredients.map((ingredient) => ingredient.itemId))], storeId, "store_pays"),
+    getBaseCostsFor([...new Set(result.ingredients.map((ingredient) => ingredient.itemId))], storeId),
     pricesFor(family.itemIds, storeId, "customer_pays")
   ]);
   const sharedProductPrice = [...familyProductPrices.values()].reduce<number | null>((highest, price) => highest == null ? price : Math.max(highest, price), null);
@@ -143,7 +165,7 @@ export async function getRecipesUsingItem(itemId: string, storeId?: string) {
   if (!recipeIds.length) return [];
   const result = await recipeRowsFor(inArray(recipes.id, recipeIds.map((entry) => entry.id)));
   const [materialPrices, productPrices] = await Promise.all([
-    pricesFor([...new Set(result.ingredients.map((ingredient) => ingredient.itemId))], storeId, "store_pays"),
+    getBaseCostsFor([...new Set(result.ingredients.map((ingredient) => ingredient.itemId))], storeId),
     pricesFor([...new Set(result.rows.map((recipe) => recipe.outputItemId))], storeId, "customer_pays")
   ]);
   return deduplicate(assemble(result.rows, result.ingredients, materialPrices, productPrices)).map((recipe) => ({ ...recipe, quantityUsed: recipe.ingredients.find((ingredient) => ingredient.itemId === itemId)?.quantity ?? 0 }));
