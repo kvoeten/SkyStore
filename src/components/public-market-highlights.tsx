@@ -27,7 +27,7 @@ export function PublicMarketHighlights() {
   const [state, setState] = useState<Highlights | null>(null);
   useEffect(() => {
     const controller = new AbortController();
-    fetch("/api/v1/market/public", { signal: controller.signal })
+    fetch("/api/v1/market/public?highlights=1", { signal: controller.signal })
       .then((response) => response.ok ? response.json() : Promise.reject())
       .then((value: Partial<Highlights>) => setState({ hotItems: value.hotItems ?? [], allTimeFavorites: value.allTimeFavorites ?? [], official: value.official ?? [], estimates: value.estimates ?? [] }))
       .catch(() => { if (!controller.signal.aborted) setState({ hotItems: [], allTimeFavorites: [], official: [], estimates: [] }); });

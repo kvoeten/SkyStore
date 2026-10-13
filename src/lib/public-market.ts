@@ -21,6 +21,7 @@ export type PublicMarketOverviewOptions = {
   itemLimit?: number;
   /** Catalog ids requested by a search. Their collapsed price families are retained. */
   itemIds?: readonly string[];
+  includeTrends?: boolean;
 };
 
 function payload(value: unknown): PublicSnapshotPayload {
@@ -56,7 +57,7 @@ function priceFor(snapshot: PublicSnapshotPayload, itemId: string): number | nul
   return streetValue ?? (baseCostIsNewer ? baseCostValue : officialCustomerPays ?? baseCostValue);
 }
 
-export async function getPublicMarketOverview({ itemLimit, itemIds: requestedItemIds }: PublicMarketOverviewOptions = {}) {
+export async function getPublicMarketOverview({ itemLimit, itemIds: requestedItemIds, includeTrends = true }: PublicMarketOverviewOptions = {}) {
   const now = new Date();
   const [officialRows, baseCostRows, reportRows, snapshots] = await Promise.all([
     db.select({ itemId: officialPriceRules.itemId, name: catalogItems.displayName, side: officialPriceRules.side, minimum: officialPriceRules.minimumSeptims, maximum: officialPriceRules.maximumSeptims, quantity: officialPriceRules.quantity, maximumQuantity: officialPriceRules.maximumQuantity, effectiveFrom: officialPriceRules.effectiveFrom, createdAt: officialPriceRules.createdAt })
@@ -104,17 +105,19 @@ export async function getPublicMarketOverview({ itemLimit, itemIds: requestedIte
   const itemIds = new Set([...latestPayload.official, ...latestPayload.baseCosts, ...latestPayload.estimates].map((entry) => entry.itemId));
   const imageRows = itemIds.size ? await db.select({
     id: catalogItems.id, name: catalogItems.displayName, category: catalogItems.category, editorId: catalogItems.editorId, recordType: catalogItems.recordType,
-    craftSignature: sql<string | null>`(
-      select string_agg(ri.item_id::text || ':' || ri.quantity::text, '|' order by ri.item_id::text)
-      from recipes public_recipe join recipe_ingredients ri on ri.recipe_id = public_recipe.id
-      where public_recipe.output_item_id = ${catalogItems.id} and public_recipe.approval = 'approved' and public_recipe.is_catalog_default = true
-    )`
   })
     .from(catalogItems)
     .where(inArray(catalogItems.id, [...itemIds])) : [];
+  const signatureRows = itemIds.size ? await db.execute<{ output_item_id: string; signature: string }>(sql`
+    select r.output_item_id, string_agg(ri.item_id::text || ':' || ri.quantity::text, '|' order by ri.item_id::text) as signature
+    from recipes r join recipe_ingredients ri on ri.recipe_id = r.id
+    where r.approval = 'approved' and r.is_catalog_default = true
+    group by r.output_item_id
+  `) : [];
+  const signatures = new Map(signatureRows.map((row) => [row.output_item_id, row.signature]));
   const families = collapseItemFamilies(imageRows.map((item) => {
     const group = productGroupForItem(item);
-    return { ...item, productGroupKey: group?.key, productGroupLabel: group?.label };
+    return { ...item, craftSignature: signatures.get(item.id) ?? null, productGroupKey: group?.key, productGroupLabel: group?.label };
   }));
   const canonicalByItem = new Map(families.flatMap((family) => family.familyItemIds.map((id) => [id, family.id] as const)));
   const familyByCanonical = new Map(families.map((family) => [family.id, family]));
@@ -126,11 +129,19 @@ export async function getPublicMarketOverview({ itemLimit, itemIds: requestedIte
     hotItems: collapseHotItems(latestPayload.hotItems, canonicalByItem, familyByCanonical),
     allTimeFavorites: collapseFavorites(latestPayload.allTimeFavorites, canonicalByItem, familyByCanonical),
   };
+  const changedAt = new Map<string, number>();
+  for (const entry of [...publicPayload.official, ...publicPayload.baseCosts, ...publicPayload.estimates]) {
+    const at = "effectiveFrom" in entry ? entry.effectiveFrom : "newestEvidenceAt" in entry ? entry.newestEvidenceAt : null;
+    changedAt.set(entry.itemId, Math.max(changedAt.get(entry.itemId) ?? 0, Date.parse(at ?? "") || 0));
+  }
+  const selectedIds = requestedItemIds?.length
+    ? new Set(requestedItemIds.map((id) => canonicalByItem.get(id) ?? id))
+    : new Set([...changedAt.keys()].sort((left, right) => (changedAt.get(right) ?? 0) - (changedAt.get(left) ?? 0)).slice(0, itemLimit ?? changedAt.size));
   const images: Record<string, string> = {};
   for (const family of families) images[family.id] = categoryIconPath(family);
   const chronological = [...snapshots].reverse();
   const trends: Record<string, PublicTrend> = {};
-  for (const family of families) {
+  for (const family of includeTrends ? families.filter((family) => selectedIds.has(family.id)) : []) {
     const history = marketOfficialRows.filter((row) => family.familyItemIds.includes(row.itemId)).sort((left, right) => left.effectiveFrom.getTime() - right.effectiveFrom.getTime());
     // Store purchase and sale references must remain distinct in the chart.
     // Only a store sale can establish a street-value reference; a store-buy
@@ -145,12 +156,12 @@ export async function getPublicMarketOverview({ itemLimit, itemIds: requestedIte
       .filter((row) => family.familyItemIds.includes(row.itemId))
       .map((row) => ({ at: row.effectiveFrom.toISOString(), value: row.septims / row.quantity }));
     const reportPoints = marketReportRows.filter((row) => family.familyItemIds.includes(row.itemId)).map((row) => row.locationType === "street_sale" ? { at: row.occurrenceAt.toISOString(), value: row.totalSeptims / row.quantity } : { at: row.occurrenceAt.toISOString(), [row.side]: row.totalSeptims / row.quantity });
-    const snapshotPoints = chronological.map((snapshot) => {
+    const points = [...officialPoints, ...baseCostPoints, ...reportPoints].sort((left, right) => Date.parse(left.at) - Date.parse(right.at));
+    const snapshotPoints = points.length ? [] : chronological.map((snapshot) => {
       const content = payload(snapshot.payload);
       const values = family.familyItemIds.map((itemId) => priceFor(content, itemId)).filter((value): value is number => value != null);
       return { at: snapshot.snapshotDate.toISOString(), value: values.length ? Math.max(...values) : null };
     }).filter((point) => point.value != null);
-    const points = [...officialPoints, ...baseCostPoints, ...reportPoints].sort((left, right) => Date.parse(left.at) - Date.parse(right.at));
     const usablePoints = weeklyTrend(points.length ? points : snapshotPoints, now);
     const current = usablePoints.at(-1)?.value ?? null;
     const monthlyBaseline = usablePoints.at(-5)?.value ?? usablePoints.at(-2)?.value ?? current;
@@ -161,24 +172,6 @@ export async function getPublicMarketOverview({ itemLimit, itemIds: requestedIte
   // Keep only its leading priced families in the payload. Searches first resolve
   // catalog families and request their ids explicitly, so unpriced search hits
   // remain possible without making the opening page download every catalog item.
-  const availableIds = new Set([
-    ...publicPayload.official.map((entry) => entry.itemId),
-    ...publicPayload.baseCosts.map((entry) => entry.itemId),
-    ...publicPayload.estimates.map((entry) => entry.itemId),
-  ]);
-  const requestedIds = requestedItemIds?.length
-    ? new Set(requestedItemIds.map((itemId) => canonicalByItem.get(itemId) ?? itemId))
-    : null;
-  const selectedIds = requestedIds ?? new Set(
-    [...availableIds].sort((left, right) => {
-      const dateFor = (itemId: string) => Math.max(
-        ...publicPayload.official.filter((entry) => entry.itemId === itemId).map((entry) => Date.parse(entry.effectiveFrom ?? "") || 0),
-        ...publicPayload.baseCosts.filter((entry) => entry.itemId === itemId).map((entry) => Date.parse(entry.effectiveFrom ?? "") || 0),
-        ...publicPayload.estimates.filter((entry) => entry.itemId === itemId).map((entry) => Date.parse(entry.newestEvidenceAt ?? "") || 0),
-      );
-      return dateFor(right) - dateFor(left);
-    }).slice(0, itemLimit ?? availableIds.size)
-  );
   const selected = <T extends { itemId: string }>(entries: T[]) => entries.filter((entry) => selectedIds.has(entry.itemId));
   const selectedTrends = Object.fromEntries(Object.entries(trends).filter(([itemId]) => selectedIds.has(itemId)));
   const selectedImages = Object.fromEntries(Object.entries(images).filter(([itemId]) => selectedIds.has(itemId)));
