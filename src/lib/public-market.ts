@@ -7,6 +7,8 @@ import { isMarketItemDisplayable } from "@/lib/catalog/market-item-filter";
 import { productGroupForItem } from "@/lib/catalog/product-groups";
 import { DEFAULT_MARKET_REGION, marketRegion } from "@/lib/market/holds";
 import { marketReferenceValue } from "@/lib/market/reference-value";
+import { trendChangePercent } from "@/lib/market/trend-change";
+import { rebaseCorrectedTrend } from "@/lib/market/trend-baseline";
 
 export type PublicOfficialRule = { itemId: string; name: string; side: "store_pays" | "customer_pays"; septims: [number, number]; quantity: [number, number]; effectiveFrom?: string; region?: string };
 export type PublicBaseCostRule = { itemId: string; name: string; septims: number; quantity: number; effectiveFrom?: string };
@@ -60,7 +62,7 @@ function priceFor(snapshot: PublicSnapshotPayload, itemId: string): number | nul
 export async function getPublicMarketOverview({ itemLimit, itemIds: requestedItemIds, includeTrends = true }: PublicMarketOverviewOptions = {}) {
   const now = new Date();
   const [officialRows, baseCostRows, reportRows, snapshots] = await Promise.all([
-    db.select({ itemId: officialPriceRules.itemId, name: catalogItems.displayName, side: officialPriceRules.side, minimum: officialPriceRules.minimumSeptims, maximum: officialPriceRules.maximumSeptims, quantity: officialPriceRules.quantity, maximumQuantity: officialPriceRules.maximumQuantity, effectiveFrom: officialPriceRules.effectiveFrom, createdAt: officialPriceRules.createdAt })
+    db.select({ sourceLabel: officialPriceRules.sourceLabel, itemId: officialPriceRules.itemId, name: catalogItems.displayName, side: officialPriceRules.side, minimum: officialPriceRules.minimumSeptims, maximum: officialPriceRules.maximumSeptims, quantity: officialPriceRules.quantity, maximumQuantity: officialPriceRules.maximumQuantity, effectiveFrom: officialPriceRules.effectiveFrom, createdAt: officialPriceRules.createdAt })
       .from(officialPriceRules).innerJoin(catalogItems, eq(officialPriceRules.itemId, catalogItems.id))
       .where(and(eq(catalogItems.status, "active"), lte(officialPriceRules.effectiveFrom, now)))
       .orderBy(desc(officialPriceRules.effectiveFrom), desc(officialPriceRules.createdAt)),
@@ -162,10 +164,11 @@ export async function getPublicMarketOverview({ itemLimit, itemIds: requestedIte
       const values = family.familyItemIds.map((itemId) => priceFor(content, itemId)).filter((value): value is number => value != null);
       return { at: snapshot.snapshotDate.toISOString(), value: values.length ? Math.max(...values) : null };
     }).filter((point) => point.value != null);
-    const usablePoints = weeklyTrend(points.length ? points : snapshotPoints, now);
+    const correctedAt = history.filter((row) => row.side === "customer_pays" && row.sourceLabel.startsWith("SkyStore material-cost baseline correction")).at(-1)?.effectiveFrom ?? null;
+    const usablePoints = weeklyTrend(rebaseCorrectedTrend<RawTrendPoint>(points.length ? points : snapshotPoints, correctedAt), now);
     const current = usablePoints.at(-1)?.value ?? null;
-    const monthlyBaseline = usablePoints.at(-5)?.value ?? usablePoints.at(-2)?.value ?? current;
-    const percent = current != null && monthlyBaseline != null && monthlyBaseline !== 0 ? ((current - monthlyBaseline) / monthlyBaseline) * 100 : 0;
+    const monthlyBaseline = usablePoints.at(-5)?.value ?? usablePoints.at(-2)?.value ?? null;
+    const percent = trendChangePercent(current, monthlyBaseline);
     trends[family.id] = { direction: Math.abs(percent) < 0.005 ? "flat" : percent > 0 ? "up" : "down", percent, points: usablePoints };
   }
   // The guide's default view is a browsing feed, not a full catalog export.

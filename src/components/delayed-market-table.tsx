@@ -75,7 +75,7 @@ function trendVisual(trend?: Trend) {
     const y = spread === 0 ? 12 : 21 - ((price - minimum) / spread) * 18;
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(" ");
-  const change = `${trend?.percent && trend.percent > 0 ? "+" : ""}${(trend?.percent ?? 0).toFixed(1)}%`;
+  const change = (trend?.percent ?? 0) === 0 ? "+0%" : `${(trend?.percent ?? 0) > 0 ? "+" : ""}${(trend?.percent ?? 0).toFixed(1)}%`;
   const label = `Four-week price change ${change}`;
   return <span className={`trend-visual ${trend?.direction ?? "new"}`} title={label}>
     <svg viewBox="0 0 72 24" role="img" aria-label={label}>{values.length === 1 ? <circle cx="36" cy="12" r="2.5"/> : <polyline points={points}/>}</svg>

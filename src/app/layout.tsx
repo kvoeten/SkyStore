@@ -3,6 +3,7 @@ import "./globals.css";
 import "./market.css";
 import "./item-detail.css";
 import "./account.css";
+import "./item-inspection.css";
 
 export const metadata: Metadata = {
   title: "SkyStore · Merchant Ledger",

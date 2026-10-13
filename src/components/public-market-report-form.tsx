@@ -62,7 +62,7 @@ export function PublicMarketReportForm({ itemId, itemName, appliesToCount = 1, o
     {appliesToCount > 1 && <p className="fine">One report applies to all {appliesToCount} equivalent Tailoring variants in this group.</p>}
     <form className="stack" aria-busy={state === "submitting"} onSubmit={(event) => { event.preventDefault(); void submit(event.currentTarget); }}>
       <div className="grid form-grid report-basics">
-        <label className="field"><span>Price per item (g)</span><input name="unitPrice" type="number" min="0" step="0.01" required={!advanced} autoFocus disabled={state === "submitting"} /></label>
+        <label className="field"><span>Price per item (g)</span><input name="unitPrice" type="number" min="0" step="0.01" required={!advanced} disabled={state === "submitting"} /></label>
         <label className="field"><span>Price type</span><select name="priceType" defaultValue="street_value" disabled={state === "submitting"}><option value="street_value">Street value</option><option value="store_buying_price">Store buying price</option><option value="store_selling_price">Store selling price</option></select></label>
         <label className="field"><span>Region</span><select name="sourceLocation" defaultValue={DEFAULT_MARKET_REGION} disabled={state === "submitting"}>{SKYRIM_HOLDS.map((hold) => <option key={hold} value={hold}>{hold}</option>)}</select></label>
       </div>
