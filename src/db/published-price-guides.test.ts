@@ -30,6 +30,7 @@ describe("published price guides", () => {
       { id: "iron", name: "Iron Ore", category: "Ores & ingots" },
       { id: "iron-ingot", name: "Iron Ingot", category: "Ores & ingots" },
       { id: "flower", name: "Blue Mountain Flower", category: "Alchemy ingredients" },
+      { id: "thread", name: "Thread", category: "Miscellaneous" },
     ];
     const { rules } = resolvePublishedPriceGuide(items);
     const { rules: baseCosts } = resolvePublishedBaseCosts(items);
@@ -39,6 +40,7 @@ describe("published price guides", () => {
       expect.objectContaining({ itemId: "iron", totalSeptims: 1, quantity: 4 }),
       expect.objectContaining({ itemId: "iron-ingot", totalSeptims: 1, quantity: 1 }),
       expect.objectContaining({ itemId: "flower", totalSeptims: 1, quantity: 5 }),
+      expect.objectContaining({ itemId: "thread", totalSeptims: 1, quantity: 1 }),
     ]));
     expect(rules.some((rule) => rule.itemId === "quicksilver" && rule.sourceLabel.includes("Blacksmith material"))).toBe(false);
   });

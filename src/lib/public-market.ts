@@ -16,6 +16,12 @@ export type PublicFavorite = { itemId: string; name: string; unitsTraded: number
 export type PublicSnapshotPayload = { policy?: Record<string, number>; official: PublicOfficialRule[]; baseCosts: PublicBaseCostRule[]; estimates: PublicEstimate[]; hotItems: PublicHotItem[]; allTimeFavorites: PublicFavorite[] };
 export type PublicTrendPoint = { at: string; value: number | null; customerPays: number | null; storePays: number | null };
 export type PublicTrend = { direction: "up" | "down" | "flat"; percent: number; points: PublicTrendPoint[] };
+export type PublicMarketOverviewOptions = {
+  /** Keep the browse feed small; search can name the exact catalog families it needs. */
+  itemLimit?: number;
+  /** Catalog ids requested by a search. Their collapsed price families are retained. */
+  itemIds?: readonly string[];
+};
 
 function payload(value: unknown): PublicSnapshotPayload {
   const source = value && typeof value === "object" ? value as Partial<PublicSnapshotPayload> : {};
@@ -50,7 +56,7 @@ function priceFor(snapshot: PublicSnapshotPayload, itemId: string): number | nul
   return streetValue ?? (baseCostIsNewer ? baseCostValue : officialCustomerPays ?? baseCostValue);
 }
 
-export async function getPublicMarketOverview(limit = 31) {
+export async function getPublicMarketOverview({ itemLimit, itemIds: requestedItemIds }: PublicMarketOverviewOptions = {}) {
   const now = new Date();
   const [officialRows, baseCostRows, reportRows, snapshots] = await Promise.all([
     db.select({ itemId: officialPriceRules.itemId, name: catalogItems.displayName, side: officialPriceRules.side, minimum: officialPriceRules.minimumSeptims, maximum: officialPriceRules.maximumSeptims, quantity: officialPriceRules.quantity, maximumQuantity: officialPriceRules.maximumQuantity, effectiveFrom: officialPriceRules.effectiveFrom, createdAt: officialPriceRules.createdAt })
@@ -65,7 +71,7 @@ export async function getPublicMarketOverview(limit = 31) {
       .from(publicMarketReports).innerJoin(catalogItems, eq(publicMarketReports.itemId, catalogItems.id))
       .where(and(eq(catalogItems.status, "active"), eq(publicMarketReports.status, "approved"), isNull(publicMarketReports.quarantinedAt), gt(publicMarketReports.occurrenceAt, new Date(now.getTime() - 90 * 86400000))))
       .orderBy(desc(publicMarketReports.occurrenceAt)),
-    db.select().from(delayedSnapshots).orderBy(desc(delayedSnapshots.snapshotDate)).limit(limit)
+    db.select().from(delayedSnapshots).orderBy(desc(delayedSnapshots.snapshotDate)).limit(31)
   ]);
   const marketOfficialRows = officialRows.filter(isMarketItemDisplayable);
   const marketBaseCostRows = baseCostRows.filter(isMarketItemDisplayable);
@@ -151,7 +157,36 @@ export async function getPublicMarketOverview(limit = 31) {
     const percent = current != null && monthlyBaseline != null && monthlyBaseline !== 0 ? ((current - monthlyBaseline) / monthlyBaseline) * 100 : 0;
     trends[family.id] = { direction: Math.abs(percent) < 0.005 ? "flat" : percent > 0 ? "up" : "down", percent, points: usablePoints };
   }
-  return { sourceCutoffAt: now, generatedAt: now, checksum: "live", ...publicPayload, images, trends };
+  // The guide's default view is a browsing feed, not a full catalog export.
+  // Keep only its leading priced families in the payload. Searches first resolve
+  // catalog families and request their ids explicitly, so unpriced search hits
+  // remain possible without making the opening page download every catalog item.
+  const availableIds = new Set([
+    ...publicPayload.official.map((entry) => entry.itemId),
+    ...publicPayload.baseCosts.map((entry) => entry.itemId),
+    ...publicPayload.estimates.map((entry) => entry.itemId),
+  ]);
+  const requestedIds = requestedItemIds?.length
+    ? new Set(requestedItemIds.map((itemId) => canonicalByItem.get(itemId) ?? itemId))
+    : null;
+  const selectedIds = requestedIds ?? new Set(
+    [...availableIds].sort((left, right) => {
+      const dateFor = (itemId: string) => Math.max(
+        ...publicPayload.official.filter((entry) => entry.itemId === itemId).map((entry) => Date.parse(entry.effectiveFrom ?? "") || 0),
+        ...publicPayload.baseCosts.filter((entry) => entry.itemId === itemId).map((entry) => Date.parse(entry.effectiveFrom ?? "") || 0),
+        ...publicPayload.estimates.filter((entry) => entry.itemId === itemId).map((entry) => Date.parse(entry.newestEvidenceAt ?? "") || 0),
+      );
+      return dateFor(right) - dateFor(left);
+    }).slice(0, itemLimit ?? availableIds.size)
+  );
+  const selected = <T extends { itemId: string }>(entries: T[]) => entries.filter((entry) => selectedIds.has(entry.itemId));
+  const selectedTrends = Object.fromEntries(Object.entries(trends).filter(([itemId]) => selectedIds.has(itemId)));
+  const selectedImages = Object.fromEntries(Object.entries(images).filter(([itemId]) => selectedIds.has(itemId)));
+  return {
+    sourceCutoffAt: now, generatedAt: now, checksum: "live", ...publicPayload,
+    official: selected(publicPayload.official), baseCosts: selected(publicPayload.baseCosts), estimates: selected(publicPayload.estimates),
+    images: selectedImages, trends: selectedTrends
+  };
 }
 
 /** One point per ISO week. Multiple price reports in a week are averaged; the

@@ -28,6 +28,7 @@ const generalProduce = "Whiterun General Store produce intake (imported 2026-08-
 const blacksmithBaseCosts = "Whiterun Blacksmith base material costs (imported 2026-09-23)";
 const tailoringBaseCosts = "Whiterun Tailoring material costs (imported 2026-09-23)";
 const confirmedProfessionMaterialCosts = "Keizaal profession material costs (confirmed 2026-09-23)";
+const provisionalRecipeComponentCosts = "Keizaal provisional recipe-component estimates (2026-09-23)";
 const tailoringGuide = "Whiterun Tailoring price guide (imported 2026-08-25)";
 const currentUpdate = "Whiterun General Store operational update (2026-09-20)";
 
@@ -87,6 +88,33 @@ const CONFIRMED_PROFESSION_MATERIAL_COST_RATES: readonly ExactRate[] = [
   ["Flawless Amethyst", 25], ["Flawless Diamond", 150], ["Flawless Emerald", 100], ["Flawless Garnet", 25],
   ["Flawless Ruby", 25], ["Flawless Sapphire", 25], ["Garnet", 1], ["Linen Wrap", 8], ["Roll of Paper", 1],
   ["Ruby", 1], ["Sapphire", 1], ["Shellbug Chitin", 5], ["Stalhrim", 50],
+];
+
+// These are explicit tailoring-sheet component values. Thread is also
+// reproducible from five 0.2g mountain flowers, so the 1g source value and
+// the recipe agree exactly.
+const TAILORING_COMPONENT_COST_RATES: readonly ExactRate[] = [
+  ["Thread", 1], ["Tundra Cotton", 0.5],
+];
+
+// Leaves without a published Keizaal material rate. These are transparent
+// catalog-value or market-family estimates used only to complete the initial
+// recipe-cost baseline; they never become store buying or selling offers.
+const PROVISIONAL_RECIPE_COMPONENT_COST_RATES: readonly ExactRate[] = [
+  ["Aetherium Crest", 25], ["Ale", 5],
+  ["Amulet of Akatosh", 20], ["Amulet of Arkay", 20], ["Amulet of Dibella", 20], ["Amulet of Julianos", 20],
+  ["Amulet of Kynareth", 20], ["Amulet of Mara", 20], ["Amulet of Stendarr", 20], ["Amulet of Talos", 20], ["Amulet of Zenithar", 20],
+  ["Ancient Nord Arrow", 1], ["Bent Dwemer Scrap Metal", 15], ["Cave Bear Pelt", 5], ["Clay", 1], ["Cow Hide", 1],
+  ["Bleeding Crown", 0.2], ["Canis Root", 0.2], ["Deathbell", 0.2], ["Dragon's Tongue", 0.2], ["Dwemer Scrap Metal", 15],
+  ["Fly Amanita", 0.2], ["Fox Pelt", 1], ["Frostbite Venom", 5], ["Giant Bracers (Unfitted)", 20],
+  ["Giant Clothes (Unfitted)", 100], ["Giant Legwraps (Unfitted)", 20], ["Giant Lichen", 0.2], ["Glass", 5], ["Glowing Mushroom", 0.2], ["Goat Hide", 1], ["Goat Horns", 5],
+  ["Heart Stone", 100], ["Horker Tusk", 15], ["Horse Hide", 1], ["Ice Wolf Pelt", 1], ["Large Decorative Dwemer Strut", 10],
+  ["Large Dwemer Plate Metal", 15], ["Large Dwemer Strut", 15], ["Lavender", 0.2], ["Leek", 0.5], ["Lesser Soul Gem", 4],
+  ["Moon Sugar", 10], ["Mora Tapinella", 0.2], ["Nightshade", 0.2], ["Petty Soul Gem", 4], ["Quarried Stone", 2], ["Rust Armor", 50], ["Rust Boots", 5],
+  ["Rust Gauntlets", 5], ["Rust Helmet", 15], ["Rust Shield", 20], ["Salt Pile", 0.5], ["Sawn Log", 1], ["Scaly Pholiota", 0.2], ["Skull", 5], ["Small Dwemer Plate Metal", 15],
+  ["Snow Fox Pelt", 1], ["Solid Dwemer Metal", 25], ["Straw", 1], ["Tomato", 0.5], ["Troll Skull", 5],
+  ["Unenchanted Alteration Staff", 15], ["Unenchanted Conjuration Staff", 15], ["Unenchanted Destruction Staff", 15],
+  ["Unenchanted Illusion Staff", 15], ["Unenchanted Restoration Staff", 15], ["Vale Deer Hide", 1], ["Wheat", 0.5], ["Wolf Pelt", 1],
 ];
 
 // The tailoring material sheet calls these "Mountain Flowers" at 0.2g each.
@@ -238,7 +266,9 @@ export function resolvePublishedBaseCosts(items: readonly PublishedCatalogItem[]
   const resolved: BaseCostRule[] = [];
   const unresolved: string[] = [];
   resolveBaseCosts(items, BLACKSMITH_BASE_COST_RATES, blacksmithBaseCosts, BLACKSMITH_URL, resolved, unresolved);
+  resolveBaseCosts(items, TAILORING_COMPONENT_COST_RATES, tailoringBaseCosts, TAILORING_URL, resolved, unresolved);
   resolveBaseCosts(items, CONFIRMED_PROFESSION_MATERIAL_COST_RATES, confirmedProfessionMaterialCosts, undefined, resolved, unresolved);
+  resolveBaseCosts(items, PROVISIONAL_RECIPE_COMPONENT_COST_RATES, provisionalRecipeComponentCosts, undefined, resolved, unresolved);
   for (const rate of BASE_COST_PREDICATES) {
     const matches = items.filter(rate.matches);
     if (!matches.length) { unresolved.push(`${tailoringBaseCosts}: ${rate.label}`); continue; }

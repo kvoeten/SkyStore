@@ -87,18 +87,21 @@ export function DelayedMarketTable({ query = "" }: { query?: string }) {
   const [state, setState] = useState<{ status: "loading" | "ready" | "empty" | "error"; rows: Row[]; message?: string }>({ status: "loading", rows: [] });
   useEffect(() => {
     const controller = new AbortController();
-    const market = fetch("/api/v1/market/public", { signal: controller.signal, headers: { accept: "application/json" } })
+    const getMarket = (itemIds: string[] = []) => fetch(`/api/v1/market/public${itemIds.length ? `?itemIds=${encodeURIComponent(itemIds.join(","))}` : ""}`, { signal: controller.signal, headers: { accept: "application/json" } })
       .then(async (response) => {
         if (!response.ok) throw new Error(response.status === 503 ? "The guide is still being prepared." : "The guide could not be loaded.");
         return response.json() as Promise<MarketPayload>;
       });
-    const catalog = query.trim()
-      ? fetch(`/api/v1/catalog/public-items?q=${encodeURIComponent(query.trim())}`, { signal: controller.signal, headers: { accept: "application/json" } })
-        .then(async (response) => response.ok ? response.json() as Promise<{ items?: CatalogItem[] }> : { items: [] })
-      : Promise.resolve({ items: [] as CatalogItem[] });
-    Promise.all([market, catalog])
-      .then(([payload, catalogMatches]) => {
-        const rows = normalize(payload, catalogMatches.items ?? []);
+    const load = async () => {
+      if (!query.trim()) return { payload: await getMarket(), catalog: { items: [] as CatalogItem[] } };
+      const catalog = await fetch(`/api/v1/catalog/public-items?q=${encodeURIComponent(query.trim())}`, { signal: controller.signal, headers: { accept: "application/json" } })
+        .then(async (response) => response.ok ? response.json() as Promise<{ items?: CatalogItem[] }> : { items: [] });
+      const itemIds = (catalog.items ?? []).flatMap((item) => item.familyItemIds?.length ? item.familyItemIds : [item.id]);
+      return { payload: await getMarket(itemIds), catalog };
+    };
+    load()
+      .then(({ payload, catalog }) => {
+        const rows = normalize(payload, catalog.items ?? []);
         setState({ status: rows.length ? "ready" : "empty", rows });
       })
       .catch((error: unknown) => {

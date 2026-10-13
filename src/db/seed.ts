@@ -3,6 +3,7 @@ import { and, eq, inArray, isNull, like, lt, or, sql } from "drizzle-orm";
 import { createDatabase } from "./index";
 import { CURRENT_REFERENCE_RATES } from "./current-reference-rates";
 import { resolvePublishedBaseCosts, resolvePublishedPriceGuide } from "./published-price-guides";
+import { installMaterialCostBaseline } from "./repair-under-cost-prices";
 import { agreementAcceptances, auditEvents, baseCostRules, catalogItems, jobs, memberships, officialPriceRules, recipes, stores, users } from "./schema";
 
 export const WHITERUN_STORE_ID = "00000000-0000-4000-8000-000000000002";
@@ -179,6 +180,7 @@ export async function installOpeningReferences() {
       // recipe costing, but must never masquerade as a store buying offer.
       await tx.delete(baseCostRules).where(like(baseCostRules.sourceLabel, "Whiterun % material costs (imported 2026-09-23)%"));
       await tx.delete(baseCostRules).where(like(baseCostRules.sourceLabel, "Keizaal profession material costs (confirmed 2026-09-23)%"));
+      await tx.delete(baseCostRules).where(like(baseCostRules.sourceLabel, "Keizaal provisional recipe-component estimates (2026-09-23)%"));
       if (baseCosts.rules.length) await tx.insert(baseCostRules).values(baseCosts.rules.map((rule) => ({
         itemId: rule.itemId, totalSeptims: rule.totalSeptims, quantity: rule.quantity,
         effectiveFrom: rule.sourceLabel.startsWith("Keizaal profession material costs") ? confirmedProfessionMaterialEffectiveFrom : baseCostEffectiveFrom,
@@ -191,6 +193,9 @@ export async function installOpeningReferences() {
       await tx.insert(jobs).values({ kind: "market.public_snapshot", payload: { reason: "opening_references_imported" } });
     });
   } finally { await client.end(); }
+  // The initial data repair happens after the reference transaction commits so
+  // it can calculate full nested recipe costs from the newly imported inputs.
+  await installMaterialCostBaseline(WHITERUN_STORE_ID);
 }
 
 export async function bootstrapAdminStore(userId: string) {

@@ -12,7 +12,7 @@ export type RecipeView = {
   id: string; outputItemId: string; outputName: string; outputYield: number;
   profession: string | null; masteryTier: string | null; laborFee: number;
   conditions: string[]; requirements: RecipeRequirement[];
-  ingredients: RecipeIngredientView[]; materialCost: number | null; productPrice: number | null; missingPriceCount: number;
+  ingredients: RecipeIngredientView[]; materialCost: number | null; productPrice: number | null; missingPriceCount: number; priceBelowMaterialCost: boolean;
 };
 
 export type CatalogPriceFamily = {
@@ -65,7 +65,7 @@ async function pricesFor(itemIds: string[], storeId: string | undefined, side: "
  * only when an item has no base-cost entry. Trade offers are deliberately not
  * allowed to overwrite a known material cost.
  */
-export async function getBaseCostsFor(itemIds: string[], storeId?: string) {
+async function getDirectBaseCostsFor(itemIds: string[], storeId?: string) {
   const costs = new Map<string, number>();
   if (!itemIds.length) return costs;
   const now = new Date();
@@ -82,6 +82,75 @@ export async function getBaseCostsFor(itemIds: string[], storeId?: string) {
   return costs;
 }
 
+type CostRecipe = { id: string; outputItemId: string; outputYield: number; laborFee: number; ingredients: Array<{ itemId: string; quantity: number }> };
+
+/**
+ * Resolve source-backed input values first, then follow default Keizaal recipes
+ * for any craftable intermediate. This keeps finished armour and clothing
+ * derived from their own materials instead of requiring a separate invented
+ * base price merely because another recipe consumes them.
+ */
+export async function getBaseCostsFor(itemIds: string[], storeId?: string) {
+  const requested = [...new Set(itemIds)];
+  const directCosts = new Map<string, number>();
+  const addDirectCosts = async (ids: string[]) => {
+    const unresolved = [...new Set(ids)].filter((itemId) => !directCosts.has(itemId));
+    if (!unresolved.length) return;
+    for (const [itemId, cost] of await getDirectBaseCostsFor(unresolved, storeId)) directCosts.set(itemId, cost);
+  };
+
+  await addDirectCosts(requested);
+  const recipesByOutput = new Map<string, CostRecipe[]>();
+  const exploredOutputs = new Set<string>();
+  let frontier = requested.filter((itemId) => !directCosts.has(itemId));
+
+  while (frontier.length) {
+    const outputs = [...new Set(frontier)].filter((itemId) => !exploredOutputs.has(itemId) && !directCosts.has(itemId));
+    if (!outputs.length) break;
+    outputs.forEach((itemId) => exploredOutputs.add(itemId));
+    const rows = await db.select({ id: recipes.id, outputItemId: recipes.outputItemId, outputYield: recipes.outputYield, laborFee: recipes.laborFee })
+      .from(recipes).where(and(inArray(recipes.outputItemId, outputs), eq(recipes.approval, "approved"), eq(recipes.isCatalogDefault, true), isNull(recipes.storeId)));
+    if (!rows.length) { frontier = []; continue; }
+    const ingredients = await db.select({ recipeId: recipeIngredients.recipeId, itemId: recipeIngredients.itemId, quantity: recipeIngredients.quantity })
+      .from(recipeIngredients).where(inArray(recipeIngredients.recipeId, rows.map((recipe) => recipe.id)));
+    for (const row of rows) recipesByOutput.set(row.outputItemId, [
+      ...(recipesByOutput.get(row.outputItemId) ?? []),
+      { ...row, ingredients: ingredients.filter((ingredient) => ingredient.recipeId === row.id).map(({ itemId, quantity }) => ({ itemId, quantity })) }
+    ]);
+    const nextIngredients = ingredients.map((ingredient) => ingredient.itemId);
+    await addDirectCosts(nextIngredients);
+    frontier = nextIngredients.filter((itemId) => !directCosts.has(itemId) && !exploredOutputs.has(itemId));
+  }
+
+  const resolved = new Map(directCosts);
+  const visiting = new Set<string>();
+  const calculate = (itemId: string): number | null => {
+    const direct = resolved.get(itemId);
+    if (direct != null) return direct;
+    if (visiting.has(itemId)) return null;
+    const candidates = recipesByOutput.get(itemId) ?? [];
+    if (!candidates.length) return null;
+    visiting.add(itemId);
+    const costs = candidates.flatMap((recipe) => {
+      const inputs = recipe.ingredients.map((ingredient) => calculate(ingredient.itemId));
+      if (inputs.some((cost) => cost == null)) return [];
+      const total = recipe.ingredients.reduce((sum, ingredient, index) => sum + (inputs[index] ?? 0) * ingredient.quantity, recipe.laborFee);
+      return [total / recipe.outputYield];
+    });
+    visiting.delete(itemId);
+    const cost = costs.length ? Math.min(...costs) : null;
+    if (cost != null) resolved.set(itemId, cost);
+    return cost;
+  };
+
+  const result = new Map<string, number>();
+  for (const itemId of requested) {
+    const cost = calculate(itemId);
+    if (cost != null) result.set(itemId, cost);
+  }
+  return result;
+}
+
 function normalizeConditions(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((condition): condition is string => typeof condition === "string") : [];
 }
@@ -92,7 +161,9 @@ function assemble(rows: Array<{ id: string; outputItemId: string; outputName: st
     const missingPriceCount = inputs.filter((ingredient) => !materialPrices.has(ingredient.itemId)).length;
     const total = inputs.reduce((sum, ingredient) => sum + (materialPrices.get(ingredient.itemId) ?? 0) * ingredient.quantity, recipe.laborFee);
     const conditions = normalizeConditions(recipe.conditions);
-    return { ...recipe, conditions, requirements: parseRecipeRequirements(conditions), ingredients: inputs, missingPriceCount, materialCost: missingPriceCount ? null : total / recipe.outputYield, productPrice: productPrices.get(recipe.outputItemId) ?? null };
+    const materialCost = missingPriceCount ? null : total / recipe.outputYield;
+    const productPrice = productPrices.get(recipe.outputItemId) ?? null;
+    return { ...recipe, conditions, requirements: parseRecipeRequirements(conditions), ingredients: inputs, missingPriceCount, materialCost, productPrice, priceBelowMaterialCost: materialCost != null && productPrice != null && productPrice < materialCost };
   });
 }
 
