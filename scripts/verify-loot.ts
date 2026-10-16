@@ -89,6 +89,12 @@ async function main() {
   assert.equal(plan.plan.boxes.length,100);assert.equal(plan.plan.profit,4495);
   const disposable=await executeLootCommand(owner,{action:"plan",name:"Delete me",settings});
   assert.ok("eventId" in disposable);if(!("eventId" in disposable))throw Error("No draft");
+  const fittedSettings={...settings,boxTypes:[{tier:"General" as const,count:2,price:120},{tier:"Premium" as const,count:2,price:150}]};
+  await assert.rejects(()=>executeLootCommand(customer,{action:"rebalance",eventId:disposable.eventId,name:"Forbidden",settings:fittedSettings}),/Only/);
+  const fitted=await executeLootCommand(owner,{action:"rebalance",eventId:disposable.eventId,name:"Owner can rebalance",settings:fittedSettings});
+  assert.ok("plan" in fitted&&fitted.plan.boxes.length===4&&fitted.plan.margin!>=.2);
+  const [savedFit]=await db.select().from(lootEvents).where(eq(lootEvents.id,disposable.eventId));
+  assert.deepEqual(savedFit.settings.boxTypes,"plan" in fitted?fitted.plan.settings.boxTypes:undefined);
   await executeLootCommand(owner,{action:"purchase",eventId:disposable.eventId,userId:customer.userId,tier:"General",quantity:2});
   await assert.rejects(()=>executeLootCommand(customer,{action:"deleteEvent",eventId:disposable.eventId}),/Only/);
   await executeLootCommand(owner,{action:"deleteEvent",eventId:disposable.eventId});
@@ -111,6 +117,7 @@ async function main() {
   assert.equal("storage" in mine,false);assert.equal("users" in mine,false);
   assert.ok(mine.boxes.every((box)=>!("contents" in box)));
   await assert.rejects(()=>executeLootCommand(owner,{action:"deleteEvent",eventId:plan.eventId}),/Distributed/);
+  await assert.rejects(()=>executeLootCommand(owner,{action:"rebalance",eventId:plan.eventId,name:"Locked",settings:fittedSettings}),/Only draft/);
   await executeLootCommand(owner,{action:"purchase",eventId:plan.eventId,userId:customer.userId,tier:"General",quantity:1});
   assert.equal((await getLootDashboard(customer)).boxes.length,2);
   await executeLootCommand(owner,{action:"purchase",eventId:plan.eventId,userId:customer.userId,tier:"General",quantity:0});

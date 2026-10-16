@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { LOOT_CATEGORIES } from "./planner";
+import {FIX_KINDS} from "./warning-fixes";
 const settings = z.object({
   count: z.number().int().min(1).max(1000),
   margin: z.number().min(0).lt(1),
@@ -20,6 +21,8 @@ export const lootCommand = z.discriminatedUnion("action", [
   z.object({ action:z.literal("import"), kind:z.enum(["store","event"]), csv:z.string().min(1).max(20_000_000) }),
   z.object({ action:z.literal("price"), key:z.string().min(1).max(2000), unitValue:z.number().min(0).max(100_000_000).nullable(), category:z.enum(LOOT_CATEGORIES), excluded:z.boolean(), reviewed:z.boolean(), leading:z.boolean().optional() }),
   z.object({ action:z.literal("plan"), eventId:z.uuid().optional(), name:z.string().trim().min(1).max(120), settings }),
+  z.object({ action:z.literal("rebalance"), eventId:z.uuid().optional(), name:z.string().trim().min(1).max(120), settings }),
+  z.object({ action:z.literal("repair"), fix:z.enum(FIX_KINDS), eventId:z.uuid().optional(), name:z.string().trim().min(1).max(120), settings }),
   z.object({ action:z.literal("preview"), settings }),
   z.object({ action:z.literal("purchase"), eventId:z.uuid(), userId:z.uuid(), tier:z.enum(["General","Premium","Exclusive","Special"]), quantity:z.number().int().min(0).max(1000) }),
   z.object({ action:z.literal("distribute"), eventId:z.uuid() }),

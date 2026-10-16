@@ -7,6 +7,8 @@ import confirmedValues from "./confirmed-values.json";
 import { canManageWhiterunStorage } from "./access";
 import { importStorageCsv, isIgnoredStorageItem, type StorageKind, type StorageSnapshot } from "./storage-import";
 import { planLoot, type PlannerItem } from "./planner";
+import {rebalanceLoot} from "./rebalance";
+import {fixLootWarning} from "./warning-fixes";
 import type { LootCommand } from "./commands";
 import { defaultSettings } from "./pack-rewards.mjs";
 import { bundleLabel } from "./bundle-label";
@@ -191,25 +193,30 @@ export async function executeLootCommand(context:AccessContext|null, command:Loo
       await audit(tx,context,"event_deleted",event.id,{name:event.name,purchasesRemoved:true});
       return {deleted:true};
     }
-    if(command.action==="plan"||command.action==="preview") {
+    if(command.action==="plan"||command.action==="preview"||command.action==="rebalance"||command.action==="repair") {
+      if(command.action!=="preview"&&command.eventId){
+        const [event]=await tx.select({status:lootEvents.status}).from(lootEvents).where(eq(lootEvents.id,command.eventId));
+        if(!event||event.status!=="draft")throw new LootError("Only draft events can be repacked.");
+      }
       const [storage]=await tx.select().from(chestStorage).where(eq(chestStorage.kind,"event")).limit(1);
       if(!storage) throw new LootError("Import EVENT STORAGE first.");
       const items=await availableEventItems(tx,storage);
       let plan;
       const bundles=(await tx.select().from(lootLeadingBundles).where(eq(lootLeadingBundles.enabled,true))).map(bundle=>({...bundle,name:withoutQuality(bundle.name),lines:resolveBundleLines(bundle.lines,items)}));
-      try { plan=planLoot(items,{...command.settings,leaderBundles:bundles}); } catch(error) { throw new LootError(error instanceof Error?error.message:"Invalid plan.",400); }
+      try { const settings={...command.settings,leaderBundles:bundles};plan=command.action==="repair"?fixLootWarning(items,settings,command.fix):(command.action==="rebalance"?rebalanceLoot:planLoot)(items,settings); } catch(error) { throw new LootError(error instanceof Error?error.message:"Invalid plan.",400); }
       if(command.action==="preview") return {plan};
       if(plan.blocked) throw new LootError(plan.warnings.join(" ")||"Check the box requirements before generating.");
+      const savedSettings=command.action==="rebalance"||command.action==="repair"?{...command.settings,count:plan.settings.count,boxTypes:plan.settings.boxTypes,winPercent:plan.settings.winPercent}:command.settings;
       if(command.eventId) {
         const [event]=await tx.select().from(lootEvents).where(eq(lootEvents.id,command.eventId));
         if(!event||event.status!=="draft") throw new LootError("Only draft events can be repacked.");
-        await tx.update(lootEvents).set({name:command.name,settings:command.settings,snapshotId:storage.snapshotId,plan,updatedAt:new Date()}).where(eq(lootEvents.id,event.id));
-        await audit(tx,context,"repacked",event.id,{boxes:plan.boxes.length});
-        return {eventId:event.id,plan};
+        await tx.update(lootEvents).set({name:command.name,settings:savedSettings,snapshotId:storage.snapshotId,plan,updatedAt:new Date()}).where(eq(lootEvents.id,event.id));
+        await audit(tx,context,command.action==="rebalance"?"rebalanced":"repacked",event.id,{boxes:plan.boxes.length,settings:savedSettings});
+        return {eventId:event.id,plan,settings:savedSettings};
       }
-      const [event]=await tx.insert(lootEvents).values({name:command.name,settings:command.settings,snapshotId:storage.snapshotId,plan,createdBy:context.userId}).returning({id:lootEvents.id});
+      const [event]=await tx.insert(lootEvents).values({name:command.name,settings:savedSettings,snapshotId:storage.snapshotId,plan,createdBy:context.userId}).returning({id:lootEvents.id});
       await audit(tx,context,"planned",event.id,{boxes:plan.boxes.length});
-      return {eventId:event.id,plan};
+      return {eventId:event.id,plan,settings:savedSettings};
     }
     if(command.action==="purchase") {
       const [event]=await tx.select().from(lootEvents).where(eq(lootEvents.id,command.eventId));

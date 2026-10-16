@@ -140,8 +140,9 @@ export function generateAll(items,settings=defaultSettings,seed=42){
  const rank={General:0,Premium:1,Exclusive:2,Special:3};boxes.sort((a,b)=>rank[a.tier]-rank[b.tier]);
  boxes.forEach((b,k)=>{b.id=String(k+1).padStart(3,'0');b.profit=b.sale-b.value;b.margin=b.profit/b.sale;b.status=s.winPercent>0?(b.value>b.sale+1e-7?'Above price':b.value<b.sale-1e-7?'Below price':'Break even'):b.value<b.sale*.7-1e-7?'Underfilled':b.value>b.sale*1.15+1e-7?'Over value':'Ready';});
  if(boxes.length!==s.count)warnings.push(`${boxes.length} boxes fit the prices and profit target; ${s.count} preferred.`);
- if(bins.length&&nm/bins.length<5)warnings.push(`${nm} materials across ${bins.length} standard boxes: fewer than 5 each.`);
- if(bins.length&&nm/bins.length>15)warnings.push(`${nm} materials across ${bins.length} standard boxes: more than 15 each to allocate all stock.`);
+ const materialBoxes=boxes.filter(b=>!b.special&&!b.leadOnly),materialUnits=sum(materialBoxes,b=>b.materials);
+ if(materialBoxes.length&&materialUnits/materialBoxes.length<5)warnings.push(`${materialUnits} materials across ${materialBoxes.length} standard boxes: fewer than 5 each.`);
+ if(materialBoxes.length&&materialUnits/materialBoxes.length>15)warnings.push(`${materialUnits} materials across ${materialBoxes.length} standard boxes: more than 15 each to allocate all stock.`);
  if(s.winPercent>0&&boxes.some(b=>!b.special&&!b.leadOnly&&(b.materials<5||b.materials>15)))warnings.push('Winning-value distribution puts some boxes outside the usual 5–15 material count. Review their contents.');
  if(!s.winPercent&&boxes.some(b=>b.status!=='Ready'))warnings.push('Some boxes miss the 70–115% value range; review flagged rows.');
  const odds=['General','Premium','Exclusive','Special'].map(tier=>{const group=boxes.filter(b=>b.tier===tier),winners=group.filter(b=>b.value>b.sale+1e-7).length;return {tier,total:group.length,winners,percent:group.length?winners/group.length*100:0};}).filter(row=>row.total);
