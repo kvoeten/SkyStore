@@ -218,6 +218,7 @@ jobs:
             --allow-stable
           cp deploy/truenas/README.md dist/TRUENAS-README.md
           cp deploy/truenas/nginx.conf.example dist/nginx.conf.example
+          cp scripts/import-loot-transfer.sh dist/import-loot-transfer.sh
           printf '%s@%s\n' "$IMAGE_NAME" "$DIGEST" > dist/image-reference.txt
           printf '%s:stable\n' "$IMAGE_NAME" > dist/automatic-image-reference.txt
           (cd dist && sha256sum ./* > SHA256SUMS)

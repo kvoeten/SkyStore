@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- the static SVG bypasses host-dependent image optimization inside Docker. */
 
 import Link from "next/link";
+import { LootNotification } from "@/components/loot-notification";
 import type { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState, type ReactNode } from "react";
@@ -11,7 +12,7 @@ import { PROFESSIONS } from "@/lib/professions";
 const marketLinks = [["/guide", "Price guide", "◈"]] as const;
 const storeLinks = [
   ["/record", "Record a Sale", "+"], ["/approvals", "Approvals", "✓"],
-  ["/reports", "Reports", "⌁"], ["/store-admin", "Store settings", "⚙"],
+  ["/reports", "Reports", "⌁"], ["/loot-boxes", "Event boxes", "◇"], ["/store-admin", "Store settings", "⚙"],
 ] as const;
 const adminLinks = [["/platform", "Platform controls", "◆"], ["/catalog", "Catalog intake", "□"]] as const;
 
@@ -59,7 +60,7 @@ export function AppShell({ children, current, identity, publicView = false, publ
       {(!publicView || showAdmin) && <><span className="mobile-nav-label">Admin</span>{adminLinks.map(([href,text,icon]) => <Link key={href} href={href} onClick={closeMenu}><span aria-hidden="true">{icon}</span>{text}</Link>)}{!publicView && <Link href="/guide?view=public" onClick={closeMenu}>Public price guide</Link>}{!publicView && <Link href="/logout" onClick={closeMenu}>Sign out</Link>}</>}
       {publicView && !publicAccount && <Link href={loginHref as Route} onClick={closeMenu}>Sign in</Link>}{publicView && publicAccount && <><Link href="/guide" onClick={closeMenu}>Store view</Link><Link href="/logout" onClick={closeMenu}>Sign out</Link></>}
     </nav></header>
-    <main id="content" className="content"><header className="topbar"><form className="global-search" role="search" action={searchAction ?? "/guide"} method="get">{effectiveSearchStoreId && !publicView && <input type="hidden" name="storeId" value={effectiveSearchStoreId}/>} {searchPublicView && <input type="hidden" name="view" value="public"/>}<span aria-hidden="true">⌕</span><input name="q" type="search" placeholder="Search catalog and prices" aria-label="Search catalog and prices"/><kbd>Enter</kbd></form><div className="top-actions">{publicView && <><Link className="outline quick-report" href="/guide/bulk-report">Bulk report</Link><Link className="outline quick-report" href="/guide/report-ledger">Report ledger</Link></>}{publicView ? publicAccount ? <><Link className="outline" href="/guide">Store view</Link><Link className="text-button" href="/logout">Sign out</Link></> : <Link className="outline" href={loginHref as Route}>Sign in</Link> : <><Link className="text-button" href="/guide?view=public">Public guide</Link><Link className="text-button" href="/logout">Sign out</Link></>}</div></header>{children}</main>
+    <main id="content" className="content"><header className="topbar"><form className="global-search" role="search" action={searchAction ?? "/guide"} method="get">{effectiveSearchStoreId && !publicView && <input type="hidden" name="storeId" value={effectiveSearchStoreId}/>} {searchPublicView && <input type="hidden" name="view" value="public"/>}<span aria-hidden="true">⌕</span><input name="q" type="search" placeholder="Search catalog and prices" aria-label="Search catalog and prices"/><kbd>Enter</kbd></form><div className="top-actions">{(publicAccount || identity) && <LootNotification/>}{publicView && <><Link className="outline quick-report" href="/guide/bulk-report">Bulk report</Link><Link className="outline quick-report" href="/guide/report-ledger">Report ledger</Link></>}{publicView ? publicAccount ? <><Link className="outline" href="/guide">Store view</Link><Link className="text-button" href="/logout">Sign out</Link></> : <Link className="outline" href={loginHref as Route}>Sign in</Link> : <><Link className="text-button" href="/guide?view=public">Public guide</Link><Link className="text-button" href="/logout">Sign out</Link></>}</div></header>{children}</main>
   </div>;
 }
 

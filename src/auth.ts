@@ -20,6 +20,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Discord({
       clientId: discordClientId,
       clientSecret: discordClientSecret,
+      // Discord includes its issuer in OAuth responses; without this Auth.js
+      // falls back to authjs.dev and rejects otherwise valid callbacks.
+      issuer: "https://discord.com",
       authorization: { params: { scope: "identify" } }
     })
   ],

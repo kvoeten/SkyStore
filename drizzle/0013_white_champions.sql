@@ -1,0 +1,1 @@
+ALTER TABLE "chest_price_overrides" ADD COLUMN "leading" boolean DEFAULT false NOT NULL;

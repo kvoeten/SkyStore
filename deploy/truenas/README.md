@@ -50,3 +50,9 @@ Digest-pinned `skystore-truenas.yaml` installations remain manual by design and 
 ## Back up
 
 Back up `/mnt/Atlantis/Vault/Skystore/uploads` with the database. A filesystem copy of the live PostgreSQL directory is not a database backup. Schedule a PostgreSQL custom-format dump into `/mnt/Atlantis/Vault/Skystore/backups`, encrypt it, and copy it off the TrueNAS host.
+# Moving a locally planned event to TrueNAS
+
+Application updates do not transfer a developer machine's database. Keep the private SQL transfer separate from public images/releases. Export using `scripts/export-loot-transfer.ts output/truenas/skystore-event-state.sql` against the source database, and privately copy that file to `/mnt/Atlantis/Vault/Skystore/backups/skystore-event-state.sql` on TrueNAS.
+
+After updating the app, download the release's `import-loot-transfer.sh` helper and run it with the private SQL file as its argument. It pauses web/worker, creates a full database backup beside the transfer file, imports transactionally, and restarts the running services. It never replaces public reports, store memberships, login sessions, or unrelated events. People are matched by Discord ID; no OAuth secrets/tokens are exported. Newer live chest prices win conflicts. Existing event-ID conflicts or a newer live chest snapshot abort the whole import instead of overwriting it. Repeating the same successful transfer does nothing.
+

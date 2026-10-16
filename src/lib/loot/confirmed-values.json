@@ -1,0 +1,286 @@
+{
+  "Iron Shield (Pristine)": {
+    "category": "Armor",
+    "unitValue": 23
+  },
+  "Belted Tunic (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 10
+  },
+  "Blue Cowl (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 10
+  },
+  "clothes (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 15
+  },
+  "Copper and Onyx Circlet": {
+    "category": "Jewellery",
+    "unitValue": 10
+  },
+  "Fine Clothes (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 20
+  },
+  "Leather Cape (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 10
+  },
+  "Quilted Surcoat 01 (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 30
+  },
+  "Ragged Trousers (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 5
+  },
+  "Reinforced Backpack (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 40
+  },
+  "Trader's Resource & Lantern": {
+    "category": "Clothing",
+    "unitValue": 65
+  },
+  "Traveller Robes Red Hooded (Pristine)": {
+    "category": "Clothing",
+    "unitValue": 15
+  },
+  "KzlChestLootBook": {
+    "category": "Review",
+    "unitValue": 15
+  },
+  "Ale": {
+    "category": "Food",
+    "unitValue": 12
+  },
+  "Mammoth Snout": {
+    "category": "Food",
+    "unitValue": 3
+  },
+  "Nord Mead": {
+    "category": "Food",
+    "unitValue": 25
+  },
+  "Burned Book": {
+    "category": "Joke",
+    "unitValue": 10
+  },
+  "Amethyst": {
+    "category": "Material",
+    "unitValue": 2
+  },
+  "Chaurus Eggs": {
+    "category": "Material",
+    "unitValue": 3
+  },
+  "Creep Cluster": {
+    "category": "Material",
+    "unitValue": 2
+  },
+  "Emerald": {
+    "category": "Material",
+    "unitValue": 5
+  },
+  "Flawless Sapphire": {
+    "category": "Material",
+    "unitValue": 25
+  },
+  "Garnet": {
+    "category": "Material",
+    "unitValue": 1
+  },
+  "Goat Horns": {
+    "category": "Material",
+    "unitValue": 2
+  },
+  "Horker Tusk": {
+    "category": "Material",
+    "unitValue": 2
+  },
+  "Petty Soul Gem": {
+    "category": "Other",
+    "unitValue": 8
+  },
+  "Ruby": {
+    "category": "Material",
+    "unitValue": 1
+  },
+  "Sabre Cat Tooth": {
+    "category": "Material",
+    "unitValue": 4
+  },
+  "Sapphire": {
+    "category": "Material",
+    "unitValue": 1
+  },
+  "2920, First Seed, v3": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "A Dance in Fire, v1": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "A Dance in Fire, v2": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "A Dance in Fire, v3": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "A Dance in Fire, v4": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "A Dance in Fire, v5": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "A Dance in Fire, v6": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "A Dance in Fire, v7": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "Amulet of Arkay": {
+    "category": "Jewellery",
+    "unitValue": 150
+  },
+  "Amulet of Dibella": {
+    "category": "Jewellery",
+    "unitValue": 150
+  },
+  "Amulet of Mara": {
+    "category": "Jewellery",
+    "unitValue": 150
+  },
+  "Amulet of Stendarr": {
+    "category": "Jewellery",
+    "unitValue": 150
+  },
+  "Amulet of Zenithar": {
+    "category": "Jewellery",
+    "unitValue": 150
+  },
+  "Chimarvamidium": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "Common Soul Gem": {
+    "category": "Other",
+    "unitValue": 8
+  },
+  "Flute": {
+    "category": "Other",
+    "unitValue": 20
+  },
+  "Hallgerd's Tale": {
+    "category": "Book",
+    "unitValue": 15
+  },
+  "Mammoth Tusk": {
+    "category": "Other",
+    "unitValue": 8
+  },
+  "Silver Garnet Ring": {
+    "category": "Jewellery",
+    "unitValue": 13
+  },
+  "Silver Necklace": {
+    "category": "Jewellery",
+    "unitValue": 12
+  },
+  "Silver Ring": {
+    "category": "Jewellery",
+    "unitValue": 6
+  },
+  "Conjurer's Potion": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Draught of the Berserker": {
+    "category": "Potion",
+    "unitValue": 25
+  },
+  "Draught of the Healer": {
+    "category": "Potion",
+    "unitValue": 25
+  },
+  "Draught of the Warrior": {
+    "category": "Potion",
+    "unitValue": 25
+  },
+  "Enchanter's Potion": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of Alteration": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of Destruction": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of Illusion": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of Light Feet": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of Minor Healing": {
+    "category": "Potion",
+    "unitValue": 16
+  },
+  "Potion of Resist Magic": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of the Berserker": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of the Defender": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of the Healer": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of the Knight": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Potion of Waterbreathing": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Skirmisher's Potion": {
+    "category": "Potion",
+    "unitValue": 20
+  },
+  "Ice Wraith Essence": {
+    "category": "Potion",
+    "unitValue": 8
+  },
+  "Jugged Rabbit": {
+    "category": "Food",
+    "unitValue": 13
+  },
+  "Robed Steel Armor (Fine)": {
+    "category": "Armor",
+    "unitValue": 500
+  },
+  "Dwarven Bow (Fine)": {
+    "category": "Weapon",
+    "unitValue": 7205
+  }
+}

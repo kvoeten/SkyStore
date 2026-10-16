@@ -1,4 +1,6 @@
 import { relations, sql } from "drizzle-orm";
+import type { StorageItem } from "@/lib/loot/storage-import";
+import type { PackedBox, PackingResult, PackingSettings } from "@/lib/loot/pack-rewards.mjs";
 import {
   boolean,
   check,
@@ -260,3 +262,68 @@ export const usersRelations = relations(users, ({ many }) => ({ memberships: man
 export const membershipsRelations = relations(memberships, ({ one }) => ({ store: one(stores, { fields: [memberships.storeId], references: [stores.id] }), user: one(users, { fields: [memberships.userId], references: [users.id] }) }));
 export const receiptsRelations = relations(receipts, ({ one, many }) => ({ store: one(stores, { fields: [receipts.storeId], references: [stores.id] }), lines: many(receiptLines), movements: many(stockMovements) }));
 export const receiptLinesRelations = relations(receiptLines, ({ one }) => ({ receipt: one(receipts, { fields: [receiptLines.receiptId], references: [receipts.id] }), item: one(catalogItems, { fields: [receiptLines.itemId], references: [catalogItems.id] }) }));
+
+// Imported chest balances are replacement snapshots, never additive receipts.
+export const chestStorage = pgTable("chest_storage", {
+  kind: varchar("kind", { length: 12 }).primaryKey(),
+  snapshotId: uuid("snapshot_id").notNull().defaultRandom(),
+  fingerprint: varchar("fingerprint", { length: 64 }).notNull(),
+  capturedAt: timestamp("captured_at", { withTimezone: true }).notNull(),
+  importedAt: timestamp("imported_at", { withTimezone: true }).notNull().defaultNow(),
+  importedBy: uuid("imported_by").notNull().references(() => users.id),
+  items: jsonb("items").$type<StorageItem[]>().notNull(),
+}, (t) => [check("chest_kind_valid", sql`${t.kind} in ('event', 'store')`)]);
+
+export const chestPriceOverrides = pgTable("chest_price_overrides", {
+  itemKey: text("item_key").primaryKey(),
+  unitValue: numeric("unit_value", { precision: 18, scale: 2 }),
+  category: varchar("category", { length: 32 }).notNull(),
+  excluded: boolean("excluded").notNull().default(false),
+  leading: boolean("leading").notNull().default(false),
+  reviewed: boolean("reviewed").notNull().default(false),
+  updatedBy: uuid("updated_by").notNull().references(() => users.id),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [check("chest_override_nonnegative", sql`${t.unitValue} is null or ${t.unitValue} >= 0`)]);
+
+export const lootLeadingBundles = pgTable("loot_leading_bundles", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: varchar("name", {length:120}).notNull(),
+  lines: jsonb("lines").$type<{key:string;quantity:number}[]>().notNull(),
+  enabled: boolean("enabled").notNull().default(true),
+  updatedBy: uuid("updated_by").notNull().references(()=>users.id),
+  updatedAt: timestamp("updated_at",{withTimezone:true}).notNull().defaultNow(),
+});
+
+export const lootEvents = pgTable("loot_events", {
+  id: uuid("id").defaultRandom().primaryKey(), name: varchar("name", { length: 120 }).notNull(),
+  snapshotId: uuid("snapshot_id").notNull(),
+  status: varchar("status", { length: 16 }).notNull().default("draft"),
+  settings: jsonb("settings").$type<PackingSettings>().notNull(),
+  plan: jsonb("plan").$type<PackingResult>(),
+  createdBy: uuid("created_by").notNull().references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [check("loot_event_status", sql`${t.status} in ('draft', 'distributed')`)]);
+
+export const lootPurchases = pgTable("loot_purchases", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventId: uuid("event_id").notNull().references(() => lootEvents.id),
+  userId: uuid("user_id").notNull().references(() => users.id),
+  tier: varchar("tier", { length: 16 }).notNull(),
+  quantity: integer("quantity").notNull(),
+  createdBy: uuid("created_by").notNull().references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [check("loot_purchase_positive", sql`${t.quantity} > 0 and ${t.quantity} <= 1000`), uniqueIndex("loot_purchase_user_tier").on(t.eventId, t.userId, t.tier)]);
+
+export const lootBoxes = pgTable("loot_boxes", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventId: uuid("event_id").notNull().references(() => lootEvents.id),
+  boxNumber: varchar("box_number", { length: 12 }).notNull(),
+  contents: jsonb("contents").$type<PackedBox>().notNull(),
+  userId: uuid("user_id").references(() => users.id),
+  assignedAt: timestamp("assigned_at", { withTimezone: true }),
+  openedAt: timestamp("opened_at", { withTimezone: true }),
+  fulfilledAt: timestamp("fulfilled_at", { withTimezone: true }),
+  fulfilledBy: uuid("fulfilled_by").references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex("loot_event_box_unique").on(t.eventId, t.boxNumber), index("loot_box_recipient").on(t.userId)]);

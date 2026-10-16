@@ -57,7 +57,7 @@ internal static class Program
         }
         catch (Exception exception)
         {
-            Console.Error.WriteLine($"Catalog build failed: {exception.Message}");
+            Console.Error.WriteLine($"Catalog build failed: {exception}");
             return 1;
         }
     }
