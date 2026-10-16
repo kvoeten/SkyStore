@@ -1,6 +1,6 @@
 {
   "name": "skystore",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "engines": {
     "node": ">=24.0.0"
@@ -22,6 +22,7 @@
     "worker": "tsx src/worker.ts"
   },
   "dependencies": {
+    "exceljs": "4.4.0",
     "@auth/drizzle-adapter": "1.11.3",
     "drizzle-orm": "0.45.2",
     "next": "16.3.0",

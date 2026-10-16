@@ -210,13 +210,14 @@ export async function executeLootCommand(context:AccessContext|null, command:Loo
       if(command.eventId) {
         const [event]=await tx.select().from(lootEvents).where(eq(lootEvents.id,command.eventId));
         if(!event||event.status!=="draft") throw new LootError("Only draft events can be repacked.");
-        await tx.update(lootEvents).set({name:command.name,settings:savedSettings,snapshotId:storage.snapshotId,plan,updatedAt:new Date()}).where(eq(lootEvents.id,event.id));
+        const savedAt=new Date();
+        await tx.update(lootEvents).set({name:command.name,settings:savedSettings,snapshotId:storage.snapshotId,plan,updatedAt:savedAt}).where(eq(lootEvents.id,event.id));
         await audit(tx,context,command.action==="rebalance"?"rebalanced":"repacked",event.id,{boxes:plan.boxes.length,settings:savedSettings});
-        return {eventId:event.id,plan,settings:savedSettings};
+        return {eventId:event.id,plan,settings:savedSettings,savedAt:savedAt.toISOString()};
       }
-      const [event]=await tx.insert(lootEvents).values({name:command.name,settings:savedSettings,snapshotId:storage.snapshotId,plan,createdBy:context.userId}).returning({id:lootEvents.id});
+      const [event]=await tx.insert(lootEvents).values({name:command.name,settings:savedSettings,snapshotId:storage.snapshotId,plan,createdBy:context.userId}).returning({id:lootEvents.id,updatedAt:lootEvents.updatedAt});
       await audit(tx,context,"planned",event.id,{boxes:plan.boxes.length});
-      return {eventId:event.id,plan,settings:savedSettings};
+      return {eventId:event.id,plan,settings:savedSettings,savedAt:event.updatedAt.toISOString()};
     }
     if(command.action==="purchase") {
       const [event]=await tx.select().from(lootEvents).where(eq(lootEvents.id,command.eventId));

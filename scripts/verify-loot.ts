@@ -95,6 +95,7 @@ async function main() {
   assert.ok("plan" in fitted&&fitted.plan.boxes.length===4&&fitted.plan.margin!>=.2);
   const [savedFit]=await db.select().from(lootEvents).where(eq(lootEvents.id,disposable.eventId));
   assert.deepEqual(savedFit.settings.boxTypes,"plan" in fitted?fitted.plan.settings.boxTypes:undefined);
+  assert.ok("savedAt" in fitted);if("savedAt" in fitted)assert.equal(fitted.savedAt,savedFit.updatedAt.toISOString());
   await executeLootCommand(owner,{action:"purchase",eventId:disposable.eventId,userId:customer.userId,tier:"General",quantity:2});
   await assert.rejects(()=>executeLootCommand(customer,{action:"deleteEvent",eventId:disposable.eventId}),/Only/);
   await executeLootCommand(owner,{action:"deleteEvent",eventId:disposable.eventId});
